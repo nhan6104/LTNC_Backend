@@ -20,6 +20,9 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 
+
+
+
 //! routes 
 const users = require("./routes/users/index.route")  // import route main , import function
 const admin = require("./routes/admin/index.route")
@@ -30,6 +33,8 @@ admin(app);
 app.use(function(req, res, next) {
   next(createError(404));
 });
+
+
 
 // error handler
 app.use(function(err, req, res, next) {
@@ -42,8 +47,12 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-
 module.exports = app;
+
+
+
+
+
 
 
 // git push --set-upstream origin HuyHoang87

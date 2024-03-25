@@ -1,5 +1,16 @@
 //! home
-module.exports.index = (req , res) =>{
+const index = (req , res) => {
     res.send("Hospital")
+}
+
+
+
+
+
+
+
+
+module.exports ={
+    index,
 }
 
