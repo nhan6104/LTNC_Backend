@@ -1,5 +1,5 @@
 //! home
 module.exports.index = (req , res) =>{
-    res.send("Hospital")
+    res.send("Admin")
 }
 
