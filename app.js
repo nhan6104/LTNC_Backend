@@ -53,6 +53,53 @@ module.exports = app;
 
 
 
+/*
 
+Bác sĩ:
+Thông tin cá nhân:
+
+Họ và tên
+Giới tính
+Ngày sinh
+Số điện thoại
+Email
+Địa chỉ
+Thông tin về chuyên ngành:
+
+Chuyên khoa hoặc lĩnh vực chuyên môn
+Trình độ học vấn và bằng cấp
+Các bằng cấp và chứng chỉ liên quan
+Thông tin công việc:
+
+Bệnh viện hoặc phòng khám mà bác sĩ làm việc
+Vị trí công việc (chức danh)
+Thời gian làm việc
+Thông tin tài khoản (nếu cần):
+
+Tên đăng nhập
+Mật khẩu
+Y tá:
+Thông tin cá nhân:
+
+Họ và tên
+Giới tính
+Ngày sinh
+Số điện thoại
+Email
+Địa chỉ
+Thông tin về chuyên ngành (nếu có):
+
+Trình độ học vấn và bằng cấp
+Các khóa đào tạo hoặc chứng chỉ liên quan đến y tá
+Thông tin công việc:
+
+Bệnh viện hoặc phòng khám mà y tá làm việc
+Vị trí công việc (chức danh)
+Thời gian làm việc
+Thông tin tài khoản (nếu cần):
+
+Tên đăng nhập
+Mật khẩu
+ */
 
 // git push --set-upstream origin HuyHoang87
