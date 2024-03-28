@@ -4,6 +4,7 @@ const collectionName = "patient";
 
 const createNewPatient = async (data) => {
     const documentID = data.cccd;
+    console.log(documentID)
     const result = await dbUtils.insert(data, collectionName, documentID);
     return result;
 };
@@ -11,3 +12,4 @@ const createNewPatient = async (data) => {
 module.exports = {
   createNewPatient,
 }
+
