@@ -9,7 +9,15 @@ const createNewPatient = async (data) => {
     return result;
 };
 
+const checkExistPatient = async (data) => {
+    const documentID = data;
+    console.log(documentID)
+    const result = await dbUtils.checkExist(collectionName , documentID);
+    return result;
+};
+
 module.exports = {
   createNewPatient,
+  checkExistPatient,
 }
 
