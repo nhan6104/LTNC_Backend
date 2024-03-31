@@ -6,8 +6,8 @@ var logger = require('morgan');
 const firebase = require('firebase');
 
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+// var indexRouter = require('./routes/index');
+// var usersRouter = require('./routes/users');
 
 var app = express();
 
@@ -28,6 +28,19 @@ app.use('/users', usersRouter);
 app.use(function(req, res, next) {
   next(createError(404));
 });
+//! Routes
+const users = require("./routes/users/index.route")  // import route main , import function
+const admin = require("./routes/admin/index.route")
+users(app);
+// admin(app);
+
+
+
+
+
+
+
+
 
 // error handler
 app.use(function(err, req, res, next) {
