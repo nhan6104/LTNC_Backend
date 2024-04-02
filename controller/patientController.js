@@ -6,8 +6,9 @@ const patientValidation = new validation.PatientValidation();
 const ceatePatient = async (req, res) => {
     try {
             const { error } = patientValidation.validateCreatePatient(req.body);
-    
-            if (error) {console.log(error);
+            console.log(req.body);
+            if (error) {
+                // console.log(error);
                 return res.status(400).json({
                     error: true,
                     message: error.message,
@@ -15,11 +16,11 @@ const ceatePatient = async (req, res) => {
             }
     
             const checkingPatient = await patientService.checkExistPatient(req.body.cccd);
-        
+            
             if (!checkingPatient.exists) {
                 return res.status(400).json({
                     error: true,
-                    message: checkingPostalCode.message,
+                    message: "Người dùng đã tồn tại",
                 });
             }
 
@@ -42,10 +43,10 @@ const ceatePatient = async (req, res) => {
 
     }
     catch (err) {
-        console.log(error);
+        console.log(err);
 		return res.status(500).json({
 			error: true,
-			message: error.message,
+			message: err.message,
 		});
     }
 }
