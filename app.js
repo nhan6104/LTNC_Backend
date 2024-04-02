@@ -24,13 +24,7 @@ app.use(function(req, res, next) {
 const users = require("./routes/users/index.route")  // import route main , import function
 const admin = require("./routes/admin/index.route")
 users(app);
-// admin(app);
-
-
-
-
-
-
+admin(app);
 
 
 

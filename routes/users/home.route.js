@@ -7,4 +7,4 @@ router.get("/",controller_home.index)   // import function
 
 
 
-module.exports = router  
+module.exports = router
