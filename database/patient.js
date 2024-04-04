@@ -9,10 +9,10 @@ const createNewPatient = async (data) => {
     return result;
 };
 
-const checkExistPatient = async (data) => {
+const checkExistPatient = async () => {
     const documentID = data;
     console.log(documentID)
-    const result = await dbUtils.findOne(data, collectionName , documentID);
+    const result = await dbUtils.findOne(collectionName , documentID);
     return result;
 };
 
