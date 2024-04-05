@@ -3,7 +3,7 @@ const validation = require('../lib/validation');
 
 const patientValidation = new validation.PatientValidation();
 
-const ceatePatient = async (req, res) => {
+const createPatient = async (req, res) => {
     try {
             const { error } = patientValidation.validateCreatePatient(req.body);
             console.log(req.body);
@@ -16,7 +16,6 @@ const ceatePatient = async (req, res) => {
             }
 
             const checkingPatient = await patientService.checkExistPatient(req.body.cccd);
-            console.log(checkingPatient);
             if (checkingPatient) {
                 return res.status(400).json({
                     error: true,
@@ -24,15 +23,30 @@ const ceatePatient = async (req, res) => {
                 });
             }
 
-            let  ref = `patient/${req.boy.cccd}` 
-            const newPatient = {
-                cccd: req.body.cccd,
-                refference: ref,
-                fullname: req.body.name
+            let newPatient = new Array();
+            let tempPatient = new Object();
+            let  ref = `patient/${req.body.cccd}` 
+            
+            tempPatient.cccd = req.body.cccd;
+            tempPatient.refference = ref;
+            tempPatient.fullname = req.body.name;
+
+            const patients = await patientService.findPatiens();
+
+
+            newPatient.push(tempPatient);
+
+            if (patients.patient) 
+            {
+                console.log(patients.patient[0]);
+                for (const patient of patients.patient)  
+                {
+                    newPatient.push(patient);
+                }
             }
 
-            const resultCreatingNewPatientInTotal = await patientService.creatPatientInTotal(newPatient);
-
+            const resultCreatingNewPatientInTotal = await patientService.creatPatientInTotal({patient: newPatient});
+            
             const resultCreatingNewPatient = await patientService.createPatient(req.body);
 		
             let textResultCreatingNewPatient;
@@ -57,7 +71,7 @@ const ceatePatient = async (req, res) => {
                 message: `
                 Kết quả:\n
                 ${textResultCreatingNewPatient}\n
-                ${textResultCreatingNewPatientInTotal}\n`,
+                ${textResultCreatingNewPatientInTotal}`,
             });
 
     }
@@ -195,7 +209,6 @@ const removeRecords = async (req, res) => {
     }
 }
 
-
 const treatmentProcessByID = async (req, res) => {
     try{
         const { error } = patientValidation.validateTreatmentProcessByID(req.body);
@@ -293,7 +306,7 @@ const updatePatientData = async (req, res) => {
 }
 
 module.exports = {
-    ceatePatient,
+    createPatient,
     removePatient,
     createRecords,
     removeRecords,

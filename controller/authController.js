@@ -17,8 +17,9 @@ const auth = getAuth(app);
 
 const login = async (req, res) => {
   try {
-    await signInWithEmailAndPassword(auth, req.body.email, req.body.password);
-    return res.status(200).send({
+   const userCredential = await signInWithEmailAndPassword(auth, req.body.email, req.body.password);
+   console.log(userCredential); 
+   return res.status(200).send({
       error: false,
       message: "Login sucessfully."
     });

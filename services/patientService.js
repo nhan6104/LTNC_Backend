@@ -1,6 +1,4 @@
-const { x } = require('joi');
 const patient = require('../database/patient');
-const dbUtils = require('../lib/dbUtils')
 
 const createPatient = async (data) => {
   return await patient.createNewPatient(data);
@@ -40,7 +38,10 @@ const removeRecords = async (patientID, recordsDate) => {
 
 const creatPatientInTotal = async (patientData) => {
   return await patient.createNewPatientInTotal(patientData);
+}
 
+const findPatiens = async () => {
+  return await patient.findPatients();
 }
 
 module.exports = {
@@ -54,6 +55,7 @@ module.exports = {
   removePatient,
   removeRecords,
   creatPatientInTotal,
+  findPatiens
 }
 
 

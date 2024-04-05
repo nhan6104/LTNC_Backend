@@ -6,14 +6,15 @@ const collectiontotal = "staff";
 
 const createNewPatient = async (dataPatient) => {
   const documentID = dataPatient.cccd;
-  // console.log(documentID)
+  console.log(documentID)
   const result = await dbUtils.insert(dataPatient, collectionName, documentID);
   return result;
 };
 
 const createNewPatientInTotal = async (dataPatient) => {
   // console.log(documentID)
-  const result = await dbUtils.insert(dataPatient, collectiontotal, collectionName);
+
+  const result = await dbUtils.add(dataPatient, collectiontotal, collectionName);
   return result;
 };
 
@@ -26,6 +27,11 @@ const updatePatientData = async (newDataPatient) => {
 
 const findPatientByID = async (patientID) => {
   const result = await dbUtils.findOne(collectionName, patientID);
+  return result;
+}
+
+const findPatients = async () => {
+  const result = await dbUtils.findOne(collectiontotal, collectionName);
   return result;
 }
 
@@ -73,6 +79,7 @@ module.exports = {
   findPatientByID,
   findRecordsByDate,
   treatmentProcessByID,
-  createNewPatientInTotal
+  createNewPatientInTotal,
+  findPatients
 }
 
