@@ -3,7 +3,6 @@ const dbUtils = require('../lib/dbUtils');
 const collectionName = "staff";
 
 
-// const doctor = firestore.database().collection('staff').collection('doctor')
 const createNewStaff = async (data) => {
     const documentID = data.cccd;
     
@@ -18,12 +17,13 @@ const checkExistStaff = async (data) => {
     const result = await dbUtils.checkExist(collectionName , documentID);
     return result;
 };
-const removeStaff = async (data) => {
+const removeStaff = async (data , type) => {
     const documentID = data;
-    staff = "doctor"
-    const result = await dbUtils.removeStaff(collectionName , documentID , staff);
+    type = "";
+    const result = await dbUtils.removeStaff(collectionName , documentID , type);
     return result;
 }
+
 
 module.exports = {
     createNewStaff,

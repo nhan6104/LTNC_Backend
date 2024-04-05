@@ -50,9 +50,34 @@ const createStaff = async (req, res) => {
 		});
     }
 }
-const removeStaff = async (req, res) => {
+const removeStaff = async (req, res , type) => {
     try {
-        
+        const checkingStaff = await staffService.checkExistStaff(req.body.cccd);
+
+        if (!checkingStaff.exists) {
+            return res.status(400).json({
+                error: true,
+                message: checkingPostalCode.message,
+            });
+        }
+
+
+        const resultRemoveNewStaff = await staffService.removeStaff(req.body , type);
+		
+        let textResultRemoveNewStaff;
+        if (!resultRemoveNewStaff) {
+            textResultRemoveNewStaff = `Xóa ${type} thất bại.`;
+        }
+        else {
+            textResultRemoveNewStaff = `Xóa ${type} thành công.`
+        }
+
+        return res.status(200).json({
+            error: false,
+            message: `
+            Kết quả:\n
+            ${textResultRemoveNewStaff}\n`,
+        });
     } catch (error) {
         console.log(error);
         return res.status(500).json({
