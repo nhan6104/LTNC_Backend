@@ -176,19 +176,9 @@ const removeRecords = async (req, res) => {
     }
 }
 
-//update
-
-const dataPatient = {
-    gender: 'Male',
-    name: 'Tan Phat',
-    date_of_birth: '2004-01-01',
-    phoneNumber: '0987654321',
-    medicalHistory: [
-      { name: 'cough', process: 'completed' },
-      { name : 'cancer', process: 'being treated' }
-  ],
-    address: { province: 'def', city: 'xyz', street: 'abc' }, // Corrected 'adress' to 'address'
-    cccd: '077204456123'
-  };
-const validationResult = patientValidation.validatePatientData(dataPatient);
-console.log(validationResult);
+module.exports = {
+    ceatePatient,
+    removePatient,
+    createRecords,
+    removeRecords
+}
