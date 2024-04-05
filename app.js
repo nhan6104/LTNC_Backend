@@ -3,15 +3,17 @@ var express = require('express');
 var path = require('path');
 
 var patientRouter = require('./routes/patientRoute');
-// var usersRouter = require('./routes/users');
+var doctorRouter = require('./routes/doctorRoute');
+
 
 var app = express();
-
-
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
+
+
 app.use('/api/v1/patient',  patientRouter);
+app.use('/api/v1/doctor',  doctorRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
