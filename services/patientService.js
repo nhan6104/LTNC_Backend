@@ -50,49 +50,20 @@ module.exports = {
   removeRecords
 }
 
-const dataPatient = {
-  gender: 'Male',
-  name: 'Tan Phat',
-  date_of_birth: '2004-1-1',
-  phoneNumber: '0987654321',
-  medicalHistory: [
-    { name: 'cough', process: 'completed' },
-    { name : 'cancer', process: 'being treated' }
-],
-  address: { province: 'def', city: 'xyz', street: 'abc' }, // Corrected 'adress' to 'address'
-  cccd: '077204456123'
-};
-
-const dataRecords = 
-{
-  date: '2024-07-04',
-  description: 'description',
-  prescription: [
-    { dosage: { morning : 2, noon : 1, night : 2}, quantity: 25, medicine: 'Medicine 3' },
-    { dosage: { morning : 2, noon : 2, night: 2 }, quantity: 30, medicine: 'Medicine 4' }
-  ],
-  testResult: [
-    { result: 'Normal', testName: 'Test 3' },
-    { result: 'Positive', testName: 'Test 4' }
-  ],
-  diagnosis: 'Sick 1',
-}
-
-
 
 
 // createRecords(dataPatient, dataRecords);
 
 // patient.removeRecords('077204456789', '003');
 
-const func = async ()=>{
-  const checkingPatient = await checkExistPatient('077204456789');
+// const func = async ()=>{
+//   const checkingPatient = await checkExistPatient('077204456789');
             
-  if (checkingPatient) {
-      console.log("ko tt")
-  }
-}
-func();
+//   if (checkingPatient) {
+//       console.log("ko tt")
+//   }
+// }
+// func();
 
 // createPatient(dataPatient);
 

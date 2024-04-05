@@ -5,14 +5,14 @@ const subcollectionName = "medicalRecords"
 
 const createNewPatient = async (dataPatient) => {
   const documentID = dataPatient.cccd;
-  console.log(documentID)
+  // console.log(documentID)
   const result = await dbUtils.insert(dataPatient, collectionName, documentID);
   return result;
 };
 
 const updatePatientData = async (newDataPatient) => {
   const documentID = newDataPatient.cccd;
-  console.log(documentID)
+  // console.log(documentID)
   const result = await dbUtils.update(newDataPatient, collectionName, documentID);
   return result;
 }
@@ -28,7 +28,7 @@ const removePatient = async (patientID) => {
 
 const checkExistPatient = async (data) => {
   const documentID = data;
-  console.log(documentID)
+  // console.log(documentID)
   const result = await dbUtils.findOne(data, collectionName, documentID);
   return result;
 };
@@ -36,9 +36,9 @@ const checkExistPatient = async (data) => {
 const createNewRecords = async (dataPatient, dataRecords) => {
   const documentID = dataPatient.cccd;
   const subdocumentID = dataRecords.date;
-  console.log(documentID + " " + subdocumentID);
+  // console.log(documentID + " " + subdocumentID);
   result = await dbUtils.insert(dataRecords, collectionName, documentID, subcollectionName, subdocumentID);
-  console.log(result);
+  // console.log(result);
   return result;
 }
 
