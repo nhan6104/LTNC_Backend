@@ -14,15 +14,24 @@ const ceatePatient = async (req, res) => {
                     message: error.message,
                 });
             }
-    
+
             const checkingPatient = await patientService.checkExistPatient(req.body.cccd);
-            
-            if (checkingPatient.exists) {
+            console.log(checkingPatient);
+            if (checkingPatient) {
                 return res.status(400).json({
                     error: true,
                     message: "Người dùng đã tồn tại",
                 });
             }
+
+            let  ref = `patient/${req.boy.cccd}` 
+            const newPatient = {
+                cccd: req.body.cccd,
+                refference: ref,
+                fullname: req.body.name
+            }
+
+            const resultCreatingNewPatientInTotal = await patientService.creatPatientInTotal(newPatient);
 
             const resultCreatingNewPatient = await patientService.createPatient(req.body);
 		
@@ -34,11 +43,21 @@ const ceatePatient = async (req, res) => {
                 textResultCreatingNewPatient = `Tạo bệnh nhân thành công.`
             }
 
+            let textResultCreatingNewPatientInTotal;
+            if (!resultCreatingNewPatientInTotal) {
+                textResultCreatingNewPatientInTotal = `Tạo bệnh nhân trong bảng tổng thất bại.`;
+            }
+            else {
+                textResultCreatingNewPatientInTotal = `Tạo bệnh nhân trong bảng tổng thành công.`
+            }
+
+
             return res.status(200).json({
                 error: false,
                 message: `
                 Kết quả:\n
-                ${textResultCreatingNewPatient}\n`,
+                ${textResultCreatingNewPatient}\n
+                ${textResultCreatingNewPatientInTotal}\n`,
             });
 
     }

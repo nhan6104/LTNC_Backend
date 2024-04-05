@@ -2,11 +2,18 @@ const dbUtils = require('../lib/dbUtils');
 
 const collectionName = "patient";
 const subcollectionName = "medicalRecords"
+const collectiontotal = "staff";
 
 const createNewPatient = async (dataPatient) => {
   const documentID = dataPatient.cccd;
   // console.log(documentID)
   const result = await dbUtils.insert(dataPatient, collectionName, documentID);
+  return result;
+};
+
+const createNewPatientInTotal = async (dataPatient) => {
+  // console.log(documentID)
+  const result = await dbUtils.insert(dataPatient, collectiontotal, collectionName);
   return result;
 };
 
@@ -29,7 +36,7 @@ const removePatient = async (patientID) => {
 const checkExistPatient = async (data) => {
   const documentID = data;
   // console.log(documentID)
-  const result = await dbUtils.findOne(data, collectionName, documentID);
+  const result = await dbUtils.findOne(collectionName, documentID);
   return result;
 };
 
@@ -65,6 +72,7 @@ module.exports = {
   removeRecords,
   findPatientByID,
   findRecordsByDate,
-  treatmentProcessByID
+  treatmentProcessByID,
+  createNewPatientInTotal
 }
 

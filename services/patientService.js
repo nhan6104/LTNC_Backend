@@ -38,6 +38,11 @@ const removeRecords = async (patientID, recordsDate) => {
   return await patient.removeRecords(patientID, recordsDate);
 }
 
+const creatPatientInTotal = async (patientData) => {
+  return await patient.createNewPatientInTotal(patientData);
+
+}
+
 module.exports = {
   createPatient,
   checkExistPatient,
@@ -47,7 +52,8 @@ module.exports = {
   treatmentProcessByID,
   updatePatientData,
   removePatient,
-  removeRecords
+  removeRecords,
+  creatPatientInTotal,
 }
 
 
