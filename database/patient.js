@@ -12,7 +12,7 @@ const createNewPatient = async (data) => {
 const checkExistPatient = async (data) => {
     const documentID = data;
     console.log(documentID)
-    const result = await dbUtils.checkExist(collectionName , documentID);
+    const result = await dbUtils.findOne(collectionName , documentID);
     return result;
 };
 
