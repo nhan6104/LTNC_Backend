@@ -17,7 +17,7 @@ const ceatePatient = async (req, res) => {
     
             const checkingPatient = await patientService.checkExistPatient(req.body.cccd);
             
-            if (!checkingPatient.exists) {
+            if (checkingPatient.exists) {
                 return res.status(400).json({
                     error: true,
                     message: "Người dùng đã tồn tại",

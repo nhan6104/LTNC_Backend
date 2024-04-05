@@ -1,5 +1,5 @@
 const { initializeApp } = require("firebase/app");
-const { getAuth, signInWithEmailAndPassword } = require("firebase/auth");
+const { getAuth, signInWithEmailAndPassword, AuthErrorCodes } = require("firebase/auth");
 
 const firebaseConfig = {
   apiKey: "AIzaSyB1gkuDziM58XIJtbBBt2wYR0LzY9oYf7s",
