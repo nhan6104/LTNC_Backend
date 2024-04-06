@@ -16,20 +16,15 @@ app.use(express.urlencoded({ extended: false }));
 
 
 app.use('/api/v1/patient',  patientRouter);
+
 app.use('/api/v1/staff',  staffRouter);
-app.use('/api/v1/docter',  doctorRouter);
+app.use('/api/v1/doctor',  doctorRouter);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
 });
-//! Routes
-// const users = require("./routes/users/index.route")  // import route main , import function
-// const admin = require("./routes/admin/index.route")
-// users(app);
-// admin(app);
-
-
 
 
 // error handler

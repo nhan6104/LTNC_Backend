@@ -17,11 +17,8 @@ const checkExistStaff = async (data) => {
     const result = await dbUtils.checkExist(collectionName , documentID);
     return result;
 };
-const removeStaff = async (data , type) => {
-    const documentID = data;
-    type = "";
-    const result = await dbUtils.removeStaff(collectionName , documentID , type);
-    return result;
+const removeStaff = async (data) => {
+    return dbUtils.erase(collectionName, patientID);
 }
 
 

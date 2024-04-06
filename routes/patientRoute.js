@@ -7,4 +7,6 @@ router.post("/create", patientController.ceatePatient);
 router.post("/create", authenticate.isAuthenticated, patientController.ceatePatient);
 
 
+
+
 module.exports = router;

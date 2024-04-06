@@ -5,6 +5,7 @@ const staffValidation = new validation.PatientValidation();
 
 
 const createStaff = async (req, res) => {
+    console.log(req.body)
     try {
             const { error } = staffValidation.validateLoginStaff(req.body);
     
@@ -14,16 +15,6 @@ const createStaff = async (req, res) => {
                     message: error.message,
                 });
             }
-    
-            const checkingStaff = await staffService.checkExistStaff(req.body.cccd);
-        
-            if (!checkingStaff.exists) {
-                return res.status(400).json({
-                    error: true,
-                    message: checkingPostalCode.message,
-                });
-            }
-
             const resultCreatingNewStaff = await staffService.createStaff(req.body);
 		
             let textResultCreatingNewStaff;
@@ -42,13 +33,14 @@ const createStaff = async (req, res) => {
             });
 
     }
-    catch (err) {
-        console.log(error);
+    catch (error) {
+        // console.log(err);
 		return res.status(500).json({
 			error: true,
 			message: error.message,
 		});
     }
+    
 }
 const removeStaff = async (req, res , type) => {
     try {

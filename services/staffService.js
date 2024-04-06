@@ -7,8 +7,8 @@ const createStaff = async (data) => {
 const checkExistStaff = async (data) => { 
   return await staff.checkExistStaff(data);
 }
-const removeStaff = async (data , type) => {
-  return await staff.removeStaff(data , type);
+const removeStaff = async (data) => {
+  return await staff.removeStaff(data);
 }
 
 module.exports = {
