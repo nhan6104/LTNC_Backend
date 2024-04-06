@@ -1,6 +1,8 @@
 const dbUtils = require('../lib/dbUtils');
 
-const collectionName = "staff";
+const collectionName = "doctor";
+const subcollectionName = "medicalRecords"
+const collectiontotal = "staff";
 
 
 const createNewStaff = async (data) => {
@@ -13,18 +15,22 @@ const createNewStaff = async (data) => {
 
 const checkExistStaff = async (data) => {
     const documentID = data;
-  
-    const result = await dbUtils.checkExist(collectionName , documentID);
+    // console.log(documentID)
+    const result = await dbUtils.findOne(collectionName, documentID);
     return result;
-};
+  };
 const removeStaff = async (data) => {
-    return dbUtils.erase(collectionName, patientID);
+    return dbUtils.erase(collectionName, data);
 }
-
+const createNewStaffInTotal = async (staff) => {
+    const result = await dbUtils.insert(staff, collectiontotal, collectionName);
+    return result;
+  };
 
 module.exports = {
     createNewStaff,
     checkExistStaff,
     removeStaff,
+    createNewStaffInTotal,
 }
 

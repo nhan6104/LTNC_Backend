@@ -10,9 +10,12 @@ const checkExistStaff = async (data) => {
 const removeStaff = async (data) => {
   return await staff.removeStaff(data);
 }
-
+const createStaffInTotal = async (doctorID) => {
+  return await staff.createNewStaffInTotal(doctorID);
+}
 module.exports = {
   createStaff,
   checkExistStaff,
   removeStaff,
+  createStaffInTotal,
 }

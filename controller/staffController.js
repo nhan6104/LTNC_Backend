@@ -5,7 +5,7 @@ const staffValidation = new validation.PatientValidation();
 
 
 const createStaff = async (req, res) => {
-    console.log(req.body)
+    //console.log(req.body)
     try {
             const { error } = staffValidation.validateLoginStaff(req.body);
     
@@ -15,6 +15,34 @@ const createStaff = async (req, res) => {
                     message: error.message,
                 });
             }
+            //!
+            // const checkingStaff = await staffService.checkExistStaff(req.body.cccd);
+            // //console.log(checkingStaff);
+            // if (checkingStaff) {
+            //     return res.status(400).json({
+            //         error: true,
+            //         message: "Người dùng đã tồn tại",
+            //     });
+            // }
+
+            const  ref = `doctor/${req.body.cccd}` 
+            const newStaff = {
+                cccd: req.body.cccd,
+                refference: ref,
+                fullname: req.body.name
+            }
+
+            const resultCreatingNewStaffInTotal = await staffService.createStaffInTotal(newStaff);
+            //console.log(resultCreatingNewStaffInTotal)
+            let textResultCreatingNewStaffInTotal;
+            if (!resultCreatingNewStaffInTotal) {
+                textResultCreatingNewStaffInTotal = `Tạo nhân viên trong bảng tổng thất bại.`;
+            }
+            else {
+                textResultCreatingNewStaffInTotal = `Tạo nhân viên trong bảng tổng thành công.`
+            }
+
+            //!
             const resultCreatingNewStaff = await staffService.createStaff(req.body);
 		
             let textResultCreatingNewStaff;
@@ -29,7 +57,8 @@ const createStaff = async (req, res) => {
                 error: false,
                 message: `
                 Kết quả:\n
-                ${textResultCreatingNewStaff}\n`,
+                ${textResultCreatingNewStaff}\n
+                ${textResultCreatingNewStaffInTotal}\n`,
             });
 
     }
@@ -42,7 +71,7 @@ const createStaff = async (req, res) => {
     }
     
 }
-const removeStaff = async (req, res , type) => {
+const removeStaff = async (req, res) => {
     try {
         const checkingStaff = await staffService.checkExistStaff(req.body.cccd);
 
@@ -54,14 +83,14 @@ const removeStaff = async (req, res , type) => {
         }
 
 
-        const resultRemoveNewStaff = await staffService.removeStaff(req.body , type);
+        const resultRemoveNewStaff = await staffService.removeStaff(req.body);
 		
         let textResultRemoveNewStaff;
         if (!resultRemoveNewStaff) {
-            textResultRemoveNewStaff = `Xóa ${type} thất bại.`;
+            textResultRemoveNewStaff = `Xóa nhân viên thất bại.`;
         }
         else {
-            textResultRemoveNewStaff = `Xóa ${type} thành công.`
+            textResultRemoveNewStaff = `Xóa nhân viên thành công.`
         }
 
         return res.status(200).json({
