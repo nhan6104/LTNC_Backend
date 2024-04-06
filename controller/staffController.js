@@ -16,24 +16,24 @@ const createStaff = async (req, res) => {
                 });
             }
             //!
-            // const checkingStaff = await staffService.checkExistStaff(req.body.cccd);
-            // //console.log(checkingStaff);
-            // if (checkingStaff) {
-            //     return res.status(400).json({
-            //         error: true,
-            //         message: "Người dùng đã tồn tại",
-            //     });
-            // }
-
-            const  ref = `doctor/${req.body.cccd}` 
-            const newStaff = {
-                cccd: req.body.cccd,
-                refference: ref,
-                fullname: req.body.name
+            const checkingStaff = await staffService.checkExistStaff(req.body.infor.cccd);
+            //console.log(checkingStaff);
+            if (checkingStaff) {
+                return res.status(400).json({
+                    error: true,
+                    message: "Người dùng đã tồn tại",
+                });
             }
-
+            //console.log(req.body.infor.cccd)
+            const  ref = `doctor/${req.body.infor.cccd}` 
+            const newStaff = {
+                cccd: req.body.infor.cccd,
+                refference: ref,
+                fullname: req.body.infor.name
+            }
+            console.log(newStaff)
             const resultCreatingNewStaffInTotal = await staffService.createStaffInTotal(newStaff);
-            //console.log(resultCreatingNewStaffInTotal)
+            // console.log(resultCreatingNewStaffInTotal)
             let textResultCreatingNewStaffInTotal;
             if (!resultCreatingNewStaffInTotal) {
                 textResultCreatingNewStaffInTotal = `Tạo nhân viên trong bảng tổng thất bại.`;

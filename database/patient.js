@@ -12,7 +12,7 @@ const createNewPatient = async (dataPatient) => {
 };
 
 const createNewPatientInTotal = async (dataPatient) => {
-  // console.log(documentID)
+  console.log(documentID)
   const result = await dbUtils.insert(dataPatient, collectiontotal, collectionName);
   return result;
 };
