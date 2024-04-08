@@ -107,7 +107,31 @@ const removeStaff = async (req, res) => {
         }); 
     }
 }
-
+const detailStaff = async (req, res) => {
+    try {
+        const detail = req.body
+        // console.log(work)
+        // res.render("index.jade" ,{
+        //     title : "Schedule",
+        //     work : work,
+        // })
+        console.log(detail)
+        if (detail) {
+            return res.status(400).json({
+                error: true,
+                message: "Lịch làm việc của nhân viên",
+                detail : detail
+            });
+        }
+    }
+    catch (error) {
+        // console.log(err);
+		return res.status(500).json({
+			error: true,
+			message: error.message,
+		});
+    }
+}
 
 
 
@@ -115,4 +139,5 @@ const removeStaff = async (req, res) => {
 module.exports = {
     createStaff,
     removeStaff,
+    detailStaff
 }

@@ -10,7 +10,8 @@ var app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-
+app.set('views', `${__dirname}/views`)  
+app.set('view engine', 'jade')
 
 app.use('/api/v1/patient',  patientRouter);
 app.use('/api/v1/doctor',  doctorRouter);
