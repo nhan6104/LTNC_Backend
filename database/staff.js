@@ -22,14 +22,20 @@ const checkExistStaff = async (data) => {
 const removeStaff = async (data) => {
     return dbUtils.erase(collectionName, data);
 }
-const createNewStaffInTotal = async (staff) => {
-    const result = await dbUtils.insert(staff, collectiontotal, collectionName);
+const createNewStaffInTotal = async (doctorID) => {
+    const result = await dbUtils.insert(doctorID, collectiontotal, collectionName);
     return result;
   };
+const detailOfStaff = async (doctorID) => {
+  const result = await dbUtils.findOne(collectionName, doctorID);
+  return result;
+}
+
 
 module.exports = {
     createNewStaff,
     checkExistStaff,
     removeStaff,
     createNewStaffInTotal,
+    detailOfStaff,
 }

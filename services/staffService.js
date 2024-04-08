@@ -1,21 +1,25 @@
 const staff = require('../database/staff');
 
-const createStaff = async (data) => {
-  return await staff.createNewStaff(data);
+const createStaff = async (doctorID) => {
+  return await staff.createNewStaff(doctorID);
 };
 
-const checkExistStaff = async (data) => { 
-  return await staff.checkExistStaff(data);
+const checkExistStaff = async (doctorID) => { 
+  return await staff.checkExistStaff(doctorID);
 }
-const removeStaff = async (data) => {
-  return await staff.removeStaff(data);
+const removeStaff = async (doctorID) => {
+  return await staff.removeStaff(doctorID);
 }
 const createStaffInTotal = async (doctorID) => {
   return await staff.createNewStaffInTotal(doctorID);
+}
+const detailStaff = async (doctorID) => {
+  return await staff.detailOfStaff(doctorID);
 }
 module.exports = {
   createStaff,
   checkExistStaff,
   removeStaff,
   createStaffInTotal,
+  detailStaff,
 }

@@ -109,17 +109,23 @@ const removeStaff = async (req, res) => {
 }
 const detailStaff = async (req, res) => {
     try {
-        const detail = req.body
+        const detail = await staffService.detailStaff(req.body.cccd)
         // console.log(work)
         // res.render("index.jade" ,{
         //     title : "Schedule",
         //     work : work,
         // })
-        console.log(detail)
+        let textResult;
+        if (!detail) {
+            textResult = `Lấy thông tin thất bại.`;
+        }
+        else {
+            textResult = `Lấy thông tin thành công.`;
+        }
         if (detail) {
             return res.status(400).json({
                 error: true,
-                message: "Lịch làm việc của nhân viên",
+                message: "Thông tin của bác sĩ",
                 detail : detail
             });
         }
@@ -132,12 +138,14 @@ const detailStaff = async (req, res) => {
 		});
     }
 }
+const illnessToDoctor = async (req , res) => {
 
-
+}
 
 
 module.exports = {
     createStaff,
     removeStaff,
-    detailStaff
+    detailStaff,
+    illnessToDoctor
 }
