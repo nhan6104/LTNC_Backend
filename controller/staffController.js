@@ -109,7 +109,7 @@ const removeStaff = async (req, res) => {
 }
 const detailStaff = async (req, res) => {
     try {
-        const detail = await staffService.detailStaff(req.body.cccd)
+        const detail = await staffService.detailStaff(req.body.Infor.cccd)
         // console.log(work)
         // res.render("index.jade" ,{
         //     title : "Schedule",
