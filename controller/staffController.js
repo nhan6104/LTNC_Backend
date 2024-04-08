@@ -119,7 +119,7 @@ const detailStaff = async (req, res) => {
         if (detail) {
             return res.status(400).json({
                 error: true,
-                message: "Lịch làm việc của nhân viên",
+                message: "Thông tin chi tiết của bác sĩ",
                 detail : detail
             });
         }
