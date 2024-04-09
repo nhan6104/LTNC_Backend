@@ -19,15 +19,22 @@ const detailStaff = async (doctorID) => {
 const jobDoctor = async (doctorID) => {
   return await staff.jobOfStaff(doctorID);
 }
-const findPatiens = async () => {
-  return await staff.findPatients();
+
+const findDoctor = async () => {
+  return await staff.findDoctor();
 }
+
+const updateDoctorInTotal = async (data) => {
+  return await staff.UpdateDoctorInTotal(data)
+};
+
 module.exports = {
   createStaff,
   checkExistStaff,
-  findPatiens,
+  findDoctor,
   removeStaff,
   createStaffInTotal,
   detailStaff,
   jobDoctor,
+  updateDoctorInTotal
 }

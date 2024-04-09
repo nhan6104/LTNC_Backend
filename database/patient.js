@@ -36,7 +36,7 @@ const findPatients = async () => {
 }
 
 const removePatient = async (patientID) => {
-  return dbUtils.erase(collectionName, patientID);
+  return await dbUtils.erase(collectionName, patientID);
 }
 
 const checkExistPatient = async (data) => {

@@ -1,0 +1,45 @@
+{
+    "Infor": {
+        "address": "1745 T Street Southeast Washington",
+        "birthday" :"1990-08-02",
+        "cccd" :"12345678910",
+        "email" :"atuny0@sohu.com",
+        "gender" :"male",
+        "name": "Hoàng"
+    },
+    "job":{
+        "clinic": 103,
+        "position": "Đa khoa",
+        "working_hours": [
+            {
+              "day": "Monday",
+              "start_time": "09:00",
+              "end_time": "17:00"
+            },
+            {
+              "day": "Tuesday",
+              "start_time": "09:00",
+              "end_time": "17:00"
+            },
+            {
+              "day": "Wednesday",
+              "start_time": "09:00",
+              "end_time": "17:00"
+            },
+            {
+              "day": "Thursday",
+              "start_time": "09:00",
+              "end_time": "17:00"
+            },
+            {
+              "day": "Friday",
+              "start_time": "09:00",
+              "end_time": "17:00"
+            }
+          ]
+    },
+    "major": {
+        "degree": "Doctor of Medicine - M.D.",
+        "specialized":"Đa khoa"
+    }
+}
