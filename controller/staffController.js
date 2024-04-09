@@ -139,7 +139,30 @@ const detailStaff = async (req, res) => {
     }
 }
 const illnessToDoctor = async (req , res) => {
-
+    try {
+        const job = await staffService.jobDoctor(req.body.Infor.cccd)
+        let textResult;
+        if (!detail) {
+            textResult = `Lấy thông tin thất bại.`;
+        }
+        else {
+            textResult = `Lấy thông tin thành công.`;
+        }
+        if (detail) {
+            return res.status(400).json({
+                error: true,
+                message: "Thông tin công việc của bác sĩ",
+                job : job
+            });
+        }
+    }
+    catch (error) {
+        // console.log(err);
+		return res.status(500).json({
+			error: true,
+			message: error.message,
+		});
+    }
 }
 
 

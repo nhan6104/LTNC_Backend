@@ -30,6 +30,10 @@ const detailOfStaff = async (doctorID) => {
   const result = await dbUtils.findOne(collectionName, doctorID);
   return result;
 }
+const jobOfStaff = async (doctorID) => {
+  const result = await dbUtils.findOne(collectionName, doctorID);
+  return result.job;
+}
 
 
 module.exports = {
@@ -38,4 +42,5 @@ module.exports = {
     removeStaff,
     createNewStaffInTotal,
     detailOfStaff,
+    jobOfStaff,
 }
