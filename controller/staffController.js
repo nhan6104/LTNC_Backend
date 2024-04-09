@@ -73,12 +73,12 @@ const createStaff = async (req, res) => {
 }
 const removeStaff = async (req, res) => {
     try {
-        const checkingStaff = await staffService.checkExistStaff(req.body.cccd);
+        const checkingStaff = await staffService.checkExistStaff(req.body.Infor.cccd);
 
-        if (!checkingStaff.exists) {
+        if (checkingStaff) {
             return res.status(400).json({
                 error: true,
-                message: checkingPostalCode.message,
+                message: "Nhân viên đã tồn tại",
             });
         }
 
