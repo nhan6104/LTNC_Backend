@@ -55,7 +55,6 @@ const checkExistMedicalEquip = async (data) => {
     return result;
 }
 
-  
 
 module.exports = {
     findMedicalEquip,
