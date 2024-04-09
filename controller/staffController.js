@@ -5,7 +5,6 @@ const staffValidation = new validation.PatientValidation();
 
 
 const createStaff = async (req, res) => {
-    //console.log(req.body)
     try {
             const { error } = staffValidation.validateLoginStaff(req.body);
     
@@ -16,23 +15,36 @@ const createStaff = async (req, res) => {
                 });
             }
             //!
-            const checkingStaff = await staffService.checkExistStaff(req.body.infor.cccd);
-            //console.log(checkingStaff);
+            const checkingStaff = await staffService.checkExistStaff(req.body.Infor.cccd);
             if (checkingStaff) {
                 return res.status(400).json({
                     error: true,
                     message: "Người dùng đã tồn tại",
                 });
             }
-            //console.log(req.body.infor.cccd)
-            const  ref = `doctor/${req.body.infor.cccd}` 
-            const newStaff = {
-                cccd: req.body.infor.cccd,
+            let newStaff = new Array();
+            let tempStaff = new Object();           
+            const  ref = `doctor/${req.body.Infor.cccd}` 
+            tempStaff = {
+                cccd: req.body.Infor.cccd,
                 refference: ref,
-                fullname: req.body.infor.name
+                fullname: req.body.Infor.name
             }
-            console.log(newStaff)
-            const resultCreatingNewStaffInTotal = await staffService.createStaffInTotal(newStaff);
+
+            const staffs = await staffService.findPatiens();
+            newStaff.push(tempStaff)
+            if (staffs.staff) 
+            {
+                console.log(staffs.staff[0]);
+                for (const staff of staffs.staff)  
+                {
+                    newPatient.push(staff);
+                }
+            }
+            
+
+
+            const resultCreatingNewStaffInTotal = await staffService.createStaffInTotal(tempStaff);
             // console.log(resultCreatingNewStaffInTotal)
             let textResultCreatingNewStaffInTotal;
             if (!resultCreatingNewStaffInTotal) {

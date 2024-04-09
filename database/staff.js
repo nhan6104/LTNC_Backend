@@ -34,11 +34,16 @@ const jobOfStaff = async (doctorID) => {
   const result = await dbUtils.findOne(collectionName, doctorID);
   return result.job;
 }
+const findPatients = async () => {
+  const result = await dbUtils.findOne(collectiontotal, collectionName);
+  return result;
+}
 
 
 module.exports = {
     createNewStaff,
     checkExistStaff,
+    findPatients,
     removeStaff,
     createNewStaffInTotal,
     detailOfStaff,
