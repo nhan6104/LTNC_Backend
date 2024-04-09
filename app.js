@@ -4,12 +4,7 @@ var path = require('path');
 
 var patientRouter = require('./routes/patientRoute');
 var doctorRouter = require('./routes/doctorRoute');
-<<<<<<< HEAD
-var medicineRouter = require('./routes/medicineRoute');
-var medicalEquipRouter = require('./routes/medicalEquipRoute');
-=======
 var staffRouter = require('./routes/staffRoute');
->>>>>>> bebdc7fe817361af919a682339f4338ee2b9ee57
 
 var app = express();
 app.use(express.json());
@@ -20,12 +15,7 @@ app.set('view engine', 'jade')
 
 app.use('/api/v1/patient',  patientRouter);
 app.use('/api/v1/doctor',  doctorRouter);
-<<<<<<< HEAD
-app.use('/api/v1/medicine',  medicineRouter);
-app.use('/api/v1/medicalEquip',medicalEquipRouter);
-=======
 app.use('/api/v1/staff',  staffRouter);
->>>>>>> bebdc7fe817361af919a682339f4338ee2b9ee57
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
