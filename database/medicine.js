@@ -23,7 +23,7 @@ const findMedicinesExpire = async () => {
     return new Date(`${year}-${month}-${day}`);
   };
 
-  // Lọc các kết quả sao cho expiration_day >= now
+  // Lọc các kết quả sao cho expiration_day <= now
   const filteredResult = result.filter(item => {
     const expirationDate = convertToDate(item.expiration_date);
     const expirationYear = expirationDate.getFullYear();
@@ -71,6 +71,7 @@ module.exports = {
   findMedicinesExpire,
   createMedicine,
   removeMedicine,
-  checkExistMedicine
+  checkExistMedicine,
+  generateRandomString
 }
 
