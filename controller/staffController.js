@@ -16,7 +16,6 @@ const createStaff = async (req, res) => {
             }
 
             const doctors = await doctorService.findDoctor();
-            console.log(doctors);
 
             if (doctors.doctor) {
                 for (let doctor of doctors.doctor) {
@@ -28,6 +27,8 @@ const createStaff = async (req, res) => {
                     }   
                 }
             }
+
+            const resultSignUp = await doctorService.signupAccount(req.body.email, req.body.cccd);
             
             let newStaff = new Array();
             let tempStaff = new Object();           
@@ -35,7 +36,8 @@ const createStaff = async (req, res) => {
             tempStaff = {
                 cccd: req.body.cccd,
                 refference: ref,
-                fullname: req.body.name
+                fullname: req.body.name,
+                userUid: resultSignUp.user.uid
             }
 
             newStaff.push(tempStaff)
@@ -46,7 +48,7 @@ const createStaff = async (req, res) => {
                     newStaff.push(staff);
                 }
             }
-            
+
             const resultCreatingNewStaffInTotal = await doctorService.createStaffInTotal({doctors: newStaff});
             // console.log(resultCreatingNewStaffInTotal)
             let textResultCreatingNewStaffInTotal;

@@ -28,6 +28,11 @@ const updateDoctorInTotal = async (data) => {
   return await staff.UpdateDoctorInTotal(data)
 };
 
+const signupAccount = async (email, password) => {
+  return await staff.signupAccount(email, password);
+};
+
+
 module.exports = {
   createStaff,
   checkExistStaff,
@@ -36,5 +41,6 @@ module.exports = {
   createStaffInTotal,
   detailStaff,
   jobDoctor,
-  updateDoctorInTotal
+  updateDoctorInTotal,
+  signupAccount
 }
