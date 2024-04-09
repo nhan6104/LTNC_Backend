@@ -1,7 +1,7 @@
 const patient = require('../database/patient');
 
-const createPatient = async (data) => {
-  return await patient.createNewPatient(data);
+const createPatient = async (data, ref) => {
+  return await patient.createNewPatient(data, ref);
 };
 
 const findPatientByID = async (patientID) => {
@@ -36,6 +36,10 @@ const removePatient = async (patientID) => {
   return await patient.removePatient(patientID);
 }
 
+const removePatientByPath = async (path) => {
+  return await patient.removePatientByPath(path);
+}
+
 const removeRecords = async (patientID, recordsDate) => {
   return await patient.removeRecords(patientID, recordsDate);
 }
@@ -44,8 +48,24 @@ const creatPatientInTotal = async (patientData) => {
   return await patient.createNewPatientInTotal(patientData);
 }
 
-const findPatiens = async () => {
+const createRecordsInHistory = async (historyData, ref) => {
+  return await patient.createNewRecordsInHistory(historyData, ref);
+}
+
+const findPatients = async () => {
   return await patient.findPatients();
+}
+
+const findHistory = async (ref) => {
+  return await patient.findHistory(ref);
+}
+
+const updatePatientInTotal = async (patientData) => {
+  return await patient.updateNewPatientInTotal();
+}
+
+const removeRecordsByPath = async (path) => {
+  return await patient.removeRecordsByPath(path);
 }
 
 module.exports = {
@@ -59,8 +79,13 @@ module.exports = {
   removePatient,
   removeRecords,
   creatPatientInTotal,
-  findPatiens,
-  checkExistRecords
+  findPatients,
+  checkExistRecords,
+  updatePatientInTotal,
+  removePatientByPath,
+  removeRecordsByPath,
+  findHistory,
+  createRecordsInHistory
 }
 
 
