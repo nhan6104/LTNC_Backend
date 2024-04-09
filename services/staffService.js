@@ -16,10 +16,14 @@ const createStaffInTotal = async (doctorID) => {
 const detailStaff = async (doctorID) => {
   return await staff.detailOfStaff(doctorID);
 }
+const jobDoctor = async (doctorID) => {
+  return await staff.jobOfStaff(doctorID);
+}
 module.exports = {
   createStaff,
   checkExistStaff,
   removeStaff,
   createStaffInTotal,
   detailStaff,
+  jobDoctor,
 }
