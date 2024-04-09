@@ -142,7 +142,7 @@ const illnessToDoctor = async (req , res) => {
     try {
         const job = await staffService.jobDoctor(req.body.Infor.cccd)
         let textResult;
-        if (!detail) {
+        if (!job) {
             textResult = `Lấy thông tin thất bại.`;
         }
         else {
