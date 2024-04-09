@@ -12,8 +12,12 @@ const checkExistPatient = async (data) => {
   return await patient.checkExistPatient(data);
 }
 
-const createRecords = async (dataPatient, dataRecords) => {
-  return await patient.createNewRecords(dataPatient, dataRecords);
+const checkExistRecords = async (patientID, recordsDate) => { 
+  return await patient.checkExistRecords(patientID, recordsDate);
+}
+
+const createRecords = async (dataRecords) => {
+  return await patient.createNewRecords(dataRecords);
 };
 
 const findRecordsByDate = async (patientID, recordsDate) => {
@@ -55,7 +59,8 @@ module.exports = {
   removePatient,
   removeRecords,
   creatPatientInTotal,
-  findPatiens
+  findPatiens,
+  checkExistRecords
 }
 
 

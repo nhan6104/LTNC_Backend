@@ -46,8 +46,8 @@ const checkExistPatient = async (data) => {
   return result;
 };
 
-const createNewRecords = async (dataPatient, dataRecords) => {
-  const documentID = dataPatient.cccd;
+const createNewRecords = async (dataRecords) => {
+  const documentID = dataRecords.cccd;
   const subdocumentID = dataRecords.date;
   // console.log(documentID + " " + subdocumentID);
   result = await dbUtils.insert(dataRecords, collectionName, documentID, subcollectionName, subdocumentID);
@@ -59,6 +59,14 @@ const removeRecords = async (patientID, recordsDate) => {
     return await dbUtils.erase(collectionName, patientID, subcollectionName, recordsDate);
 };
 
+const checkExistRecords = async (patientID, recordsDate) => {
+  const documentID = patientID;
+  const subDocumentID = recordsDate;
+  // console.log(documentID)
+  const result = await dbUtils.findOne(collectionName, documentID, subcollectionName, subDocumentID);
+  return result;
+};
+
 const findRecordsByDate = async (patientID, recordsDate) => {
   const result = await dbUtils.findOne(collectionName, patientID, subcollectionName, recordsDate);
   return result;
@@ -66,6 +74,7 @@ const findRecordsByDate = async (patientID, recordsDate) => {
 
 const treatmentProcessByID = async (patientID) => {
   const result = await dbUtils.findOne(collectionName, patientID);
+  console.log(result.medicalHistory);
   return result.medicalHistory;
 }
 
@@ -80,6 +89,7 @@ module.exports = {
   findRecordsByDate,
   treatmentProcessByID,
   createNewPatientInTotal,
-  findPatients
+  findPatients,
+  checkExistRecords
 }
 
