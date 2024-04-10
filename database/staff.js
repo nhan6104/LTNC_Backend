@@ -32,7 +32,7 @@ const detailOfStaff = async (doctorID) => {
 }
 const jobOfStaff = async (doctorID) => {
   const result = await dbUtils.findOne(collectionName, doctorID);
-  return result.job;
+  return result.position;
 }
 const findPatients = async () => {
   const result = await dbUtils.findOne(collectiontotal, collectionName);

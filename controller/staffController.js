@@ -14,8 +14,7 @@ const createStaff = async (req, res) => {
                     message: error.message,
                 });
             }
-            //!
-            const checkingStaff = await staffService.checkExistStaff(req.body.Infor.cccd);
+            const checkingStaff = await staffService.checkExistStaff(req.body.cccd);
             if (checkingStaff) {
                 return res.status(400).json({
                     error: true,
@@ -24,11 +23,11 @@ const createStaff = async (req, res) => {
             }
             let newStaff = new Array();
             let tempStaff = new Object();           
-            const  ref = `doctor/${req.body.Infor.cccd}` 
+            const  ref = `doctor/${req.body.cccd}` 
             tempStaff = {
-                cccd: req.body.Infor.cccd,
+                cccd: req.body.cccd,
                 refference: ref,
-                fullname: req.body.Infor.name
+                fullname: req.body.name
             }
 
             const staffs = await staffService.findPatiens();
@@ -85,7 +84,7 @@ const createStaff = async (req, res) => {
 }
 const removeStaff = async (req, res) => {
     try {
-        const checkingStaff = await staffService.checkExistStaff(req.body.Infor.cccd);
+        const checkingStaff = await staffService.checkExistStaff(req.body.cccd);
 
         if (checkingStaff) {
             return res.status(400).json({
@@ -121,7 +120,7 @@ const removeStaff = async (req, res) => {
 }
 const detailStaff = async (req, res) => {
     try {
-        const detail = await staffService.detailStaff(req.body.Infor.cccd)
+        const detail = await staffService.detailStaff(req.body.cccd)
         // console.log(work)
         // res.render("index.jade" ,{
         //     title : "Schedule",
@@ -152,7 +151,7 @@ const detailStaff = async (req, res) => {
 }
 const illnessToDoctor = async (req , res) => {
     try {
-        const job = await staffService.jobDoctor(req.body.Infor.cccd)
+        const job = await staffService.jobDoctor(req.body.cccd)
         let textResult;
         if (!job) {
             textResult = `Lấy thông tin thất bại.`;
