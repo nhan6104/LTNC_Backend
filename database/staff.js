@@ -67,7 +67,12 @@ const signupAccount = async (email, password) => {
   const result = await createUserWithEmailAndPassword(auth, email, password);
   return result;
 };
-
+const updateStaffdatabase = async (staff) => {
+  const documentID = staff.cccd;
+  // console.log(documentID)
+  const result = await dbUtils.update(staff, collectionName, documentID);
+  return result;
+}
 
 module.exports = {
     createNewStaff,
@@ -78,5 +83,6 @@ module.exports = {
     detailOfStaff,
     jobOfStaff,
     UpdateDoctorInTotal,
-    signupAccount
+    signupAccount,
+    updateStaffdatabase,
 }
