@@ -1,182 +1,86 @@
-const { initializeApp } = require("firebase/app");
-const {
-  getFirestore,
-  collection,
-  getDocs,
-  doc,
-  setDoc,
-  updateDoc,
-  getDoc,
-  query,
-  where,
-  deleteDoc, 
-  deleteField,
-} = require("firebase/firestore/lite");
-
-const firebaseConfig = {
-  apiKey: "AIzaSyB1gkuDziM58XIJtbBBt2wYR0LzY9oYf7s",
-  authDomain: "ltnc-a844c.firebaseapp.com",
-  databaseURL: "https://ltnc-a844c-default-rtdb.firebaseio.com",
-  projectId: "ltnc-a844c",
-  storageBucket: "ltnc-a844c.appspot.com",
-  messagingSenderId: "520659904033",
-  appId: "1:520659904033:web:af292fccd30a7d65956560",
-  measurementId: "G-KL3GR845B4",
-};
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-
-
-
-//
-
-//add field
-const add = async (data, collectionName, documentID ) => {
+const createStaff = async (req, res) => {
   try {
-    const ref = doc(db, collectionName, documentID);
-    await updateDoc(ref, data);
-    return true;
-  } catch (error) {
-    return error;
+          const { error } = doctorValidation.validateCreateDoctor(req.body);
+  
+          if (error) {
+              console.log(error);
+              return res.status(400).json({
+                  error: true,
+                  message: error.message,
+              });
+          }
+
+          const doctors = await doctorService.findDoctor();
+
+          if (doctors.doctor) {
+              for (let doctor of doctors.doctor) {
+                  if (doctor.cccd === req.body.cccd || doctor.email === req.body.email) {
+                      return res.status(400).json({
+                          error: true,
+                          message: "Người dùng đã tồn tại",
+                      });
+                  }   
+              }
+          }
+
+          const resultSignUp = await doctorService.signupAccount(req.body.email, req.body.cccd);
+          
+          let newStaff = new Array();
+          let tempStaff = new Object();           
+          const  ref = `doctor/${req.body.cccd}` 
+          tempStaff = {
+              cccd: req.body.cccd,
+              refference: ref,
+              fullname: req.body.name,
+              userUid: resultSignUp.user.uid
+          }
+
+          newStaff.push(tempStaff)
+          if (doctors.doctors) 
+          {
+              for (const staff of doctors.doctors)  
+              {
+                  newStaff.push(staff);
+              }
+          }
+
+          const resultCreatingNewStaffInTotal = await doctorService.createStaffInTotal({doctors: newStaff});
+          // console.log(resultCreatingNewStaffInTotal)
+          let textResultCreatingNewStaffInTotal;
+          if (!resultCreatingNewStaffInTotal) {
+              textResultCreatingNewStaffInTotal = `Tạo nhân viên trong bảng tổng thất bại.`;
+          }
+          else {
+              textResultCreatingNewStaffInTotal = `Tạo nhân viên trong bảng tổng thành công.`
+          }
+
+          //!
+          const resultCreatingNewStaff = await doctorService.createStaff(req.body);
+          
+
+          let textResultCreatingNewStaff;
+          if (!resultCreatingNewStaff) {
+              textResultCreatingNewStaff = `Tạo nhân viên thất bại.`;
+          }
+          else {
+              textResultCreatingNewStaff = `Tạo nhân viên thành công.`
+          }
+
+          return res.status(200).json({
+              error: false,
+              message: `
+              Kết quả:\n
+              ${textResultCreatingNewStaff}\n
+              ${textResultCreatingNewStaffInTotal}\n`,
+          });
+
   }
-};
-
-// Update data for document 'collectionName/documentID'
-const update = async (data, collectionName, documentID, subcollectionName = '', subdocumentID = '') => {
-  try {
-    const ref = doc(db, collectionName, documentID, subcollectionName, subdocumentID);
-    await updateDoc(ref, data);
-    return true;
-  } catch (error) {
-    return error;
+  catch (error) {
+      // console.log(err);
+  return res.status(500).json({
+    error: true,
+    message: error.message,
+  });
   }
-};
-
-// Find single document by documentID
-const findOne = async (collectionName, documentID, subcollectionName = '', subdocumentID = '') => {
-  try {
-    const ref = doc(db, collectionName, documentID, subcollectionName, subdocumentID);
-    const docSnap = await getDoc(ref);
-    const result = docSnap.data();
-    return result;
-  } catch (error) {
-    return error;
-  }
-};
-
-// Remove document from collectionName
-const erase = async (collectionName, documentID, subcollectionName = '', subdocumentID = '') => {
-  try {
-      const ref = doc(db, collectionName, documentID, subcollectionName, subdocumentID);
-      const result = await deleteDoc(ref);
-      console.log("Document deleted successfully");
-      return true;
-  } catch (error) { 
-      return error;
-  }
-};
-
-// Remove the 'field' from the document docRef
-const eraseField = async (docRef, field) => {
-  await updateDoc(docRef, {[field]:deleteField()});
-}
-
-// Find all documents from collectionName 
-const findMany = async (collectionName, field, value) => {
-  try {
-    const result = new Array();
-    const q = query(collection(db, collectionName), where(field, "==", value));
-    const querySnapshot = await getDocs(q);
-    querySnapshot.forEach((doc) => {
-      result.push(doc.data());
-    });
-    return result;
-  } catch (error) {
-    return error;
-  }
-};
-
-
-//  Add a new document to 'collectionName/documentID/subcollectionName/subdocumentID'
-const insert = async (data, collectionName, documentID, subcollectionName = '', subdocumentID = '') => {
-  try {
-      const ref = doc(db, collectionName, documentID, subcollectionName, subdocumentID);
-      await setDoc(ref, data);
-      return true;
-  } catch (error) {
-      return error;
-  }
-};
-
-
-const checkExist = async (collectionName, documentID, subcollectionName = '', subdocumentID = '') => {
-  try {
-    const ref = doc(db, collectionName, documentID, subcollectionName, subdocumentID);
-    const result = await ref.get();
-    return result;
-  } catch (error) {
-    return error;
-  }
-};
-
-//update path 
-const updatePath = async (data, path) => {
-  try {
-    const ref = doc(db, path);
-    await updateDoc(ref, data);
-    return true;
-  } catch (error) {
-    return error;
-  }
-}
-
-const findOnePath = async (path) => {
-  try {
-    const ref = doc(db, path);
-    const snapShot = await getDoc(ref);
-    if (!snapShot.exists()) throw "No such document!";
-    else return snapShot.data();
-  } catch (error) {
-    return error;
-  }
-}
-
-
-const erasePath = async (path) => {
-  try{
-    const ref = doc(db, path);
-    const result = await deleteDoc(ref);
-    return true;
-  } catch (error) {
-    return error;
-  }
-}
-
-
-async function insertPath(data, path) {
-  try {
-    const ref = doc(db, path);
-    await setDoc(ref, data);
-    return true;
-  } catch (error) {
-    return false;
-  }
-}
-
-
-module.exports = {
-  insert,
-  erase,
-  findMany,
-  findOne,
-  update,
-  checkExist,
-  eraseField,
-  add,
-  updatePath,
-  findOnePath,
-  erasePath,
-  insertPath
+  
 }
