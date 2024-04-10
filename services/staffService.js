@@ -19,7 +19,6 @@ const detailStaff = async (doctorID) => {
 const jobDoctor = async (doctorID) => {
   return await staff.jobOfStaff(doctorID);
 }
-
 const findDoctor = async () => {
   return await staff.findDoctor();
 }

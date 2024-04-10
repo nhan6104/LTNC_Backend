@@ -185,6 +185,7 @@ const detailStaff = async (req, res) => {
 
         const doctor =  doctors.doctors.filter(item => item.cccd == req.query.cccd);
 
+
         if (!doctor) {
             return res.status(400).json({
                 error: true,
@@ -237,24 +238,32 @@ const illnessToDoctor = async (req , res) => {
 
 const updateStaff = async (req, res) => {
     try{
-        const { error } = doctorValidation.validationUpdateStaff(req.body);
-        if (error) {
-            return res.status(400).json({
-                error: true,
-                message: error.message,
-            });
-        }
-        const checkingStaff = await doctorService.checkExistStaff(req.body.cccd);
-            
-        if (!checkingPatient) {
+        // const { error } = doctorValidation.validationUpdateStaff(req.query);
+        // if (error) {
+        //     return res.status(400).json({
+        //         error: true,
+        //         message: error.message,
+        //     });
+        // }
+        const doctors = await doctorService.findDoctor();
+
+        if ( !doctors || !doctors.doctors) {
             return res.status(400).json({
                 error: true,
                 message: "Người dùng không tồn tại",
             });
         }
+        const doctor =  doctors.doctors.filter(item => item.cccd == req.query.cccd);
 
+        if (!doctor) {
+            return res.status(400).json({
+                error: true,
+                message: "Người dùng không tồn tại",
+            });
+        }
+        //!
         const result = await doctorService.updateStaff(req.body);
-    
+        
         let textResult;
 
         if (!result) {
