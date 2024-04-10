@@ -4,7 +4,7 @@ const { route } = require("./patientRoute");
 const router = express.Router();
 
 router.post("/create", staffController.createStaff);
-router.get("/detail", staffController.detailStaff);
-
+router.post("/detail", staffController.detailStaff);
+router.put("/delete", staffController.removeStaff);
 
 module.exports = router;

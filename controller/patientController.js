@@ -312,7 +312,6 @@ const updatePatientData = async (req, res) => {
     }
 }
 
-
 const findPatient = async (req, res) => {
     try{
         const { error } = patientValidation.validateFindPatient(req.body);
