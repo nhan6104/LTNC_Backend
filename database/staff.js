@@ -38,7 +38,7 @@ const removeStaff = async (path) => {
 };
 
 const createNewStaffInTotal = async (doctorID) => {
-    const result = await dbUtils.insert(doctorID, collectiontotal, collectionName);
+    const result = await dbUtils.add(doctorID, collectiontotal, collectionName);
     return result;
 };
 

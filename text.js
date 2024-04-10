@@ -9,7 +9,8 @@ const {
   getDoc,
   query,
   where,
-  deleteDoc,
+  deleteDoc, 
+  deleteField,
 } = require("firebase/firestore/lite");
 
 const firebaseConfig = {
@@ -29,6 +30,8 @@ const db = getFirestore(app);
 
 
 
+//
+
 //add field
 const add = async (data, collectionName, documentID ) => {
   try {
@@ -39,26 +42,27 @@ const add = async (data, collectionName, documentID ) => {
     return error;
   }
 };
+
 // Update data for document 'collectionName/documentID'
 const update = async (data, collectionName, documentID, subcollectionName = '', subdocumentID = '') => {
   try {
-      const ref = doc(db, collectionName, documentID, subcollectionName, subdocumentID);
-      await updateDoc(ref, data);
-      return true;
+    const ref = doc(db, collectionName, documentID, subcollectionName, subdocumentID);
+    await updateDoc(ref, data);
+    return true;
   } catch (error) {
-      return error;
+    return error;
   }
 };
 
 // Find single document by documentID
-const findOne = async (data, collectionName, documentID, subcollectionName = '', subdocumentID = '') => {
+const findOne = async (collectionName, documentID, subcollectionName = '', subdocumentID = '') => {
   try {
-      const ref = doc(db, collectionName, documentID, subcollectionName, subdocumentID);
-      const docSnap = await getDoc(ref);
-      const result = docSnap.data();
-      return result;
+    const ref = doc(db, collectionName, documentID, subcollectionName, subdocumentID);
+    const docSnap = await getDoc(ref);
+    const result = docSnap.data();
+    return result;
   } catch (error) {
-      return error;
+    return error;
   }
 };
 
@@ -73,6 +77,7 @@ const erase = async (collectionName, documentID, subcollectionName = '', subdocu
       return error;
   }
 };
+
 // Remove the 'field' from the document docRef
 const eraseField = async (docRef, field) => {
   await updateDoc(docRef, {[field]:deleteField()});
@@ -81,15 +86,15 @@ const eraseField = async (docRef, field) => {
 // Find all documents from collectionName 
 const findMany = async (collectionName, field, value) => {
   try {
-      const result = new Array();
-      const q = query(collection(db, collectionName), where(field, "==", value));
-      const querySnapshot = await getDocs(q);
-      querySnapshot.forEach((doc) => {
-          result.push(doc.data());
-      });
-      return result;
+    const result = new Array();
+    const q = query(collection(db, collectionName), where(field, "==", value));
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+      result.push(doc.data());
+    });
+    return result;
   } catch (error) {
-      return error;
+    return error;
   }
 };
 
@@ -113,10 +118,10 @@ const checkExist = async (collectionName, documentID, subcollectionName = '', su
     return result;
   } catch (error) {
     return error;
-}
+  }
 };
 
-
+//update path 
 const updatePath = async (data, path) => {
   try {
     const ref = doc(db, path);
@@ -159,6 +164,8 @@ async function insertPath(data, path) {
     return false;
   }
 }
+
+
 module.exports = {
   insert,
   erase,
