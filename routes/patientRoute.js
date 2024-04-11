@@ -10,6 +10,7 @@ router.put("/remove_records", patientController.removeRecords);
 router.put("/update_patient", patientController.updatePatientData);
 router.post("/find_treatment", patientController.treatmentProcessByID);
 router.post("/find_patient", patientController.findPatient);
+router.post("/find_patient_all", patientController.findAllPatient);
 router.post("/find_records", patientController.findRecords);
 
 

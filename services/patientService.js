@@ -16,8 +16,8 @@ const checkExistRecords = async (patientID, recordsDate) => {
   return await patient.checkExistRecords(patientID, recordsDate);
 }
 
-const createRecords = async (dataRecords) => {
-  return await patient.createNewRecords(dataRecords);
+const createRecords = async (dataRecords, patientID) => {
+  return await patient.createNewRecords(dataRecords, patientID);
 };
 
 const findRecordsByDate = async (patientID, recordsDate) => {
@@ -28,8 +28,8 @@ const treatmentProcessByID = async (patientID) => {
   return await patient.treatmentProcessByID(patientID);
 }
 
-const updatePatientData = async (newDataPatient) => {
-  return await patient.updatePatientData(newDataPatient);
+const updatePatientData = async (newDataPatient, patientID) => {
+  return await patient.updatePatientData(newDataPatient, patientID);
 }
 
 const removePatient = async (patientID) => {

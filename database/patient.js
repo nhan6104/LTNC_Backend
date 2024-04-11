@@ -30,8 +30,8 @@ const updateNewPatientInTotal = async (dataPatient) => {
   return result;
 };
 
-const updatePatientData = async (newDataPatient) => {
-  const documentID = newDataPatient.cccd;
+const updatePatientData = async (newDataPatient, patientID) => {
+  const documentID = patientID;
   // console.log(documentID)
   const result = await dbUtils.update(newDataPatient, collectionName, documentID);
   return result;
@@ -71,8 +71,8 @@ const checkExistPatient = async (data) => {
   return result;
 };
 
-const createNewRecords = async (dataRecords) => {
-  const documentID = dataRecords.cccd;
+const createNewRecords = async (dataRecords, patientID) => {
+  const documentID = patientID;
   const subdocumentID = dataRecords.date;
   // console.log(documentID + " " + subdocumentID);
   const { cccd, ...rest } = dataRecords;

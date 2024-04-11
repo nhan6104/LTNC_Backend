@@ -87,9 +87,9 @@ const createPatient = async (req, res) => {
 const removePatient = async (req, res) => {
     try{
         const { error } = patientValidation.validateRemovePatient(req.query);
-        console.log(req.body);
+        // console.log(req.query.cccd);
         if (error) {
-            // console.log(error);
+            console.log(error);
             return res.status(400).json({
                 error: true,
                 message: error.message,
@@ -99,18 +99,23 @@ const removePatient = async (req, res) => {
         const patients = await patientService.findPatients();
 
         let textResultRemovePatient;
-        for (const el of patients.patient)
+        for (let el of patients.patient)
         {
-            if (el.cccd === req.body.cccd){
-                textResultRemovePatient = `Xóa bệnh nhân thành công.`;
-                const ref = `patient/${req.body.cccd}` 
+            if (el.cccd === req.query.cccd){
+                const ref = `patient/${req.query.cccd}` 
+                const history = await patientService.findHistory(req.query.cccd);
+                for (hist of history.medicalHistory)
+                {
+                    await patientService.removeRecords(req.query.cccd, hist.date);
+                }
                 await patientService.removePatientByPath(ref);
 
                 let newPatient = new Array();
-                newPatient = patients.patient.filter(item => item.cccd !== req.body.cccd);
+                newPatient = patients.patient.filter(item => item.cccd !== req.query.cccd);
 
                 await patientService.creatPatientInTotal({patient : newPatient});
                 
+                textResultRemovePatient = `Xóa bệnh nhân thành công.`;
                 return res.status(200).json({
                     error: false,
                     message: `
@@ -137,7 +142,8 @@ const removePatient = async (req, res) => {
 
 const createRecords = async (req, res) => {
     try {
-        const { error } = patientValidation.validateCreateRecords(req.body);
+        const { error } = patientValidation.validateFindPatient(req.query) && 
+                            patientValidation.validateCreateRecords(req.body);
         console.log(req.body);
         if (error) {
             // console.log(error);
@@ -151,7 +157,7 @@ const createRecords = async (req, res) => {
         let ref;
         for (const el of patients.patient)
         {
-            if (el.cccd === req.body.cccd){
+            if (el.cccd === req.query.cccd){
                 ref = el.refference;
                 break;
             }
@@ -163,7 +169,7 @@ const createRecords = async (req, res) => {
             });
         }
 
-        const history = await patientService.findHistory(req.body.cccd);
+        const history = await patientService.findHistory(req.query.cccd);
         
         for (const el of history.medicalHistory){
             if (el.date === req.body.date && el.name  === req.body.diagnosis){
@@ -174,7 +180,7 @@ const createRecords = async (req, res) => {
             }
         }
 
-        const resultCreatingNewRecords = await patientService.createRecords(req.body);
+        const resultCreatingNewRecords = await patientService.createRecords(req.body, req.query.cccd);
 
         let newRecords = new Array();
         let tempRecords = new Object();
@@ -194,7 +200,7 @@ const createRecords = async (req, res) => {
             }
         }
 
-        await patientService.createRecordsInHistory({medicalHistory: newRecords}, req.body.cccd);
+        await patientService.createRecordsInHistory({medicalHistory: newRecords}, req.query.cccd);
         
         let textResultCreatingNewRecords;
         if (!resultCreatingNewRecords) {
@@ -222,7 +228,8 @@ const createRecords = async (req, res) => {
 
 const removeRecords = async (req, res) => {
     try{
-        const { error } = patientValidation.validateRemoveRecords(req.body);
+        const { error } = patientValidation.validateFindPatient(req.query) && 
+                            patientValidation.validateRemoveRecords(req.body);
         console.log(req.body);
         if (error) {
             // console.log(error);
@@ -236,7 +243,7 @@ const removeRecords = async (req, res) => {
         let ref;
         for (const el of patients.patient)
         {
-            if (el.cccd === req.body.cccd){
+            if (el.cccd === req.query.cccd){
                 ref = el.refference;
                 break;
             }
@@ -248,14 +255,14 @@ const removeRecords = async (req, res) => {
             });
         }
 
-        const history = await patientService.findHistory(req.body.cccd);
+        const history = await patientService.findHistory(req.query.cccd);
 
         let textResultRemoveRecords;
         for (const el of history.medicalHistory)
         {
             if (el.date === req.body.date){
                 textResultRemoveRecords = `Xóa bệnh án thành công.`;
-                const ref = `patient/${req.body.cccd}/medicalRecords/${req.body.date}`;
+                const ref = `patient/${req.query.cccd}/medicalRecords/${req.body.date}`;
                 await patientService.removeRecordsByPath(ref);
 
                 let newRecords = new Array();
@@ -263,7 +270,7 @@ const removeRecords = async (req, res) => {
 
                 console.log(newRecords);
 
-                await patientService.createRecordsInHistory({medicalHistory : newRecords}, req.body.cccd);
+                await patientService.createRecordsInHistory({medicalHistory : newRecords}, req.query.cccd);
                 
                 return res.status(200).json({
                     error: false,
@@ -286,7 +293,7 @@ const removeRecords = async (req, res) => {
 
 const treatmentProcessByID = async (req, res) => {
     try{
-        const { error } = patientValidation.validateTreatmentProcessByID(req.body);
+        const { error } = patientValidation.validateTreatmentProcessByID(req.query);
         console.log(req.body);
         if (error) {
             // console.log(error);
@@ -296,7 +303,7 @@ const treatmentProcessByID = async (req, res) => {
             });
         }
 
-        const checkingPatient = await patientService.checkExistPatient(req.body.cccd);
+        const checkingPatient = await patientService.checkExistPatient(req.query.cccd);
             
         if (!checkingPatient) {
             return res.status(400).json({
@@ -305,7 +312,7 @@ const treatmentProcessByID = async (req, res) => {
             });
         }
 
-        const result = await patientService.treatmentProcessByID(req.body.cccd);
+        const result = await patientService.treatmentProcessByID(req.query.cccd);
     
         let textResult;
 
@@ -333,7 +340,8 @@ const treatmentProcessByID = async (req, res) => {
 
 const updatePatientData = async (req, res) => {
     try{
-        const { error } = patientValidation.validateUpdatePatient(req.query);
+        const { error } = patientValidation.validateFindPatient(req.query) &&
+                            patientValidation.validateUpdatePatient(req.body);
         console.log(req.body);
         if (error) {
             // console.log(error);
@@ -343,7 +351,7 @@ const updatePatientData = async (req, res) => {
             });
         }
 
-        const checkingPatient = await patientService.checkExistPatient(req.body.cccd);
+        const checkingPatient = await patientService.checkExistPatient(req.query.cccd);
             
         if (!checkingPatient) {
             return res.status(400).json({
@@ -352,7 +360,7 @@ const updatePatientData = async (req, res) => {
             });
         }
 
-        const result = await patientService.updatePatientData(req.body);
+        const result = await patientService.updatePatientData(req.body, req.query.cccd);
     
         let textResult;
 
@@ -379,10 +387,9 @@ const updatePatientData = async (req, res) => {
     }
 }
 
-
 const findPatient = async (req, res) => {
     try{
-        const { error } = patientValidation.validateFindPatient(req.body);
+        const { error } = patientValidation.validateFindPatient(req.query);
         console.log(req.body);
         if (error) {
             // console.log(error);
@@ -397,7 +404,7 @@ const findPatient = async (req, res) => {
         let textResultFindPatient;
         for (const el of patients.patient)
         {
-            if (el.cccd === req.body.cccd){
+            if (el.cccd === req.query.cccd){
                 textResultFindPatient = `Tìm kiếm bệnh nhân thành công.`;
                 
                 return res.status(200).json({
@@ -426,7 +433,8 @@ const findPatient = async (req, res) => {
 
 const findRecords = async (req, res) => {
     try{
-        const { error } = patientValidation.validateFindRecords(req.body);
+        const { error } = patientValidation.validateFindPatient(req.query) &&
+                            patientValidation.validateFindRecords(req.body);
         console.log(req.body);
         if (error) {
             // console.log(error);
@@ -436,7 +444,7 @@ const findRecords = async (req, res) => {
             });
         }
         
-        const checkingPatient = await patientService.checkExistRecords(req.body.cccd, req.body.date);
+        const checkingPatient = await patientService.checkExistRecords(req.query.cccd, req.body.date);
         if (!checkingPatient) {
             return res.status(400).json({
                 error: true,
@@ -444,7 +452,7 @@ const findRecords = async (req, res) => {
             });
         }
         
-        const resultFindRecords = await patientService.findRecordsByDate(req.body.cccd, req.body.date);
+        const resultFindRecords = await patientService.findRecordsByDate(req.query.cccd, req.body.date);
     
         let textResultFindRecords;
 
@@ -472,6 +480,39 @@ const findRecords = async (req, res) => {
     }
 }
 
+const findAllPatient = async (req, res) => {
+    try {
+        const patients = await patientService.findPatients();
+        if (!patients.patient)
+        {
+            return res.status(400).json({
+                error: true,
+                message: `Không có bệnh nhân.`,
+            });
+        }
+        let dataArray = new Array();
+        for (let el of patients.patient)
+        {
+            let dataObject = new Object();
+            dataObject.cccd = el.cccd;
+            dataObject.fullname = el.fullname;
+
+            dataArray.push(dataObject);
+        }
+        return res.status(200).json({
+            error: false,
+            data: dataArray,
+        });
+    }
+    catch (err) {
+        console.log(err);
+		return res.status(500).json({
+			error: true,
+			message: err.message,
+		});
+    }
+}
+
 module.exports = {
     createPatient,
     removePatient,
@@ -480,6 +521,7 @@ module.exports = {
     treatmentProcessByID,
     updatePatientData,
     findPatient,
-    findRecords
+    findRecords,
+    findAllPatient
 }
 
