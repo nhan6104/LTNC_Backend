@@ -42,6 +42,11 @@ const findPatientByID = async (patientID) => {
   return result;
 }
 
+const findPatientByPath = async (path) => {
+  const result = await dbUtils.findOnePath(path);
+  return result;
+}
+
 const findPatients = async () => {
   const result = await dbUtils.findOne(collectiontotal, collectionName);
   return result;
@@ -73,10 +78,9 @@ const checkExistPatient = async (data) => {
 
 const createNewRecords = async (dataRecords, patientID) => {
   const documentID = patientID;
-  const subdocumentID = dataRecords.date;
+  const subdocumentID = dataRecords.date.replace(/-/g, '');
   // console.log(documentID + " " + subdocumentID);
-  const { cccd, ...rest } = dataRecords;
-  const result = await dbUtils.insert(rest, collectionName, documentID, subcollectionName, subdocumentID);
+  const result = await dbUtils.insert(dataRecords, collectionName, documentID, subcollectionName, subdocumentID);
   console.log(result);
   return result;
 }
@@ -121,6 +125,7 @@ module.exports = {
   checkExistRecords,
   findHistory,
   createNewRecordsInHistory,
-  removeRecordsByPath
+  removeRecordsByPath,
+  findPatientByPath
 }
 

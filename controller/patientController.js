@@ -24,17 +24,13 @@ const createPatient = async (req, res) => {
                 });
             }
 
-            let newPatient = new Array();
-            let tempPatient = new Object();
-            let  ref = `patient/${req.body.cccd}` 
-            
-            tempPatient.cccd = req.body.cccd;
-            tempPatient.refference = ref;
-            tempPatient.fullname = req.body.name;
+            const newPatient = [{
+                cccd: req.body.cccd,
+                reference: `patient/${req.body.cccd}`,
+                name: req.body.name
+            }];
 
             const patients = await patientService.findPatients();
-
-            newPatient.push(tempPatient);
 
             if (patients.patient) 
             {
@@ -47,6 +43,7 @@ const createPatient = async (req, res) => {
 
             const resultCreatingNewPatientInTotal = await patientService.creatPatientInTotal({patient: newPatient});
             
+            const ref = `patient/${req.body.cccd}`;
             const resultCreatingNewPatient = await patientService.createPatient(req.body, ref);
 		
             let textResultCreatingNewPatient;
@@ -106,7 +103,9 @@ const removePatient = async (req, res) => {
                 const history = await patientService.findHistory(req.query.cccd);
                 for (hist of history.medicalHistory)
                 {
-                    await patientService.removeRecords(req.query.cccd, hist.date);
+                    let dateID = hist.date.replace(/-/g, '');
+                    console.log(dateID);
+                    await patientService.removeRecords(req.query.cccd, dateID);
                 }
                 await patientService.removePatientByPath(ref);
 
@@ -153,12 +152,13 @@ const createRecords = async (req, res) => {
             });
         }
 
+        const formattedDate = req.body.date.replace(/-/g, '');
         const patients = await patientService.findPatients();
         let ref;
         for (const el of patients.patient)
         {
             if (el.cccd === req.query.cccd){
-                ref = el.refference;
+                ref = el.reference;
                 break;
             }
         }
@@ -170,6 +170,21 @@ const createRecords = async (req, res) => {
         }
 
         const history = await patientService.findHistory(req.query.cccd);
+
+        const newRecords = [{
+            name: req.body.diagnosis,
+            date: req.body.date,
+            reference: `patient/${req.query.cccd}/medicalRecords/${formattedDate}`
+        }];
+
+        if (!history.medicalHistory){
+            await patientService.createRecords(req.body, req.query.cccd);
+            await patientService.createRecordsInHistory({medicalHistory: newRecords}, req.query.cccd);
+            return res.status(200).json({
+                error: false,
+                message: `Tạo bệnh án thành công.`,
+            });
+        }
         
         for (const el of history.medicalHistory){
             if (el.date === req.body.date && el.name  === req.body.diagnosis){
@@ -181,15 +196,6 @@ const createRecords = async (req, res) => {
         }
 
         const resultCreatingNewRecords = await patientService.createRecords(req.body, req.query.cccd);
-
-        let newRecords = new Array();
-        let tempRecords = new Object();
-        
-        tempRecords.name = req.body.diagnosis;
-        tempRecords.date = req.body.date;
-
-        newRecords.push(tempRecords);
-
 
         if (history.medicalHistory) 
         {
@@ -244,7 +250,7 @@ const removeRecords = async (req, res) => {
         for (const el of patients.patient)
         {
             if (el.cccd === req.query.cccd){
-                ref = el.refference;
+                ref = el.reference;
                 break;
             }
         }
@@ -262,7 +268,7 @@ const removeRecords = async (req, res) => {
         {
             if (el.date === req.body.date){
                 textResultRemoveRecords = `Xóa bệnh án thành công.`;
-                const ref = `patient/${req.query.cccd}/medicalRecords/${req.body.date}`;
+                const ref = el.reference;
                 await patientService.removeRecordsByPath(ref);
 
                 let newRecords = new Array();
@@ -290,6 +296,7 @@ const removeRecords = async (req, res) => {
 		});
     }
 }
+
 
 const treatmentProcessByID = async (req, res) => {
     try{
@@ -406,13 +413,13 @@ const findPatient = async (req, res) => {
         {
             if (el.cccd === req.query.cccd){
                 textResultFindPatient = `Tìm kiếm bệnh nhân thành công.`;
-                
+                const dataPatient =  await patientService.findPatientByPath(el.reference);
                 return res.status(200).json({
                     error: false,
                     message: `
                     Kết quả:\n
                     ${textResultFindPatient}\n`,
-                    data: el,
+                    data: dataPatient,
                 });
             }
         }
@@ -490,18 +497,9 @@ const findAllPatient = async (req, res) => {
                 message: `Không có bệnh nhân.`,
             });
         }
-        let dataArray = new Array();
-        for (let el of patients.patient)
-        {
-            let dataObject = new Object();
-            dataObject.cccd = el.cccd;
-            dataObject.fullname = el.fullname;
-
-            dataArray.push(dataObject);
-        }
         return res.status(200).json({
             error: false,
-            data: dataArray,
+            data: patients.patient,
         });
     }
     catch (err) {

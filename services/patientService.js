@@ -8,6 +8,10 @@ const findPatientByID = async (patientID) => {
   return await patient.findPatientByID(patientID);
 }
 
+const findPatientByPath = async (path) => {
+  return await patient.findPatientByPath(path);
+}
+
 const checkExistPatient = async (data) => { 
   return await patient.checkExistPatient(data);
 }
@@ -85,7 +89,8 @@ module.exports = {
   removePatientByPath,
   removeRecordsByPath,
   findHistory,
-  createRecordsInHistory
+  createRecordsInHistory,
+  findPatientByPath
 }
 
 
