@@ -19,7 +19,6 @@ const detailStaff = async (doctorID) => {
 const jobDoctor = async (doctorID) => {
   return await staff.jobOfStaff(doctorID);
 }
-
 const findDoctor = async () => {
   return await staff.findDoctor();
 }
@@ -31,7 +30,9 @@ const updateDoctorInTotal = async (data) => {
 const signupAccount = async (email, password) => {
   return await staff.signupAccount(email, password);
 };
-
+const updateStaff = async (data) => {
+  return await staff.updateStaffdatabase(data);
+}
 
 module.exports = {
   createStaff,
@@ -42,5 +43,6 @@ module.exports = {
   detailStaff,
   jobDoctor,
   updateDoctorInTotal,
-  signupAccount
+  signupAccount,
+  updateStaff,
 }

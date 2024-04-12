@@ -36,6 +36,7 @@ const createStaff = async (req, res) => {
             let newStaff = new Array();
             let tempStaff = new Object();           
             const  ref = `doctor/${req.body.cccd}` 
+
             tempStaff = {
                 cccd: req.body.cccd,
                 refference: ref,
@@ -194,6 +195,7 @@ const detailStaff = async (req, res) => {
 
         const doctor =  doctors.doctors.filter(item => item.cccd == req.query.cccd);
 
+
         if (!doctor) {
             return res.status(400).json({
                 error: true,
@@ -244,9 +246,64 @@ const illnessToDoctor = async (req , res) => {
     }
 }
 
+const updateStaff = async (req, res) => {
+    try{
+        // const { error } = doctorValidation.validationUpdateStaff(req.query);
+        // if (error) {
+        //     return res.status(400).json({
+        //         error: true,
+        //         message: error.message,
+        //     });
+        // }
+        const doctors = await doctorService.findDoctor();
+
+        if ( !doctors || !doctors.doctors) {
+            return res.status(400).json({
+                error: true,
+                message: "Người dùng không tồn tại",
+            });
+        }
+        const doctor =  doctors.doctors.filter(item => item.cccd == req.query.cccd);
+
+        if (!doctor) {
+            return res.status(400).json({
+                error: true,
+                message: "Người dùng không tồn tại",
+            });
+        }
+        //!
+        const result = await doctorService.updateStaff(req.body);
+        
+        let textResult;
+
+        if (!result) {
+            textResult = `Cập nhật thông tin bệnh nhân thất bại.`;
+        }
+        else {
+            textResult = `Cập nhật thông tin bệnh nhân thành công.`;
+        }
+
+        return res.status(200).json({
+            error: false,
+            message: `
+            Kết quả:\n
+            ${textResult}\n`,
+        });
+    }
+    catch (err) {
+        console.log(err);
+		return res.status(500).json({
+			error: true,
+			message: err.message,
+		});
+    }
+}
+
+
 module.exports = {
     createStaff,
     removeStaff,
     detailStaff,
-    illnessToDoctor
+    illnessToDoctor,
+    updateStaff
 }

@@ -7,5 +7,7 @@ const router = express.Router();
 router.post("/create", staffController.createStaff);
 router.post("/detail", staffController.detailStaff);
 router.put("/delete", staffController.removeStaff);
+router.put("/update", staffController.updateStaff);
+
 
 module.exports = router;
