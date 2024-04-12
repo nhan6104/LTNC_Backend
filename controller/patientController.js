@@ -104,7 +104,7 @@ const removePatient = async (req, res) => {
                 for (hist of history.medicalHistory)
                 {
                     let dateID = hist.date.replace(/-/g, '');
-                    console.log(dateID);
+                    // console.log(dateID);
                     await patientService.removeRecords(req.query.cccd, dateID);
                 }
                 await patientService.removePatientByPath(ref);
