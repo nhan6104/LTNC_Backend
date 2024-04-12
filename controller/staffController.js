@@ -17,9 +17,12 @@ const createStaff = async (req, res) => {
 
             const doctors = await doctorService.findDoctor();
 
-            if (doctors.doctor) {
-                for (let doctor of doctors.doctor) {
-                    if (doctor.cccd === req.body.cccd || doctor.email === req.body.email) {
+            console.log(doctors)
+
+
+            if (doctors.doctors) {
+                for (let doctor of doctors.doctors) {
+                    if (doctor.cccd === req.body.cccd) {
                         return res.status(400).json({
                             error: true,
                             message: "Người dùng đã tồn tại",
@@ -28,7 +31,7 @@ const createStaff = async (req, res) => {
                 }
             }
 
-            const resultSignUp = await doctorService.signupAccount(req.body.email, req.body.cccd);
+            // const resultSignUp = await doctorService.signupAccount(req.body.email, req.body.cccd);
             
             let newStaff = new Array();
             let tempStaff = new Object();           
@@ -37,15 +40,19 @@ const createStaff = async (req, res) => {
                 cccd: req.body.cccd,
                 refference: ref,
                 fullname: req.body.name,
-                userUid: resultSignUp.user.uid
+                // userUid: resultSignUp.user.uid
             }
+
+            console.log(doctors.doctors);
 
             newStaff.push(tempStaff)
             if (doctors.doctors) 
             {
+                console.log(doctors.doctors);
                 for (const staff of doctors.doctors)  
                 {
                     newStaff.push(staff);
+                    // console.log(staff);
                 }
             }
 
@@ -163,10 +170,11 @@ const removeStaff = async (req, res) => {
 
 const detailStaff = async (req, res) => {
     try {
+
         const { error } = doctorValidation.validateQueryDoctor(req.query);
     
         if (error) {
-            console.log(error);
+            // console.log(error);
             return res.status(400).json({
                 error: true,
                 message: error.message,
@@ -181,6 +189,8 @@ const detailStaff = async (req, res) => {
                 message: "Người dùng không tồn tại",
             });
         }
+
+        console.log(doctors.doctors);
 
         const doctor =  doctors.doctors.filter(item => item.cccd == req.query.cccd);
 

@@ -1,4 +1,4 @@
-const autheticateController = require("../controller/authController");
+const autheticateController = require("../controller/autheticateController");
 const express = require("express");
 const router = express.Router();
 const authenticate = require("../lib/auth");

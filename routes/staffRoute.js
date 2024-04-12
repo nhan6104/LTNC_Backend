@@ -1,4 +1,5 @@
 const staffController = require("../controller/staffController");
+const authenticatedUser = require("../lib/auth")
 const express = require("express");
 const { route } = require("./patientRoute");
 const router = express.Router();
