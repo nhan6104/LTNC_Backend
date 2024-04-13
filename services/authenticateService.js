@@ -26,7 +26,7 @@ const getSession = async (userId) => {
 };
 
 const login = async (info) => {
-    return await signInWithEmailAndPassword(auth, info.email, info.password)
+    return await signInWithEmailAndPassword(auth, info.account, info.password)
 };
 
 module.exports = {

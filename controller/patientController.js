@@ -1,6 +1,5 @@
 const patientService = require('../services/patientService');
 const validation = require('../lib/validation');
-const { updateNewPatientInTotal } = require('../database/patient');
 
 const patientValidation = new validation.PatientValidation();
 
@@ -296,7 +295,6 @@ const removeRecords = async (req, res) => {
 		});
     }
 }
-
 
 const treatmentProcessByID = async (req, res) => {
     try{
