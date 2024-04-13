@@ -1,6 +1,7 @@
 const dbUtils = require('../lib/dbUtils');
 
 const collectionName = "Medicines";
+const collectiontotal = "staff";
 
 const findMedicines = async () => {
   const result = await dbUtils.findAll(collectionName);
@@ -40,6 +41,9 @@ const createMedicine = async (data) => {
   const documentID = generateRandomString(10);
   data.id = documentID;
   const result = await dbUtils.insert(data, collectionName, documentID);
+
+  if (result) return data
+
   return result;
 };
 
@@ -65,6 +69,16 @@ const checkExistMedicine = async (data) => {
   return result;
 };
 
+const createNewMedicineInTotal = async (dataMedicine) => {
+  // console.log(documentID)
+
+  const result = await dbUtils.add(dataMedicine, collectiontotal, collectionName);
+  return result;
+};
+
+const removeMedicineInTotal = async (data) => {
+  return dbUtils.erase(collectionName, data);
+}
 
 module.exports = {
   findMedicines,
@@ -72,6 +86,7 @@ module.exports = {
   createMedicine,
   removeMedicine,
   checkExistMedicine,
-  generateRandomString
+  generateRandomString,
+  createNewMedicineInTotal,
+  removeMedicineInTotal
 }
-

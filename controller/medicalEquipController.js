@@ -11,7 +11,6 @@ const findMedicalEquip = async (req,res) => {
         });
     }
     catch(err){
-        console.log(err);
             return res.status(500).json({
                 error:true,
                 message:err.message,
@@ -28,7 +27,6 @@ const findMedicalEquipExpire = async (req,res) => {
         });
     }
     catch(err){
-        console.log(err);
             return res.status(500).json({
                 error: true,
                 message: err.message

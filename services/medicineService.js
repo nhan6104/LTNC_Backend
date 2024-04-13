@@ -21,10 +21,23 @@ const checkExistMedicine = async (data) => {
   return await medicine.checkExistMedicine(data);
 }
 
+const creatMedicineInTotal = async (medicineData) => {
+  return await medicine.createNewMedicineInTotal(medicineData);
+}
+
+const detailMedicine = async (medicineID) => {
+  const medicines = await medicine.findMedicines();
+
+  const medicineDetail = medicines.filter(t => t.id === medicineID);
+  return medicineDetail;
+}
+
 module.exports = {
     findMedicines,
     findMedicinesExpire,
     createMedicine,
     removeMedicine,
-    checkExistMedicine
+    checkExistMedicine,
+    creatMedicineInTotal,
+    detailMedicine
 }
