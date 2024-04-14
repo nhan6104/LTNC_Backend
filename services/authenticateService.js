@@ -29,18 +29,16 @@ const login = async (info) => {
     return await signInWithEmailAndPassword(auth, info.account, info.password)
 };
 
-const signout = async () => {
+const signout = async (useruid) => {
+  await authenticate.removeSession(useruid);
   await signOut(auth);
 };
 
-const removeSession = async (useruid) => { 
-  await authenticate.removeSession(useruid);
-}
+
 
 module.exports = {
   setSession,
   getSession,
   login,
   signout,
-  removeSession
 }
