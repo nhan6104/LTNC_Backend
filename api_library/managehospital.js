@@ -378,6 +378,29 @@ var Authenticate = /** @class */ (function () {
             });
         });
     };
+    Authenticate.prototype.logout = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var response, data, error_15;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, axios_1.default.post("".concat(this.baseUrl, "/logout"), {
+                                withCredentials: true,
+                            })];
+                    case 1:
+                        response = _a.sent();
+                        data = response.data;
+                        return [2 /*return*/, { error: data.error, message: data.message }];
+                    case 2:
+                        error_15 = _a.sent();
+                        console.log("Error logout: ", error_15.response.data);
+                        return [2 /*return*/, error_15.response.data];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
     return Authenticate;
 }());
 exports.Authenticate = Authenticate;

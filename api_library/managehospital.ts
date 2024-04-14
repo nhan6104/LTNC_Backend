@@ -326,6 +326,21 @@ class Authenticate {
 			return error.response.data;
 		}
 	}
+
+  async logout() {
+		try {
+			const response: AxiosResponse = await axios.post(`${this.baseUrl}/logout`, {
+				withCredentials: true,
+			});
+	  
+			const data = response.data;
+			return { error: data.error, message: data.message };
+		} 
+		catch (error: any) {
+			console.log("Error logout: ", error.response.data);
+			return error.response.data;
+		}
+	}
 }
 
 export {

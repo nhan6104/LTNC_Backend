@@ -1,6 +1,6 @@
 const authenticate = require("../database/auth");
 const { initializeApp } = require("firebase/app");
-const { getAuth, signInWithEmailAndPassword, AuthErrorCodes } = require("firebase/auth");
+const { getAuth, signInWithEmailAndPassword, signOut } = require("firebase/auth");
 
 const firebaseConfig = {
   apiKey: "AIzaSyB1gkuDziM58XIJtbBBt2wYR0LzY9oYf7s",
@@ -29,8 +29,18 @@ const login = async (info) => {
     return await signInWithEmailAndPassword(auth, info.account, info.password)
 };
 
+const signout = async () => {
+  await signOut(auth);
+};
+
+const removeSession = async (useruid) => { 
+  await authenticate.removeSession(useruid);
+}
+
 module.exports = {
   setSession,
   getSession,
-  login
+  login,
+  signout,
+  removeSession
 }

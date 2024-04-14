@@ -45,7 +45,25 @@ const login = async (req, res) => {
   }
 };
 
+const logout = async (req, res) => {
+  try {
+    await authenticateService.removeSession(req.body.uid);
+    await authenticateService.signout();
+
+    return res.status(200).send({
+      error: false,
+      message: "Đăng xuất thành công"
+    })
+  }
+    catch (err) {
+      return res.status(400).send({
+        error: true,
+        message: err.message
+      })
+    }
+};
 
 module.exports = {
   login,
+  logout
 }

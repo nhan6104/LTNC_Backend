@@ -1,5 +1,5 @@
 const { initializeApp } = require("firebase/app");
-const {getDatabase, ref, set, get} = require('firebase/database');
+const {getDatabase, ref, set, get, remove} = require('firebase/database');
 
 const firebaseConfig = {
   apiKey: "AIzaSyB1gkuDziM58XIJtbBBt2wYR0LzY9oYf7s",
@@ -26,9 +26,14 @@ const getSessionFromDatabase = async (userId) => {
   return await get(sessionRef);
 }
 
+const removeSession = async (userId) => {
+  await remove(ref(db, `sessions/${userId}`));
+};
+
 
 module.exports = {
   saveSessionToDatabase,
-  getSessionFromDatabase
+  getSessionFromDatabase,
+  removeSession
 
 }
