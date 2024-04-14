@@ -1,9 +1,18 @@
 const authenticateService = require("../services/authenticateService")
 const staffService = require("../services/staffService")
+const validation = require('../lib/validation');
+
+const authenticateValidation = new validation.AuthenticateValidation();
 
 const login = async (req, res) => {
   try {
-
+    const { error } = authenticateValidation.login(req.body);
+    if (error) {
+        return res.status(400).json({
+            error: true,
+            message: error.message,
+        });
+    }
     const userCredential = await authenticateService.login(req.body);
     const staff = await staffService.findDoctor();
     
@@ -36,7 +45,25 @@ const login = async (req, res) => {
   }
 };
 
+const logout = async (req, res) => {
+  try {
+    await authenticateService.removeSession(req.body.uid);
+    await authenticateService.signout();
+
+    return res.status(200).send({
+      error: false,
+      message: "Đăng xuất thành công"
+    })
+  }
+    catch (err) {
+      return res.status(400).send({
+        error: true,
+        message: err.message
+      })
+    }
+};
 
 module.exports = {
   login,
+  logout
 }
