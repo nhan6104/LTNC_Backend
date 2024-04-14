@@ -27,7 +27,7 @@ const getSessionFromDatabase = async (userId) => {
 }
 
 const removeSession = async (userId) => {
-  await remove(ref(db, `sessions/${userId}`));
+  await remove(ref(database, `sessions/${userId}`));
 };
 
 

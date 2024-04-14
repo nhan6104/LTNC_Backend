@@ -47,8 +47,9 @@ const login = async (req, res) => {
 
 const logout = async (req, res) => {
   try {
-    await authenticateService.removeSession(req.body.uid);
     await authenticateService.signout();
+    await authenticateService.removeSession(req.body.uid);
+    console.log("run");
 
     return res.status(200).send({
       error: false,
