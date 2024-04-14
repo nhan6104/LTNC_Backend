@@ -30,7 +30,7 @@ const createStaff = async (req, res) => {
                 }
             }
 
-            const resultSignUp = await doctorService.signupAccount(req.body.email, req.body.phone);
+            const resultSignUp = await doctorService.signupAccount(req.body.email, req.body.cccd);
             
             let newStaff = new Array();
             let tempStaff = new Object();           
