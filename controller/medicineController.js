@@ -99,6 +99,15 @@ const createMedicine = async (req, res) => {
 
 const removeMedicine = async (req, res) => {
     try {
+        const { error } = medicineValidation.validateRemoveMedicine(req.query);
+        // console.log(req.query.cccd);
+        if (error) {
+            console.log(error);
+            return res.status(400).json({
+                error: true,
+                message: error.message,
+            });
+        }
         let newMedicine = new Array();
 
         const checkingMedicine = await medicineService.checkExistMedicine(req.query.id);
@@ -157,6 +166,15 @@ const removeMedicine = async (req, res) => {
 
 const findMedicineDetail = async (req, res) => {
     try {
+        const { error } = medicineValidation.validateFindMedicine(req.query);
+        console.log(req.body);
+        if (error) {
+            // console.log(error);
+            return res.status(400).json({
+                error: true,
+                message: error.message,
+            });
+        }
         const medicine = await medicineService.detailMedicine(req.query.id);
         return res.status(200).json({
             error: false,

@@ -99,6 +99,15 @@ const createMedicalEquip = async (req, res) => {
 
 const removeMedicalEquip = async (req, res) => {
     try {
+        const { error } = medicalValidation.validateRemoveMedicalEquipment(req.query);
+        // console.log(req.query.cccd);
+        if (error) {
+            console.log(error);
+            return res.status(400).json({
+                error: true,
+                message: error.message,
+            });
+        }
         let newMedicalEquip = new Array();
 
         const checkingMedicalEquip = await medicalEquipService.checkExistMedicalEquip(req.query.id);
@@ -157,6 +166,15 @@ const removeMedicalEquip = async (req, res) => {
 
 const findMedicalEquipDetail = async (req, res) => {
     try {
+        const { error } = medicalValidation.validateFindMedicalEquipment(req.query);
+        // console.log(req.query.cccd);
+        if (error) {
+            console.log(error);
+            return res.status(400).json({
+                error: true,
+                message: error.message,
+            });
+        }
         const medicalEquip = await medicalEquipService.detailMedicalEquip(req.query.id);
         return res.status(200).json({
             error: false,
