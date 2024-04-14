@@ -1,5 +1,7 @@
 const medicineService = require('../services/medicineService');
 const validation = require('../lib/validation');
+
+const medicineValidation = new validation.MedicineValidation();
 const dbUtils = require('../lib/dbUtils');
 
 
@@ -49,6 +51,18 @@ const findMedicinesExpire = async (req, res) => {
 
 const createMedicine = async (req, res) => {
     try {
+        const {
+            error
+        } = medicineValidation.validateCreateMedicine(req.body);
+
+        console.log(req.body);
+        if (error) {
+            // console.log(error);
+            return res.status(400).json({
+                error: true,
+                message: error.message,
+            });
+        }
         const medicine = await medicineService.createMedicine(req.body);
 
         let newMedicine = new Array();

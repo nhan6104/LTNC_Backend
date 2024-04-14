@@ -1,9 +1,11 @@
 const medicalEquipService = require('../services/medicalEquipService');
 const validation = require('../lib/validation');
+
+const medicalValidation = new validation.MedicalEquipmentValidation();
 const dbUtils = require('../lib/dbUtils');
 
-const findMedicalEquip = async (req,res) => {
-    const name  = req.query.name;
+const findMedicalEquip = async (req, res) => {
+    const name = req.query.name;
     try {
         let medicalEquips = await medicalEquipService.findMedicalEquip();
 
@@ -24,8 +26,8 @@ const findMedicalEquip = async (req,res) => {
     }
 };
 
-const findMedicalEquipExpire = async (req,res) => {
-    const name  = req.query.name;
+const findMedicalEquipExpire = async (req, res) => {
+    const name = req.query.name;
     try {
         let medicalEquips = await medicalEquipService.findMedicalEquipExpire();
 
@@ -48,6 +50,19 @@ const findMedicalEquipExpire = async (req,res) => {
 
 const createMedicalEquip = async (req, res) => {
     try {
+        const {
+            error
+        } = medicalValidation.validateCreateMedicalEquipment(req.body);
+
+        console.log(req.body);
+        if (error) {
+            // console.log(error);
+            return res.status(400).json({
+                error: true,
+                message: error.message,
+            });
+        }
+
         const medicalEquip = await medicalEquipService.createMedicalEquip(req.body);
 
         let newMedicalEquip = new Array();
