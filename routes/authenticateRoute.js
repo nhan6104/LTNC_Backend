@@ -1,7 +1,7 @@
 const autheticateController = require("../controller/autheticateController");
 const express = require("express");
 const router = express.Router();
-const authenticate = require("../lib/auth");
+const authenticatedUser = require("../lib/auth")
 
 router.post("/login", autheticateController.login);
 router.post("/logout", autheticateController.logout);

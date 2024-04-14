@@ -19,7 +19,6 @@ const createStaff = async (req, res) => {
 
             console.log(doctors)
 
-
             if (doctors.doctors) {
                 for (let doctor of doctors.doctors) {
                     if (doctor.cccd === req.body.cccd) {
@@ -31,7 +30,7 @@ const createStaff = async (req, res) => {
                 }
             }
 
-            // const resultSignUp = await doctorService.signupAccount(req.body.email, req.body.cccd);
+            const resultSignUp = await doctorService.signupAccount(req.body.email, req.body.cccd);
             
             let newStaff = new Array();
             let tempStaff = new Object();           
@@ -41,10 +40,9 @@ const createStaff = async (req, res) => {
                 cccd: req.body.cccd,
                 refference: ref,
                 fullname: req.body.name,
-                // userUid: resultSignUp.user.uid
+                userUid: resultSignUp.user.uid,
+                role: req.body.role
             }
-
-            console.log(doctors.doctors);
 
             newStaff.push(tempStaff)
             if (doctors.doctors) 
@@ -195,12 +193,20 @@ const detailStaff = async (req, res) => {
 
         const doctor =  doctors.doctors.filter(item => item.cccd == req.query.cccd);
 
-
         if (!doctor) {
             return res.status(400).json({
                 error: true,
                 message: "Người dùng không tồn tại",
             });
+        }
+
+        if (req.body.role != "ADMIN") {
+            if (doctor[0].cccd != req.body.cccd) {
+                return res.status(400).json({
+                    error: true,
+                    message: "Người dùng không được phép truy cập",
+                });
+            }
         }
 
         const detail = await doctorService.detailStaff(doctor[0].refference)
@@ -248,13 +254,14 @@ const illnessToDoctor = async (req , res) => {
 
 const updateStaff = async (req, res) => {
     try{
-        // const { error } = doctorValidation.validationUpdateStaff(req.query);
-        // if (error) {
-        //     return res.status(400).json({
-        //         error: true,
-        //         message: error.message,
-        //     });
-        // }
+        const { error } = doctorValidation.validationUpdateStaff(req.query);
+        if (error) {
+            return res.status(400).json({
+                error: true,
+                message: error.message,
+            });
+        }
+
         const doctors = await doctorService.findDoctor();
 
         if ( !doctors || !doctors.doctors) {
