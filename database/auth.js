@@ -1,5 +1,5 @@
 const { initializeApp } = require("firebase/app");
-const {getDatabase, ref, set, get, remove} = require('firebase/database');
+const {getDatabase, ref, set, get} = require('firebase/database');
 
 const firebaseConfig = {
   apiKey: "AIzaSyB1gkuDziM58XIJtbBBt2wYR0LzY9oYf7s",
@@ -35,5 +35,4 @@ module.exports = {
   saveSessionToDatabase,
   getSessionFromDatabase,
   removeSession
-
 }

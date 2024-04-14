@@ -4,10 +4,10 @@ const collectionName = "patient";
 const subcollectionName = "medicalRecords"
 const collectiontotal = "staff";
 
-const createNewPatient = async (dataPatient, ref) => {
-  // const documentID = dataPatient.cccd;
-  // console.log(documentID)
-  const result = await dbUtils.insertPath(dataPatient, ref);
+const createNewPatient = async (dataPatient) => {
+  const documentID = dataPatient.cccd;
+  console.log(documentID)
+  const result = await dbUtils.insert(dataPatient, collectionName, documentID);
   return result;
 };
 
@@ -18,20 +18,8 @@ const createNewPatientInTotal = async (dataPatient) => {
   return result;
 };
 
-const createNewRecordsInHistory = async (data, ref) => {
-  const result = await dbUtils.add(data, collectionName, ref);
-  return result;
-}
-
-const updateNewPatientInTotal = async (dataPatient) => {
-  // console.log(documentID)
-
-  const result = await dbUtils.update(dataPatient, collectiontotal, collectionName);
-  return result;
-};
-
-const updatePatientData = async (newDataPatient, patientID) => {
-  const documentID = patientID;
+const updatePatientData = async (newDataPatient) => {
+  const documentID = newDataPatient.cccd;
   // console.log(documentID)
   const result = await dbUtils.update(newDataPatient, collectionName, documentID);
   return result;
@@ -42,31 +30,13 @@ const findPatientByID = async (patientID) => {
   return result;
 }
 
-const findPatientByPath = async (path) => {
-  const result = await dbUtils.findOnePath(path);
-  return result;
-}
-
 const findPatients = async () => {
   const result = await dbUtils.findOne(collectiontotal, collectionName);
   return result;
 }
 
-const findHistory = async (ref) => {
-  const history = await dbUtils.findOne(collectionName, ref);
-  return history;
-}
-
 const removePatient = async (patientID) => {
   return await dbUtils.erase(collectionName, patientID);
-}
-
-const removePatientByPath = async (ref) => {
-  return dbUtils.erasePath(ref);
-}
-
-const removeRecordsByPath = async (ref) => {
-  return dbUtils.erasePath(ref);
 }
 
 const checkExistPatient = async (data) => {
@@ -76,12 +46,12 @@ const checkExistPatient = async (data) => {
   return result;
 };
 
-const createNewRecords = async (dataRecords, patientID) => {
-  const documentID = patientID;
-  const subdocumentID = dataRecords.date.replace(/-/g, '');
+const createNewRecords = async (dataRecords) => {
+  const documentID = dataRecords.cccd;
+  const subdocumentID = dataRecords.date;
   // console.log(documentID + " " + subdocumentID);
-  const result = await dbUtils.insert(dataRecords, collectionName, documentID, subcollectionName, subdocumentID);
-  console.log(result);
+  result = await dbUtils.insert(dataRecords, collectionName, documentID, subcollectionName, subdocumentID);
+  // console.log(result);
   return result;
 }
 
@@ -110,22 +80,16 @@ const treatmentProcessByID = async (patientID) => {
 
 module.exports = {
   createNewPatient,
-  updateNewPatientInTotal,
   checkExistPatient,
   createNewRecords,
   updatePatientData,
   removePatient,
-  removePatientByPath,
   removeRecords,
   findPatientByID,
   findRecordsByDate,
   treatmentProcessByID,
   createNewPatientInTotal,
   findPatients,
-  checkExistRecords,
-  findHistory,
-  createNewRecordsInHistory,
-  removeRecordsByPath,
-  findPatientByPath
+  checkExistRecords
 }
 

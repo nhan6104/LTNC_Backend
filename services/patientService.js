@@ -1,15 +1,11 @@
 const patient = require('../database/patient');
 
-const createPatient = async (data, ref) => {
-  return await patient.createNewPatient(data, ref);
+const createPatient = async (data) => {
+  return await patient.createNewPatient(data);
 };
 
 const findPatientByID = async (patientID) => {
   return await patient.findPatientByID(patientID);
-}
-
-const findPatientByPath = async (path) => {
-  return await patient.findPatientByPath(path);
 }
 
 const checkExistPatient = async (data) => { 
@@ -20,8 +16,8 @@ const checkExistRecords = async (patientID, recordsDate) => {
   return await patient.checkExistRecords(patientID, recordsDate);
 }
 
-const createRecords = async (dataRecords, patientID) => {
-  return await patient.createNewRecords(dataRecords, patientID);
+const createRecords = async (dataRecords) => {
+  return await patient.createNewRecords(dataRecords);
 };
 
 const findRecordsByDate = async (patientID, recordsDate) => {
@@ -32,16 +28,12 @@ const treatmentProcessByID = async (patientID) => {
   return await patient.treatmentProcessByID(patientID);
 }
 
-const updatePatientData = async (newDataPatient, patientID) => {
-  return await patient.updatePatientData(newDataPatient, patientID);
+const updatePatientData = async (newDataPatient) => {
+  return await patient.updatePatientData(newDataPatient);
 }
 
 const removePatient = async (patientID) => {
   return await patient.removePatient(patientID);
-}
-
-const removePatientByPath = async (path) => {
-  return await patient.removePatientByPath(path);
 }
 
 const removeRecords = async (patientID, recordsDate) => {
@@ -52,24 +44,8 @@ const creatPatientInTotal = async (patientData) => {
   return await patient.createNewPatientInTotal(patientData);
 }
 
-const createRecordsInHistory = async (historyData, ref) => {
-  return await patient.createNewRecordsInHistory(historyData, ref);
-}
-
-const findPatients = async () => {
+const findPatiens = async () => {
   return await patient.findPatients();
-}
-
-const findHistory = async (ref) => {
-  return await patient.findHistory(ref);
-}
-
-const updatePatientInTotal = async (patientData) => {
-  return await patient.updateNewPatientInTotal();
-}
-
-const removeRecordsByPath = async (path) => {
-  return await patient.removeRecordsByPath(path);
 }
 
 module.exports = {
@@ -83,14 +59,8 @@ module.exports = {
   removePatient,
   removeRecords,
   creatPatientInTotal,
-  findPatients,
-  checkExistRecords,
-  updatePatientInTotal,
-  removePatientByPath,
-  removeRecordsByPath,
-  findHistory,
-  createRecordsInHistory,
-  findPatientByPath
+  findPatiens,
+  checkExistRecords
 }
 
 

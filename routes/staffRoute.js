@@ -4,10 +4,10 @@ const express = require("express");
 const { route } = require("./patientRoute");
 const router = express.Router();
 
-router.post("/create", authenticatedUser.isAuthenticated, authenticatedUser.isAuthorized(["ADMIN"]), staffController.createStaff);
-router.post("/detail", authenticatedUser.isAuthenticated, authenticatedUser.isAuthorizedFinding(["ADMIN", "DOCTOR", "NURSE"]), staffController.detailStaff);
-router.put("/delete", authenticatedUser.isAuthenticated, authenticatedUser.isAuthorized(["ADMIN"]), staffController.removeStaff);
-router.put("/update", authenticatedUser.isAuthenticated, authenticatedUser.isAuthorized(["ADMIN"]), staffController.updateStaff);
+router.post("/create", staffController.createStaff);
+router.post("/detail", staffController.detailStaff);
+router.put("/delete", staffController.removeStaff);
+router.put("/update", staffController.updateStaff);
 
 
 module.exports = router;
