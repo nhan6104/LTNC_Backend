@@ -7,7 +7,11 @@ var authenticateRouter = require('./routes/authenticateRoute');
 var staffRouter = require('./routes/staffRoute');
 var medicineRouter = require('./routes/medicineRoute');
 var medicalEquipRouter = require('./routes/medicalEquipRoute');
+var cors = require('cors');
 
+app.use(cors({
+  origin: 'http://localhost:3000' // Thay URL này bằng địa chỉ của trang web bạn muốn chấp nhận yêu cầu từ
+}));
 
 var app = express();
 app.use(express.json());

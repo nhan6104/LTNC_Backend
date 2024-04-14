@@ -32,13 +32,13 @@ const login = async (req, res) => {
 
     await authenticateService.setSession(tempStaff[0].userUid, data)
     
-    return res.status(200).send({
+    return res.status(200).json({
         error: false,
         message: "Login sucessfully."
     });
   }
   catch (err) {
-    return res.status(400).send({
+    return res.status(400).json({
       error: true,
       message: err.message
     })
@@ -49,14 +49,14 @@ const logout = async (req, res) => {
   try {
     await authenticateService.signout(req.body.uid);
 
-    return res.status(400).send({
+    return res.status(400).json({
       error: false,
       message: "Đăng xuất thành công"
     })
 
   }
     catch (err) {
-      return res.status(400).send({
+      return res.status(400).json({
         error: true,
         message: err.message
       })
