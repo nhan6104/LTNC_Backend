@@ -17,8 +17,6 @@ const createStaff = async (req, res) => {
 
             const doctors = await doctorService.findDoctor();
 
-            console.log(doctors)
-
             if (doctors.doctors) {
                 for (let doctor of doctors.doctors) {
                     if (doctor.cccd === req.body.cccd) {

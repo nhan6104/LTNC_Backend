@@ -23,7 +23,8 @@ const saveSessionToDatabase = async (userId, sessionData) => {
 
 const getSessionFromDatabase = async (userId) => {
   const sessionRef = ref(database, `sessions/${userId}`);
-  return await get(sessionRef);
+  const result = await get(sessionRef);
+  return result.val();
 }
 
 const removeSession = async (userId) => {
