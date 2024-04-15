@@ -4,7 +4,7 @@ const router = express.Router();
 const authenticatedUser = require("../lib/auth")
 
 
-router.post("/create_patient",authenticatedUser.isAuthenticated, authenticatedUser.isAuthorized(["DOCTOR"]), patientController.createPatient);
+router.post("/create_patient",authenticatedUser.isAuthenticated, authenticatedUser.isAuthorized(["ADMIN"]), patientController.createPatient);
 router.post("/create_records",authenticatedUser.isAuthenticated, authenticatedUser.isAuthorized(["DOCTOR"]), patientController.createRecords);
 router.put("/remove_patient", authenticatedUser.isAuthenticated, authenticatedUser.isAuthorized(["DOCTOR"]),patientController.removePatient);
 router.put("/remove_records", authenticatedUser.isAuthenticated, authenticatedUser.isAuthorized(["DOCTOR"]),patientController.removeRecords);
