@@ -8,6 +8,6 @@ router.post("/create", authenticatedUser.isAuthenticated, authenticatedUser.isAu
 router.post("/detail", authenticatedUser.isAuthenticated, authenticatedUser.isAuthorizedFinding(["ADMIN", "DOCTOR", "NURSE"]), staffController.detailStaff);
 router.put("/delete", authenticatedUser.isAuthenticated, authenticatedUser.isAuthorized(["ADMIN"]), staffController.removeStaff);
 router.put("/update", authenticatedUser.isAuthenticated, authenticatedUser.isAuthorized(["ADMIN"]), staffController.updateStaff);
-router.get("/getalldoctor",staffController.getAlldoctor)
+router.get("/getalldoctor",authenticatedUser.isAuthenticated, authenticatedUser.isAuthorized(["ADMIN"]),staffController.getAlldoctor)
 
 module.exports = router;
