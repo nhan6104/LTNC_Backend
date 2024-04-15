@@ -1,5 +1,6 @@
 const doctorService = require('../services/staffService');
 const validation = require('../lib/validation');
+const { doc } = require('firebase/firestore');
 
 const doctorValidation = new validation.DoctorValidation();
 
@@ -306,11 +307,52 @@ const updateStaff = async (req, res) => {
     }
 }
 
+const getAlldoctor = async (req, res) => {
+    try {
+        const doctors = await doctorService.findDoctor();
 
+        if ( !doctors || !doctors.doctors) {
+            return res.status(400).json({
+                error: true,
+                message: "Người dùng không tồn tại",
+            });
+        }
+
+        const doctor =  doctors.doctors.filter(item => item.role == "DOCTOR");
+        if (!doctor) {
+            return res.status(400).json({
+                error: true,
+                message: "Người dùng không tồn tại",
+            });
+        }
+
+        if (req.body.role != "ADMIN") {
+            if (doctor[0].cccd != req.body.cccd) {
+                return res.status(400).json({
+                    error: true,
+                    message: "Người dùng không được phép truy cập",
+                });
+            }
+        }
+
+        const alldoctor = [];
+        for(let i=0 ; i< doctor.length; i++) alldoctor.push(await doctorService.detailStaff(doctor[0].refference))
+        return res.status(200).json({
+            error: true,
+            message: alldoctor,
+        });
+    } catch (error) {
+        return res.status(500).json({
+            error: true,
+            message: error.message,
+        });
+    }
+}
 module.exports = {
     createStaff,
     removeStaff,
     detailStaff,
     illnessToDoctor,
-    updateStaff
+    updateStaff,
+    getAlldoctor
 }
