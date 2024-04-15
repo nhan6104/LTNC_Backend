@@ -1,6 +1,6 @@
 const authenticate = require("../database/auth");
 const { initializeApp } = require("firebase/app");
-const { getAuth, signInWithEmailAndPassword, signOut } = require("firebase/auth");
+const { getAuth, signInWithEmailAndPassword, signOut} = require("firebase/auth");
 
 const firebaseConfig = {
   apiKey: "AIzaSyB1gkuDziM58XIJtbBBt2wYR0LzY9oYf7s",
@@ -15,7 +15,6 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
-
 
 const setSession = async (userId , data) => {
     await authenticate.saveSessionToDatabase(userId, data);

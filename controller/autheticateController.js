@@ -52,6 +52,7 @@ const login = async (req, res) => {
 const logout = async (req, res) => {
   try {
     await authenticateService.signout(req.body.uid);
+    res.clearCookie('session')
 
     return res.status(200).json({
       error: false,
