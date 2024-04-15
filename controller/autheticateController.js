@@ -37,7 +37,8 @@ const login = async (req, res) => {
     
     return res.status(200).json({
         error: false,
-        message: "Login sucessfully."
+        message: "Login sucessfully.",
+        info: data
     });
   }
   catch (err) {
