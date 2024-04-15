@@ -31,6 +31,9 @@ const login = async (req, res) => {
     }
 
     await authenticateService.setSession(tempStaff[0].userUid, data)
+    const expiresIn = 60 * 60 * 24 * 5 * 1000; // 5 days
+    
+    res.cookie('session', userCredential.user.uid, { maxAge: expiresIn, httpOnly: true, secure: true });
     
     return res.status(200).json({
         error: false,
