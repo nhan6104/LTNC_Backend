@@ -53,7 +53,7 @@ const logout = async (req, res) => {
   try {
     await authenticateService.signout(req.body.uid);
 
-    return res.status(400).json({
+    return res.status(200).json({
       error: false,
       message: "Đăng xuất thành công"
     })
