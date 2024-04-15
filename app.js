@@ -1,25 +1,22 @@
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
-
+var cookieParser = require('cookie-parser');
 var patientRouter = require('./routes/patientRoute');
 var authenticateRouter = require('./routes/authenticateRoute');
 var staffRouter = require('./routes/staffRoute');
 var medicineRouter = require('./routes/medicineRoute');
 var medicalEquipRouter = require('./routes/medicalEquipRoute');
 var cors = require('cors');
-
-app.use(cors({
-  origin: 'http://localhost:3000' // Thay URL này bằng địa chỉ của trang web bạn muốn chấp nhận yêu cầu từ
-}));
-
 var app = express();
+
+app.use(cors());
+app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 app.set('views', `${__dirname}/views`) 
 
-var app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
