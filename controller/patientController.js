@@ -98,7 +98,7 @@ const removePatient = async (req, res) => {
         for (let el of patients.patient)
         {
             if (el.cccd === req.query.cccd){
-                const ref = `patient/${req.query.cccd}` 
+                const ref = el.reference;
                 const history = await patientService.findHistory(req.query.cccd);
                 for (hist of history.medicalHistory)
                 {
