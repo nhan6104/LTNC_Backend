@@ -499,7 +499,7 @@ const findAllPatient = async (req, res) => {
         }
         return res.status(200).json({
             error: false,
-            data: patients.patient,
+            data: patients,
         });
     }
     catch (err) {
@@ -510,6 +510,14 @@ const findAllPatient = async (req, res) => {
 		});
     }
 }
+
+// findAllPatient();
+const func = async() => {
+    const res = await findAllPatient();
+    console.log(await res);
+}
+
+func();
 
 module.exports = {
     createPatient,

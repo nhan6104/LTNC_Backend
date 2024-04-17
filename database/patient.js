@@ -58,7 +58,7 @@ const findHistory = async (ref) => {
 }
 
 const removePatient = async (patientID) => {
-  return dbUtils.erase(collectionName, patientID);
+  return await dbUtils.erase(collectionName, patientID);
 }
 
 const removePatientByPath = async (ref) => {
