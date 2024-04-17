@@ -72,7 +72,7 @@ var Patient = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, axios_1.default.put("".concat(this.baseUrl, "/update_patient").concat(condition), info, {
+                        return [4 /*yield*/, axios_1.default.put("".concat(this.baseUrl, "/update_patient?cccd=").concat(condition.cccd), info, {
                                 withCredentials: true,
                             })];
                     case 1:
@@ -95,7 +95,7 @@ var Patient = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, axios_1.default.put("".concat(this.baseUrl, "/remove_patient").concat(condition), {
+                        return [4 /*yield*/, axios_1.default.put("".concat(this.baseUrl, "/remove_patient?cccd=").concat(condition.cccd), {
                                 withCredentials: true,
                             })];
                     case 1:
@@ -118,7 +118,7 @@ var Patient = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, axios_1.default.put("".concat(this.baseUrl, "/remove_records").concat(condition), {
+                        return [4 /*yield*/, axios_1.default.put("".concat(this.baseUrl, "/remove_records?date=").concat(condition.date), {
                                 withCredentials: true,
                             })];
                     case 1:
@@ -164,13 +164,13 @@ var Patient = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, axios_1.default.get("".concat(this.baseUrl, "/find_treatment").concat(condition), {
+                        return [4 /*yield*/, axios_1.default.get("".concat(this.baseUrl, "/find_treatment?cccd=").concat(condition.cccd), {
                                 withCredentials: true,
                             })];
                     case 1:
                         response = _a.sent();
                         data = response.data;
-                        return [2 /*return*/, { error: data.error, message: data.message }];
+                        return [2 /*return*/, { error: data.error, data: data.data, message: data.message }];
                     case 2:
                         error_6 = _a.sent();
                         console.log("Error find all treatment: ", error_6.response.data);
@@ -187,13 +187,13 @@ var Patient = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, axios_1.default.get("".concat(this.baseUrl, "/find_patient").concat(condition), {
+                        return [4 /*yield*/, axios_1.default.get("".concat(this.baseUrl, "/find_patient?cccd=").concat(condition.cccd), {
                                 withCredentials: true,
                             })];
                     case 1:
                         response = _a.sent();
                         data = response.data;
-                        return [2 /*return*/, { error: data.error, message: data.message }];
+                        return [2 /*return*/, { error: data.error, data: data.data, message: data.message }];
                     case 2:
                         error_7 = _a.sent();
                         console.log("Error find patient: ", error_7.response.data);
@@ -216,7 +216,7 @@ var Patient = /** @class */ (function () {
                     case 1:
                         response = _a.sent();
                         data = response.data;
-                        return [2 /*return*/, { error: data.error, message: data.message }];
+                        return [2 /*return*/, { error: data.error, data: data.data, message: data.message }];
                     case 2:
                         error_8 = _a.sent();
                         console.log("Error find all patient: ", error_8.response.data);
@@ -233,13 +233,13 @@ var Patient = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, axios_1.default.get("".concat(this.baseUrl, "/find_records").concat(condition), {
+                        return [4 /*yield*/, axios_1.default.get("".concat(this.baseUrl, "/find_records?date=").concat(condition.date), {
                                 withCredentials: true,
                             })];
                     case 1:
                         response = _a.sent();
                         data = response.data;
-                        return [2 /*return*/, { error: data.error, message: data.message }];
+                        return [2 /*return*/, { error: data.error, data: data.data, message: data.message }];
                     case 2:
                         error_9 = _a.sent();
                         console.log("Error find record: ", error_9.response.data);
@@ -286,13 +286,13 @@ var Staff = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, axios_1.default.get("".concat(this.baseUrl, "/detail").concat(condition), {
+                        return [4 /*yield*/, axios_1.default.get("".concat(this.baseUrl, "/detail?cccd=").concat(condition.cccd), {
                                 withCredentials: true,
                             })];
                     case 1:
                         response = _a.sent();
                         data = response.data;
-                        return [2 /*return*/, { error: data.error, message: data.message }];
+                        return [2 /*return*/, { error: data.error, data: data.data, message: data.message }];
                     case 2:
                         error_11 = _a.sent();
                         console.log("Error finding staff: ", error_11.response.data);
@@ -309,7 +309,7 @@ var Staff = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, axios_1.default.put("".concat(this.baseUrl, "/delete").concat(condition), {
+                        return [4 /*yield*/, axios_1.default.put("".concat(this.baseUrl, "/delete?cccd=").concat(condition.cccd), {
                                 withCredentials: true,
                             })];
                     case 1:
@@ -332,7 +332,7 @@ var Staff = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, axios_1.default.put("".concat(this.baseUrl, "/update").concat(condition), info, {
+                        return [4 /*yield*/, axios_1.default.put("".concat(this.baseUrl, "/update?cccd=").concat(condition.cccd), info, {
                                 withCredentials: true,
                             })];
                     case 1:
@@ -438,13 +438,13 @@ var MedicalManage = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, axios_1.default.get("".concat(this.baseUrl, "/getDetail").concat(condition), {
+                        return [4 /*yield*/, axios_1.default.get("".concat(this.baseUrl, "/getDetail?id=").concat(condition.id), {
                                 withCredentials: true,
                             })];
                     case 1:
                         response = _a.sent();
                         data = response.data;
-                        return [2 /*return*/, { error: data.error, message: data.message }];
+                        return [2 /*return*/, { error: data.error, data: data.data, message: data.message }];
                     case 2:
                         error_17 = _a.sent();
                         console.log("Error creating patient: ", error_17.response.data);
@@ -467,7 +467,7 @@ var MedicalManage = /** @class */ (function () {
                     case 1:
                         response = _a.sent();
                         data = response.data;
-                        return [2 /*return*/, { error: data.error, message: data.message }];
+                        return [2 /*return*/, { error: data.error, data: data.data, message: data.message }];
                     case 2:
                         error_18 = _a.sent();
                         console.log("Error creating patient: ", error_18.response.data);
@@ -490,7 +490,7 @@ var MedicalManage = /** @class */ (function () {
                     case 1:
                         response = _a.sent();
                         data = response.data;
-                        return [2 /*return*/, { error: data.error, message: data.message }];
+                        return [2 /*return*/, { error: data.error, data: data.data, message: data.message }];
                     case 2:
                         error_19 = _a.sent();
                         console.log("Error creating patient: ", error_19.response.data);
@@ -507,7 +507,7 @@ var MedicalManage = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, axios_1.default.put("".concat(this.baseUrl, "/delete").concat(condition), {
+                        return [4 /*yield*/, axios_1.default.put("".concat(this.baseUrl, "/delete?id=").concat(condition.id), {
                                 withCredentials: true,
                             })];
                     case 1:
@@ -560,13 +560,13 @@ var medicalEquipment = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, axios_1.default.get("".concat(this.baseUrl, "/getDetail").concat(condition), {
+                        return [4 /*yield*/, axios_1.default.get("".concat(this.baseUrl, "/getDetail?id=").concat(condition.id), {
                                 withCredentials: true,
                             })];
                     case 1:
                         response = _a.sent();
                         data = response.data;
-                        return [2 /*return*/, { error: data.error, message: data.message }];
+                        return [2 /*return*/, { error: data.error, data: data.data, message: data.message }];
                     case 2:
                         error_22 = _a.sent();
                         console.log("Error creating patient: ", error_22.response.data);
@@ -589,7 +589,7 @@ var medicalEquipment = /** @class */ (function () {
                     case 1:
                         response = _a.sent();
                         data = response.data;
-                        return [2 /*return*/, { error: data.error, message: data.message }];
+                        return [2 /*return*/, { error: data.error, data: data.data, message: data.message }];
                     case 2:
                         error_23 = _a.sent();
                         console.log("Error creating patient: ", error_23.response.data);
@@ -612,7 +612,7 @@ var medicalEquipment = /** @class */ (function () {
                     case 1:
                         response = _a.sent();
                         data = response.data;
-                        return [2 /*return*/, { error: data.error, message: data.message }];
+                        return [2 /*return*/, { error: data.error, data: data.data, message: data.message }];
                     case 2:
                         error_24 = _a.sent();
                         console.log("Error creating patient: ", error_24.response.data);
@@ -629,7 +629,7 @@ var medicalEquipment = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, axios_1.default.put("".concat(this.baseUrl, "/delete").concat(condition), {
+                        return [4 /*yield*/, axios_1.default.put("".concat(this.baseUrl, "/delete?id=").concat(condition.id), {
                                 withCredentials: true,
                             })];
                     case 1:

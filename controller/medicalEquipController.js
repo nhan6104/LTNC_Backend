@@ -3,16 +3,26 @@ const validation = require('../lib/validation');
 const medicalValidation = new validation.MedicalEquipmentValidation();
 
 const findMedicalEquip = async (req, res) => {
-    const name = req.query.name;
+    const {error} = medicalValidation.validateQueryMedicalEquipByName(req.query);
+
+    console.log(req.body);
+    if (error) {
+        // console.log(error);
+        return res.status(400).json({
+            error: true,
+            message: error.message,
+        });
+    }
     try {
         let medicalEquips = await medicalEquipService.findMedicalEquip();
 
-        if (name) {
+        if (req.query.name) {
             medicalEquips = medicalEquips.filter(medicalEquip => medicalEquip.name.toUpperCase().includes(name.toUpperCase()));
         }
         return res.status(200).json({
             error: false,
-            message: medicalEquips
+            message: "Lấy thành công",
+            data: medicalEquips
         });
 
     } catch (err) {
@@ -25,16 +35,27 @@ const findMedicalEquip = async (req, res) => {
 };
 
 const findMedicalEquipExpire = async (req, res) => {
-    const name = req.query.name;
+    const {error} = medicalValidation.validateQueryMedicalEquipByName(req.query);
+
+    console.log(req.body);
+    if (error) {
+        // console.log(error);
+        return res.status(400).json({
+            error: true,
+            message: error.message,
+        });
+    }
+
     try {
         let medicalEquips = await medicalEquipService.findMedicalEquipExpire();
 
-        if (name) {
+        if (req.query.name) {
             medicalEquips = medicalEquips.filter(medicalEquip => medicalEquip.name.toUpperCase().includes(name.toUpperCase()));
         }
         return res.status(200).json({
             error: false,
-            message: medicalEquips
+            message: "Lấy thành công",
+            data: medicalEquips
         });
 
     } catch (err) {
@@ -174,7 +195,8 @@ const findMedicalEquipDetail = async (req, res) => {
         const medicalEquip = await medicalEquipService.detailMedicalEquip(req.query.id);
         return res.status(200).json({
             error: false,
-            message: medicalEquip
+            message: "Lấy thành công",
+            data: medicalEquip
         });
 
     } catch (err) {

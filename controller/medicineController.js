@@ -5,16 +5,26 @@ const medicineValidation = new validation.MedicineValidation();
 
 const findMedicines = async (req, res) => {
     
-    const brand = req.query.brand;
+    const {error} = medicineValidation.validateQueryMedicineByBrand(req.query);
+
+    console.log(req.body);
+    if (error) {
+        // console.log(error);
+        return res.status(400).json({
+            error: true,
+            message: error.message,
+        });
+    }
     try {
         let medicines = await medicineService.findMedicines();
 
-        if (brand) {
+        if (req.query.brand) {
             medicines = medicines.filter(medicine => medicine.brand.toUpperCase().includes(brand.toUpperCase()));
         }
         return res.status(200).json({
             error: false,
-            message: medicines
+            message: "Lấy thành công",
+            data: medicines
         });
 
     } catch (err) {
@@ -27,16 +37,29 @@ const findMedicines = async (req, res) => {
 };
 
 const findMedicinesExpire = async (req, res) => {
-    const brand = req.query.brand;
+        
+    const {error} = medicineValidation.validateQueryMedicineByBrand(req.query);
+
+    console.log(req.body);
+    if (error) {
+        // console.log(error);
+        return res.status(400).json({
+            error: true,
+            message: error.message,
+        });
+    }
+    
     try {
         let medicines = await medicineService.findMedicinesExpire();
 
-        if (brand) {
+        if (req.query.brand) {
             medicines = medicines.filter(medicine => medicine.brand.toUpperCase().includes(brand.toUpperCase()));
         }
+        
         return res.status(200).json({
             error: false,
-            message: medicines
+            message: "Lấy thành công",
+            data: medicines
         });
 
     } catch (err) {
@@ -173,7 +196,8 @@ const findMedicineDetail = async (req, res) => {
         const medicine = await medicineService.detailMedicine(req.query.id);
         return res.status(200).json({
             error: false,
-            message: medicine
+            message: "Lấy thành công",
+            data: medicine
         });
 
     } catch (err) {

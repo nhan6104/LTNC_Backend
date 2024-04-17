@@ -82,7 +82,7 @@ class Patient {
 
   async updatePatient (info : updatePatient, condition: queryPatient) {
     try {
-      const response: AxiosResponse = await axios.put(`${this.baseUrl}/update_patient${condition}`, info, {
+      const response: AxiosResponse = await axios.put(`${this.baseUrl}/update_patient?cccd=${condition.cccd}`, info, {
           withCredentials: true,
       });
 
@@ -97,7 +97,7 @@ class Patient {
 
   async removePatient (condition: queryPatient) {
     try {
-      const response: AxiosResponse = await axios.put(`${this.baseUrl}/remove_patient${condition}`, {
+      const response: AxiosResponse = await axios.put(`${this.baseUrl}/remove_patient?cccd=${condition.cccd}`, {
           withCredentials: true,
       });
 
@@ -112,7 +112,7 @@ class Patient {
 
   async removeRecords (condition: queryRecords) {
     try {
-      const response: AxiosResponse = await axios.put(`${this.baseUrl}/remove_records${condition}`, {
+      const response: AxiosResponse = await axios.put(`${this.baseUrl}/remove_records?date=${condition.date}`, {
           withCredentials: true,
       });
 
@@ -142,12 +142,12 @@ class Patient {
 
   async findTreatment (condition : queryPatient) {
     try {
-      const response: AxiosResponse = await axios.get(`${this.baseUrl}/find_treatment${condition}`, {
+      const response: AxiosResponse = await axios.get(`${this.baseUrl}/find_treatment?cccd=${condition.cccd}`, {
           withCredentials: true,
       });
 
       const data = response.data;
-      return { error: data.error, message: data.message };
+      return { error: data.error, data:data.data, message: data.message };
     } 
     catch (error: any) {
         console.log("Error find all treatment: ", error.response.data);
@@ -157,12 +157,12 @@ class Patient {
 
   async findPatient (condition : queryPatient) {
     try {
-      const response: AxiosResponse = await axios.get(`${this.baseUrl}/find_patient${condition}`, {
+      const response: AxiosResponse = await axios.get(`${this.baseUrl}/find_patient?cccd=${condition.cccd}`, {
           withCredentials: true,
       });
 
       const data = response.data;
-      return { error: data.error, message: data.message };
+      return { error: data.error, data:data.data, message: data.message };
     } 
     catch (error: any) {
         console.log("Error find patient: ", error.response.data);
@@ -177,7 +177,7 @@ class Patient {
       });
 
       const data = response.data;
-      return { error: data.error, message: data.message };
+      return { error: data.error, data:data.data, message: data.message };
     } 
     catch (error: any) {
         console.log("Error find all patient: ", error.response.data);
@@ -187,12 +187,12 @@ class Patient {
 
   async findRecords (condition : queryRecords) {
     try {
-      const response: AxiosResponse = await axios.get(`${this.baseUrl}/find_records${condition}`, {
+      const response: AxiosResponse = await axios.get(`${this.baseUrl}/find_records?date=${condition.date}`, {
           withCredentials: true,
       });
 
       const data = response.data;
-      return { error: data.error, message: data.message };
+      return { error: data.error, data:data.data, message: data.message };
     } 
     catch (error: any) {
         console.log("Error find record: ", error.response.data);
@@ -259,12 +259,12 @@ class Staff {
 
 	async findStaff (condition: queryStaff ) {
 		try {
-			const response: AxiosResponse = await axios.get(`${this.baseUrl}/detail${condition}`, {
+			const response: AxiosResponse = await axios.get(`${this.baseUrl}/detail?cccd=${condition.cccd}`, {
 				withCredentials: true,
 			});
 	  
 			const data = response.data;
-			return { error: data.error, message: data.message };
+			return { error: data.error, data:data.data, message: data.message };
 		} 
 		catch (error: any) {
 			console.log("Error finding staff: ", error.response.data);
@@ -274,7 +274,7 @@ class Staff {
 
 	async deleteStaff (condition : queryStaff) {
 		try {
-			const response: AxiosResponse = await axios.put(`${this.baseUrl}/delete${condition}`, {
+			const response: AxiosResponse = await axios.put(`${this.baseUrl}/delete?cccd=${condition.cccd}`, {
 				withCredentials: true,
 			});
 	  
@@ -289,7 +289,7 @@ class Staff {
 
 	async updateStaff (condition : queryStaff, info : updateStaff) {
 		try {
-			const response: AxiosResponse = await axios.put(`${this.baseUrl}/update${condition}`, info, {
+			const response: AxiosResponse = await axios.put(`${this.baseUrl}/update?cccd=${condition.cccd}`, info, {
 				withCredentials: true,
 			});
 	  
@@ -383,12 +383,12 @@ class MedicalManage {
 
   async getDetail (condition: QueryMedicine) {
 		try {
-			const response: AxiosResponse = await axios.get(`${this.baseUrl}/getDetail${condition}`, {
+			const response: AxiosResponse = await axios.get(`${this.baseUrl}/getDetail?id=${condition.id}`, {
 				withCredentials: true,
 			});
 	  
 			const data = response.data;
-			return { error: data.error, message: data.message };
+			return { error: data.error, data: data.data, message: data.message };
 		} 
 		catch (error: any) {
 			console.log("Error creating patient: ", error.response.data);
@@ -403,7 +403,7 @@ class MedicalManage {
 			});
 	  
 			const data = response.data;
-			return { error: data.error, message: data.message };
+			return { error: data.error, data: data.data, message: data.message };
 		} 
 		catch (error: any) {
 			console.log("Error creating patient: ", error.response.data);
@@ -418,7 +418,7 @@ class MedicalManage {
 			});
 	  
 			const data = response.data;
-			return { error: data.error, message: data.message };
+			return { error: data.error, data: data.data, message: data.message };
 		} 
 		catch (error: any) {
 			console.log("Error creating patient: ", error.response.data);
@@ -429,7 +429,7 @@ class MedicalManage {
   
   async deleteMedicine (condition: QueryMedicine) {
 		try {
-			const response: AxiosResponse = await axios.put(`${this.baseUrl}/delete${condition}`, {
+			const response: AxiosResponse = await axios.put(`${this.baseUrl}/delete?id=${condition.id}`, {
 				withCredentials: true,
 			});
 	  
@@ -483,12 +483,12 @@ class medicalEquipment {
 
   async getDetail (condition: queryMedicalEquipment) {
 		try {
-			const response: AxiosResponse = await axios.get(`${this.baseUrl}/getDetail${condition}`, {
+			const response: AxiosResponse = await axios.get(`${this.baseUrl}/getDetail?id=${condition.id}`, {
 				withCredentials: true,
 			});
 	  
 			const data = response.data;
-			return { error: data.error, message: data.message };
+			return { error: data.error, data: data.data, message: data.message };
 		} 
 		catch (error: any) {
 			console.log("Error creating patient: ", error.response.data);
@@ -503,7 +503,7 @@ class medicalEquipment {
 			});
 	  
 			const data = response.data;
-			return { error: data.error, message: data.message };
+			return { error: data.error,data: data.data, message: data.message };
 		} 
 		catch (error: any) {
 			console.log("Error creating patient: ", error.response.data);
@@ -518,7 +518,7 @@ class medicalEquipment {
 			});
 	  
 			const data = response.data;
-			return { error: data.error, message: data.message };
+			return { error: data.error, data:data.data, message: data.message };
 		} 
 		catch (error: any) {
 			console.log("Error creating patient: ", error.response.data);
@@ -529,7 +529,7 @@ class medicalEquipment {
   
   async deleteMedicalEquipment (condition: queryMedicalEquipment) {
 		try {
-			const response: AxiosResponse = await axios.put(`${this.baseUrl}/delete${condition}`, {
+			const response: AxiosResponse = await axios.put(`${this.baseUrl}/delete?id=${condition.id}`, {
 				withCredentials: true,
 			});
 	  

@@ -212,7 +212,8 @@ const detailStaff = async (req, res) => {
 
         return res.status(200).json({
             error: true,
-            message: detail
+            message: "Lấy thành công",
+            data: detail
         });
     }
     catch (error) {
@@ -316,28 +317,10 @@ const getAlldoctor = async (req, res) => {
             });
         }
 
-        const doctor =  doctors.doctors.filter(item => item.role == "DOCTOR");
-        if (!doctor) {
-            return res.status(400).json({
-                error: true,
-                message: "Người dùng không tồn tại",
-            });
-        }
-
-        if (req.body.role != "ADMIN") {
-            if (doctor[0].cccd != req.body.cccd) {
-                return res.status(400).json({
-                    error: true,
-                    message: "Người dùng không được phép truy cập",
-                });
-            }
-        }
-
-        const alldoctor = [];
-        for(let i=0 ; i< doctor.length; i++) alldoctor.push(await doctorService.detailStaff(doctor[0].refference))
         return res.status(200).json({
             error: true,
-            message: alldoctor,
+            message: "Lấy thành công",
+            data: doctors.doctors,
         });
     } catch (error) {
         return res.status(500).json({
