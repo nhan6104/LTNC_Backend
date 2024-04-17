@@ -273,7 +273,7 @@ const removeRecords = async (req, res) => {
                 let newRecords = new Array();
                 newRecords = history.medicalHistory.filter(item => item.date !== req.body.date);
 
-                console.log(newRecords);
+                // console.log(newRecords);
 
                 await patientService.createRecordsInHistory({medicalHistory : newRecords}, req.query.cccd);
                 
@@ -449,7 +449,8 @@ const findRecords = async (req, res) => {
             });
         }
         
-        const checkingPatient = await patientService.checkExistRecords(req.query.cccd, req.body.date);
+        const formattedDate = req.body.date.replace(/-/g, '');
+        const checkingPatient = await patientService.checkExistRecords(req.query.cccd, formattedDate);
         if (!checkingPatient) {
             return res.status(400).json({
                 error: true,
@@ -457,7 +458,15 @@ const findRecords = async (req, res) => {
             });
         }
         
-        const resultFindRecords = await patientService.findRecordsByDate(req.query.cccd, req.body.date);
+        const history = await patientService.findHistory(req.query.cccd);
+        
+        let resultFindRecords;
+        for (const el of history.medicalHistory)
+        {
+            if (el.date === req.body.date){
+                resultFindRecords = await patientService.findRecordsByDate(req.query.cccd, formattedDate);
+            }
+        }
     
         let textResultFindRecords;
 
@@ -488,8 +497,7 @@ const findRecords = async (req, res) => {
 const findAllPatient = async (req, res) => {
     try {
         const patients = await patientService.findPatients();
-        if (!patients.patient)
-        {
+        if (!patients.patient) {
             return res.status(400).json({
                 error: true,
                 message: `Không có bệnh nhân.`,
@@ -499,23 +507,20 @@ const findAllPatient = async (req, res) => {
             error: false,
             data: patients,
         });
-    }
-    catch (err) {
+    } catch (err) {
         console.log(err);
-		return res.status(500).json({
-			error: true,
-			message: err.message,
-		});
+        // Ensure res is defined before using it
+        if (res) {
+            return res.status(500).json({
+                error: true,
+                message: err.message,
+            });
+        } else {
+            // Handle the case when res is undefined
+            console.error("Response object (res) is undefined.");
+        }
     }
 }
-
-// findAllPatient();
-const func = async() => {
-    const res = await findAllPatient();
-    console.log(await res);
-}
-
-func();
 
 module.exports = {
     createPatient,
