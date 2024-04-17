@@ -1,5 +1,6 @@
 const doctorService = require('../services/staffService');
 const validation = require('../lib/validation');
+const { doc } = require('firebase/firestore');
 
 const doctorValidation = new validation.DoctorValidation();
 
@@ -17,9 +18,9 @@ const createStaff = async (req, res) => {
 
             const doctors = await doctorService.findDoctor();
 
-            if (doctors.doctor) {
-                for (let doctor of doctors.doctor) {
-                    if (doctor.cccd === req.body.cccd || doctor.email === req.body.email) {
+            if (doctors.doctors) {
+                for (let doctor of doctors.doctors) {
+                    if (doctor.cccd === req.body.cccd) {
                         return res.status(400).json({
                             error: true,
                             message: "Người dùng đã tồn tại",
@@ -38,15 +39,18 @@ const createStaff = async (req, res) => {
                 cccd: req.body.cccd,
                 refference: ref,
                 fullname: req.body.name,
-                userUid: resultSignUp.user.uid
+                userUid: resultSignUp.user.uid,
+                role: req.body.role
             }
 
             newStaff.push(tempStaff)
             if (doctors.doctors) 
             {
+                console.log(doctors.doctors);
                 for (const staff of doctors.doctors)  
                 {
                     newStaff.push(staff);
+                    // console.log(staff);
                 }
             }
 
@@ -164,10 +168,11 @@ const removeStaff = async (req, res) => {
 
 const detailStaff = async (req, res) => {
     try {
+
         const { error } = doctorValidation.validateQueryDoctor(req.query);
     
         if (error) {
-            console.log(error);
+            // console.log(error);
             return res.status(400).json({
                 error: true,
                 message: error.message,
@@ -183,14 +188,24 @@ const detailStaff = async (req, res) => {
             });
         }
 
-        const doctor =  doctors.doctors.filter(item => item.cccd == req.query.cccd);
+        console.log(doctors.doctors);
 
+        const doctor =  doctors.doctors.filter(item => item.cccd == req.query.cccd);
 
         if (!doctor) {
             return res.status(400).json({
                 error: true,
                 message: "Người dùng không tồn tại",
             });
+        }
+
+        if (req.body.role != "ADMIN") {
+            if (doctor[0].cccd != req.body.cccd) {
+                return res.status(400).json({
+                    error: true,
+                    message: "Người dùng không được phép truy cập",
+                });
+            }
         }
 
         const detail = await doctorService.detailStaff(doctor[0].refference)
@@ -238,13 +253,14 @@ const illnessToDoctor = async (req , res) => {
 
 const updateStaff = async (req, res) => {
     try{
-        // const { error } = doctorValidation.validationUpdateStaff(req.query);
-        // if (error) {
-        //     return res.status(400).json({
-        //         error: true,
-        //         message: error.message,
-        //     });
-        // }
+        const { error } = doctorValidation.validationUpdateStaff(req.query);
+        if (error) {
+            return res.status(400).json({
+                error: true,
+                message: error.message,
+            });
+        }
+
         const doctors = await doctorService.findDoctor();
 
         if ( !doctors || !doctors.doctors) {
@@ -289,11 +305,52 @@ const updateStaff = async (req, res) => {
     }
 }
 
+const getAlldoctor = async (req, res) => {
+    try {
+        const doctors = await doctorService.findDoctor();
 
+        if ( !doctors || !doctors.doctors) {
+            return res.status(400).json({
+                error: true,
+                message: "Người dùng không tồn tại",
+            });
+        }
+
+        const doctor =  doctors.doctors.filter(item => item.role == "DOCTOR");
+        if (!doctor) {
+            return res.status(400).json({
+                error: true,
+                message: "Người dùng không tồn tại",
+            });
+        }
+
+        if (req.body.role != "ADMIN") {
+            if (doctor[0].cccd != req.body.cccd) {
+                return res.status(400).json({
+                    error: true,
+                    message: "Người dùng không được phép truy cập",
+                });
+            }
+        }
+
+        const alldoctor = [];
+        for(let i=0 ; i< doctor.length; i++) alldoctor.push(await doctorService.detailStaff(doctor[0].refference))
+        return res.status(200).json({
+            error: true,
+            message: alldoctor,
+        });
+    } catch (error) {
+        return res.status(500).json({
+            error: true,
+            message: error.message,
+        });
+    }
+}
 module.exports = {
     createStaff,
     removeStaff,
     detailStaff,
     illnessToDoctor,
-    updateStaff
+    updateStaff,
+    getAlldoctor
 }
