@@ -2,10 +2,9 @@ const medicineService = require('../services/medicineService');
 const validation = require('../lib/validation');
 
 const medicineValidation = new validation.MedicineValidation();
-const dbUtils = require('../lib/dbUtils');
-
 
 const findMedicines = async (req, res) => {
+    
     const brand = req.query.brand;
     try {
         let medicines = await medicineService.findMedicines();
@@ -51,9 +50,7 @@ const findMedicinesExpire = async (req, res) => {
 
 const createMedicine = async (req, res) => {
     try {
-        const {
-            error
-        } = medicineValidation.validateCreateMedicine(req.body);
+        const {error} = medicineValidation.validateCreateMedicine(req.body);
 
         console.log(req.body);
         if (error) {
@@ -80,9 +77,7 @@ const createMedicine = async (req, res) => {
                 newMedicine.push(t);
             }
         }
-        const resultCreatingNewMedicineInTotal = await medicineService.createMedicineInTotal({
-            medicine: newMedicine
-        });
+        const resultCreatingNewMedicineInTotal = await medicineService.createMedicineInTotal({medicine: newMedicine});
         return res.status(200).json({
             error: false,
             message: medicine
@@ -99,7 +94,7 @@ const createMedicine = async (req, res) => {
 
 const removeMedicine = async (req, res) => {
     try {
-        const { error } = medicineValidation.validateRemoveMedicine(req.query);
+        const { error } = medicineValidation.validateQueryMedicine(req.query);
         // console.log(req.query.cccd);
         if (error) {
             console.log(error);

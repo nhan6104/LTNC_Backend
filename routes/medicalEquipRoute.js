@@ -3,11 +3,11 @@ const express = require("express");
 const authenticate = require('../lib/auth');
 const router = express.Router();
 
-router.get("/getData",medicalEquipController.findMedicalEquip);
-router.get("/getExp",medicalEquipController.findMedicalEquipExpire);
-router.get("/getDetail",medicalEquipController.findMedicalEquipDetail);
-router.post("/create",medicalEquipController.createMedicalEquip);
-router.put("/delete",medicalEquipController.removeMedicalEquip);
+router.get("/getData",authenticate.isAuthenticated, authenticate.isAuthorized(["ADMIN"]), medicalEquipController.findMedicalEquip);
+router.get("/getExp",authenticate.isAuthenticated, authenticate.isAuthorized(["ADMIN"]), medicalEquipController.findMedicalEquipExpire);
+router.get("/getDetail",authenticate.isAuthenticated, authenticate.isAuthorized(["ADMIN"]), medicalEquipController.findMedicalEquipDetail);
+router.post("/create",authenticate.isAuthenticated, authenticate.isAuthorized(["ADMIN"]), medicalEquipController.createMedicalEquip);
+router.put("/delete",authenticate.isAuthenticated, authenticate.isAuthorized(["ADMIN"]), medicalEquipController.removeMedicalEquip);
 
 
 module.exports = router;

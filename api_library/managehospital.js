@@ -36,7 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Authenticate = exports.Staff = exports.Patient = void 0;
+exports.medicalEquipment = exports.MedicalManage = exports.Authenticate = exports.Staff = exports.Patient = void 0;
 var axios_1 = require("axios");
 var Patient = /** @class */ (function () {
     function Patient() {
@@ -404,3 +404,247 @@ var Authenticate = /** @class */ (function () {
     return Authenticate;
 }());
 exports.Authenticate = Authenticate;
+var MedicalManage = /** @class */ (function () {
+    function MedicalManage() {
+        this.baseUrl = "http://localhost:3000/api/v1/medicine";
+    }
+    MedicalManage.prototype.createMedicine = function (info) {
+        return __awaiter(this, void 0, void 0, function () {
+            var response, data, error_16;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, axios_1.default.post("".concat(this.baseUrl, "/create"), info, {
+                                withCredentials: true,
+                            })];
+                    case 1:
+                        response = _a.sent();
+                        data = response.data;
+                        return [2 /*return*/, { error: data.error, message: data.message }];
+                    case 2:
+                        error_16 = _a.sent();
+                        console.log("Error creating patient: ", error_16.response.data);
+                        return [2 /*return*/, error_16.response.data];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    MedicalManage.prototype.getDetail = function (condition) {
+        return __awaiter(this, void 0, void 0, function () {
+            var response, data, error_17;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, axios_1.default.get("".concat(this.baseUrl, "/getDetail").concat(condition), {
+                                withCredentials: true,
+                            })];
+                    case 1:
+                        response = _a.sent();
+                        data = response.data;
+                        return [2 /*return*/, { error: data.error, message: data.message }];
+                    case 2:
+                        error_17 = _a.sent();
+                        console.log("Error creating patient: ", error_17.response.data);
+                        return [2 /*return*/, error_17.response.data];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    MedicalManage.prototype.getExpire = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var response, data, error_18;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, axios_1.default.get("".concat(this.baseUrl, "/getExp"), {
+                                withCredentials: true,
+                            })];
+                    case 1:
+                        response = _a.sent();
+                        data = response.data;
+                        return [2 /*return*/, { error: data.error, message: data.message }];
+                    case 2:
+                        error_18 = _a.sent();
+                        console.log("Error creating patient: ", error_18.response.data);
+                        return [2 /*return*/, error_18.response.data];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    MedicalManage.prototype.getData = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var response, data, error_19;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, axios_1.default.get("".concat(this.baseUrl, "/getData"), {
+                                withCredentials: true,
+                            })];
+                    case 1:
+                        response = _a.sent();
+                        data = response.data;
+                        return [2 /*return*/, { error: data.error, message: data.message }];
+                    case 2:
+                        error_19 = _a.sent();
+                        console.log("Error creating patient: ", error_19.response.data);
+                        return [2 /*return*/, error_19.response.data];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    MedicalManage.prototype.deleteMedicine = function (condition) {
+        return __awaiter(this, void 0, void 0, function () {
+            var response, data, error_20;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, axios_1.default.put("".concat(this.baseUrl, "/delete").concat(condition), {
+                                withCredentials: true,
+                            })];
+                    case 1:
+                        response = _a.sent();
+                        data = response.data;
+                        return [2 /*return*/, { error: data.error, message: data.message }];
+                    case 2:
+                        error_20 = _a.sent();
+                        console.log("Error creating patient: ", error_20.response.data);
+                        return [2 /*return*/, error_20.response.data];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    return MedicalManage;
+}());
+exports.MedicalManage = MedicalManage;
+var medicalEquipment = /** @class */ (function () {
+    function medicalEquipment() {
+        this.baseUrl = "http://localhost:3000/api/v1/medicalEquip";
+    }
+    medicalEquipment.prototype.createMedicalEquipment = function (info) {
+        return __awaiter(this, void 0, void 0, function () {
+            var response, data, error_21;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, axios_1.default.post("".concat(this.baseUrl, "/create"), info, {
+                                withCredentials: true,
+                            })];
+                    case 1:
+                        response = _a.sent();
+                        data = response.data;
+                        return [2 /*return*/, { error: data.error, message: data.message }];
+                    case 2:
+                        error_21 = _a.sent();
+                        console.log("Error creating patient: ", error_21.response.data);
+                        return [2 /*return*/, error_21.response.data];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    medicalEquipment.prototype.getDetail = function (condition) {
+        return __awaiter(this, void 0, void 0, function () {
+            var response, data, error_22;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, axios_1.default.get("".concat(this.baseUrl, "/getDetail").concat(condition), {
+                                withCredentials: true,
+                            })];
+                    case 1:
+                        response = _a.sent();
+                        data = response.data;
+                        return [2 /*return*/, { error: data.error, message: data.message }];
+                    case 2:
+                        error_22 = _a.sent();
+                        console.log("Error creating patient: ", error_22.response.data);
+                        return [2 /*return*/, error_22.response.data];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    medicalEquipment.prototype.getExpire = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var response, data, error_23;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, axios_1.default.get("".concat(this.baseUrl, "/getExp"), {
+                                withCredentials: true,
+                            })];
+                    case 1:
+                        response = _a.sent();
+                        data = response.data;
+                        return [2 /*return*/, { error: data.error, message: data.message }];
+                    case 2:
+                        error_23 = _a.sent();
+                        console.log("Error creating patient: ", error_23.response.data);
+                        return [2 /*return*/, error_23.response.data];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    medicalEquipment.prototype.getData = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var response, data, error_24;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, axios_1.default.get("".concat(this.baseUrl, "/getData"), {
+                                withCredentials: true,
+                            })];
+                    case 1:
+                        response = _a.sent();
+                        data = response.data;
+                        return [2 /*return*/, { error: data.error, message: data.message }];
+                    case 2:
+                        error_24 = _a.sent();
+                        console.log("Error creating patient: ", error_24.response.data);
+                        return [2 /*return*/, error_24.response.data];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    medicalEquipment.prototype.deleteMedicalEquipment = function (condition) {
+        return __awaiter(this, void 0, void 0, function () {
+            var response, data, error_25;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, axios_1.default.put("".concat(this.baseUrl, "/delete").concat(condition), {
+                                withCredentials: true,
+                            })];
+                    case 1:
+                        response = _a.sent();
+                        data = response.data;
+                        return [2 /*return*/, { error: data.error, message: data.message }];
+                    case 2:
+                        error_25 = _a.sent();
+                        console.log("Error creating patient: ", error_25.response.data);
+                        return [2 /*return*/, error_25.response.data];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    return medicalEquipment;
+}());
+exports.medicalEquipment = medicalEquipment;

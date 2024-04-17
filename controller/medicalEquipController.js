@@ -1,8 +1,6 @@
 const medicalEquipService = require('../services/medicalEquipService');
 const validation = require('../lib/validation');
-
 const medicalValidation = new validation.MedicalEquipmentValidation();
-const dbUtils = require('../lib/dbUtils');
 
 const findMedicalEquip = async (req, res) => {
     const name = req.query.name;
@@ -50,9 +48,7 @@ const findMedicalEquipExpire = async (req, res) => {
 
 const createMedicalEquip = async (req, res) => {
     try {
-        const {
-            error
-        } = medicalValidation.validateCreateMedicalEquipment(req.body);
+        const {error} = medicalValidation.validateCreateMedicalEquipment(req.body);
 
         console.log(req.body);
         if (error) {
@@ -99,7 +95,7 @@ const createMedicalEquip = async (req, res) => {
 
 const removeMedicalEquip = async (req, res) => {
     try {
-        const { error } = medicalValidation.validateRemoveMedicalEquipment(req.query);
+        const { error } = medicalValidation.validateQueryMedicalEquipment(req.query);
         // console.log(req.query.cccd);
         if (error) {
             console.log(error);
@@ -166,7 +162,7 @@ const removeMedicalEquip = async (req, res) => {
 
 const findMedicalEquipDetail = async (req, res) => {
     try {
-        const { error } = medicalValidation.validateFindMedicalEquipment(req.query);
+        const { error } = medicalValidation.validateQueryMedicalEquipment(req.query);
         // console.log(req.query.cccd);
         if (error) {
             console.log(error);

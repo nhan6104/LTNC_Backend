@@ -1,4 +1,5 @@
 import axios, { AxiosResponse } from "axios";
+import { expression } from "joi";
 
 export interface medicalHistory {
   name: string,
@@ -13,6 +14,8 @@ export interface createPatient {
   cccd: string,
   medicalHistory: medicalHistory[]
   address: string,
+  email: string,
+  record: string,
 }
 
 export interface updatePatient {
@@ -28,9 +31,9 @@ export interface queryPatient {
 }
 
 export interface dosage {
-  evening: string,
-  morning: string,
-  noon:    string,
+  evening: number,
+  morning: number,
+  noon:    number,
 }
 
 export interface prescription {
@@ -343,8 +346,208 @@ class Authenticate {
 	}
 }
 
+export interface createMedicine {
+  brand: string,
+  disposal_price: number,
+  expiration_date: string,
+  manufacture_date: string,
+  origin: string,
+  purchase_price: number,
+  quantity:number,
+}
+
+export interface QueryMedicine {
+  id: string
+}
+
+class MedicalManage {
+  private baseUrl: string;
+	constructor() {
+		this.baseUrl = "http://localhost:3000/api/v1/medicine";
+	}
+
+  async createMedicine (info: createMedicine) {
+		try {
+			const response: AxiosResponse = await axios.post(`${this.baseUrl}/create`, info, {
+				withCredentials: true,
+			});
+	  
+			const data = response.data;
+			return { error: data.error, message: data.message };
+		} 
+		catch (error: any) {
+			console.log("Error creating patient: ", error.response.data);
+			return error.response.data;
+		}
+	}
+
+  async getDetail (condition: QueryMedicine) {
+		try {
+			const response: AxiosResponse = await axios.get(`${this.baseUrl}/getDetail${condition}`, {
+				withCredentials: true,
+			});
+	  
+			const data = response.data;
+			return { error: data.error, message: data.message };
+		} 
+		catch (error: any) {
+			console.log("Error creating patient: ", error.response.data);
+			return error.response.data;
+		}
+	}
+
+  async getExpire () {
+		try {
+			const response: AxiosResponse = await axios.get(`${this.baseUrl}/getExp`, {
+				withCredentials: true,
+			});
+	  
+			const data = response.data;
+			return { error: data.error, message: data.message };
+		} 
+		catch (error: any) {
+			console.log("Error creating patient: ", error.response.data);
+			return error.response.data;
+		}
+	}
+
+  async getData () {
+		try {
+			const response: AxiosResponse = await axios.get(`${this.baseUrl}/getData`, {
+				withCredentials: true,
+			});
+	  
+			const data = response.data;
+			return { error: data.error, message: data.message };
+		} 
+		catch (error: any) {
+			console.log("Error creating patient: ", error.response.data);
+			return error.response.data;
+		}
+	
+  }
+  
+  async deleteMedicine (condition: QueryMedicine) {
+		try {
+			const response: AxiosResponse = await axios.put(`${this.baseUrl}/delete${condition}`, {
+				withCredentials: true,
+			});
+	  
+			const data = response.data;
+			return { error: data.error, message: data.message };
+		} 
+		catch (error: any) {
+			console.log("Error creating patient: ", error.response.data);
+			return error.response.data;
+		}
+	
+  }
+}
+
+export interface warantyHist {
+  date: string,
+}
+
+export interface createMedicalEquipment {
+  name: string,
+  warranty_expiration_date: string,
+  status: string,
+  purchase_price: number,
+  warranty_history: warantyHist[]
+}
+
+export interface queryMedicalEquipment {
+  id: string
+}
+
+class medicalEquipment {
+  private baseUrl: string;
+	constructor() {
+		this.baseUrl = "http://localhost:3000/api/v1/medicalEquip";
+	}
+
+  async createMedicalEquipment (info: createMedicalEquipment) {
+		try {
+			const response: AxiosResponse = await axios.post(`${this.baseUrl}/create`, info, {
+				withCredentials: true,
+			});
+	  
+			const data = response.data;
+			return { error: data.error, message: data.message };
+		} 
+		catch (error: any) {
+			console.log("Error creating patient: ", error.response.data);
+			return error.response.data;
+		}
+	}
+
+  async getDetail (condition: queryMedicalEquipment) {
+		try {
+			const response: AxiosResponse = await axios.get(`${this.baseUrl}/getDetail${condition}`, {
+				withCredentials: true,
+			});
+	  
+			const data = response.data;
+			return { error: data.error, message: data.message };
+		} 
+		catch (error: any) {
+			console.log("Error creating patient: ", error.response.data);
+			return error.response.data;
+		}
+	}
+
+  async getExpire () {
+		try {
+			const response: AxiosResponse = await axios.get(`${this.baseUrl}/getExp`, {
+				withCredentials: true,
+			});
+	  
+			const data = response.data;
+			return { error: data.error, message: data.message };
+		} 
+		catch (error: any) {
+			console.log("Error creating patient: ", error.response.data);
+			return error.response.data;
+		}
+	}
+
+  async getData () {
+		try {
+			const response: AxiosResponse = await axios.get(`${this.baseUrl}/getData`, {
+				withCredentials: true,
+			});
+	  
+			const data = response.data;
+			return { error: data.error, message: data.message };
+		} 
+		catch (error: any) {
+			console.log("Error creating patient: ", error.response.data);
+			return error.response.data;
+		}
+	
+  }
+  
+  async deleteMedicalEquipment (condition: queryMedicalEquipment) {
+		try {
+			const response: AxiosResponse = await axios.put(`${this.baseUrl}/delete${condition}`, {
+				withCredentials: true,
+			});
+	  
+			const data = response.data;
+			return { error: data.error, message: data.message };
+		} 
+		catch (error: any) {
+			console.log("Error creating patient: ", error.response.data);
+			return error.response.data;
+		}
+	
+  }
+}
+
 export {
 	Patient,
 	Staff,
 	Authenticate,
+  MedicalManage,
+  medicalEquipment
 }
