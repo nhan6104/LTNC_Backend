@@ -15,7 +15,7 @@ const login = async (req, res) => {
     }
     const userCredential = await authenticateService.login(req.body);
     const staff = await staffService.findDoctor();
-    
+    console.log(staff.doctors)
     const tempStaff = staff.doctors.filter(item => item.userUid == userCredential.user.uid);
     
     if (!tempStaff) {
@@ -67,6 +67,8 @@ const logout = async (req, res) => {
       })
     }
 };
+
+
 
 module.exports = {
   login,

@@ -514,6 +514,81 @@ const findAllPatient = async (req, res) => {
     }
 }
 
+
+// {
+//     cccd: "",
+//     falculty:"",
+// }
+
+const registerPatient = async (req, res) => {
+    try {
+
+        const patients = await patientService.findPatients();
+
+        if (!patients) {
+            return res.status(400).json({
+                error: true,
+                message: "Không tồn tại bệnh nhân. Vui lòng đăng kí thông tin",
+            });
+        }
+
+        const foundPatient = patients.patient.find(el => el.cccd === req.body.cccd);
+
+        if (!foundPatient) {
+            return res.status(400).json({
+                error: true,
+                message: "Không tồn tại bệnh nhân. Vui lòng đăng kí thông tin",
+            });
+        }
+
+        const tempPatient = {
+            cccd: req.body.cccd,
+            name: foundPatient[0].name,
+            faculty: req.body.faculty
+        }
+
+        patientService.createPatientInRealtimeDb(tempPatient)
+
+        return res.status(200).json({
+            error: false,
+            message: "Đăng kí khám thành công",
+        });
+    }
+    catch (err) {
+        console.error(err);
+        return res.status(500).json({
+            error: true,
+            message: err.message,
+        })
+    }
+};
+
+const findPatientsInQueue = async (req, res) => {
+    const result = await patientService.getAllPatientInRealtimeDb(req.body);
+    
+    if (!result) {
+        return res.status(400).json({
+            error: true,
+            message: "Không có bệnh nhân cần khám",
+        });
+    }
+
+    let patients = new Array();
+
+    for (const patient in result) {
+        patients.push(patient);
+    }
+
+    return res.status(200).json({
+        error: false,
+        message: "Lấy thành công",
+        data: patients,
+    });
+}
+
+
+
+
 module.exports = {
     createPatient,
     removePatient,
@@ -523,6 +598,8 @@ module.exports = {
     updatePatientData,
     findPatient,
     findRecords,
-    findAllPatient
+    findAllPatient,
+    registerPatient,
+    findPatientsInQueue
 }
 
