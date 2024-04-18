@@ -26,7 +26,8 @@ const createPatient = async (req, res) => {
         const newPatient = [{
             cccd: req.body.cccd,
             reference: `patient/${req.body.cccd}`,
-            name: req.body.name
+            name: req.body.name,
+            active: 0
         }];
 
         const patients = await patientService.findPatients();
@@ -258,18 +259,18 @@ const removeRecords = async (req, res) => {
         const history = await patientService.findHistory(req.query.cccd);
 
         let textResultRemoveRecords;
-        
+
         const matchingRecord = history.medicalHistory.find(el => el.date === req.body.date);
 
         if (matchingRecord) {
             textResultRemoveRecords = `Xóa bệnh án thành công.`;
             const ref = matchingRecord.reference;
             await patientService.removeRecordsByPath(ref);
-        
+
             const newRecords = history.medicalHistory.filter(item => item.date !== req.body.date);
-        
+
             await patientService.createRecordsInHistory({ medicalHistory: newRecords }, req.query.cccd);
-        
+
             return res.status(200).json({
                 error: false,
                 message: `
@@ -278,7 +279,7 @@ const removeRecords = async (req, res) => {
                 data: matchingRecord,
             });
         }
-        
+
     }
     catch (err) {
         console.log(err);
@@ -414,11 +415,12 @@ const findPatient = async (req, res) => {
                 data: dataPatient,
             });
         }
-        
-        return res.status(400).json({
-            error: true,
-            message: `Tìm kiếm bệnh nhân thất bại.`,
-        });
+        else {
+            return res.status(400).json({
+                error: true,
+                message: `Người dùng không tồn tại.`
+            })
+        }
     }
     catch (err) {
         console.log(err);
@@ -514,6 +516,56 @@ const findAllPatient = async (req, res) => {
     }
 }
 
+const updateStatus = async (req, res) => {
+    try {
+        const { error } = patientValidation.validateTreatmentProcessByID(req.query)
+                            || patientValidation.validateUpdatePatient(req.body);
+        // console.log(req.query.cccd);
+        if (error) {
+            console.log(error);
+            return res.status(400).json({
+                error: true,
+                message: error.message,
+            });
+        }
+
+        const patients = await patientService.findPatients();
+        const foundPatient = patients.patient.filter(el => el.cccd === req.query.cccd);
+        let newPatient;
+        
+        if (foundPatient) {
+            const newPatient = patients.patient;
+
+            for (const el of newPatient)
+            {
+                if (el.cccd === req.query.cccd) {
+                    el.active = req.body.active;
+                }
+            }
+
+            await patientService.creatPatientInTotal({ patient: newPatient });
+            return res.status(200).json({
+                error: false,
+                data: newPatient.find(el=>el.cccd===foundPatient.cccd),
+                message: `Cập nhật trạng thái thành công.`,
+            })
+        }
+        else {
+            return res.status(409).json({
+                error: true,
+                message: `Người dùng không tồn tại.`,
+            });
+        }
+
+    } catch (err) {
+        console.log(err);
+        return res.status(500).json({
+            error: true,
+            message: err.message,
+        });
+    }
+}
+
 module.exports = {
     createPatient,
     removePatient,
@@ -523,6 +575,7 @@ module.exports = {
     updatePatientData,
     findPatient,
     findRecords,
-    findAllPatient
+    findAllPatient,
+    updateStatus
 }
 
