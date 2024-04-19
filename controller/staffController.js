@@ -316,7 +316,6 @@ const getAlldoctor = async (req, res) => {
                 message: "Người dùng không tồn tại",
             });
         }
-
         return res.status(200).json({
             error: true,
             message: "Lấy thành công",
