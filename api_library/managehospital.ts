@@ -325,7 +325,7 @@ class Authenticate {
 			return { error: data.error, message: data.message };
 		} 
 		catch (error: any) {
-			console.log("Error creating patient: ", error.response.data);
+			console.log("Error login: ", error.response.data);
 			return error.response.data;
 		}
 	}

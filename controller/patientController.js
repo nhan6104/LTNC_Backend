@@ -516,10 +516,149 @@ const findAllPatient = async (req, res) => {
     }
 }
 
-const updateStatus = async (req, res) => {
+
+// {
+//     cccd: "",
+//     falculty:"",
+// }
+
+const registerPatient = async (req, res) => {
+    try {
+
+        const patients = await patientService.findPatients();
+
+        if (!patients) {
+            return res.status(400).json({
+                error: true,
+                message: "Không tồn tại bệnh nhân. Vui lòng đăng kí thông tin",
+            });
+        }
+
+        const foundPatient = patients.patient.filter(el => el.cccd === req.body.cccd);
+
+        if (!foundPatient) {
+            return res.status(400).json({
+                error: true,
+                message: "Không tồn tại bệnh nhân. Vui lòng đăng kí thông tin",
+            });
+        }
+
+        const tempPatient = {
+            cccd: req.body.cccd,
+            name: foundPatient[0].name,
+            faculty: req.body.faculty
+        }
+
+        console.log(tempPatient);
+
+        patientService.createPatientInRealtimeDb(tempPatient);
+
+        const newPatient = patients.patient;
+
+        for (const el of newPatient) {
+            if (el.cccd === foundPatient.cccd) {
+                el.active = 1;
+            }
+        }
+
+        await patientService.creatPatientInTotal({ patient: newPatient });
+
+        return res.status(200).json({
+            error: false,
+            message: "Đăng kí khám thành công",
+        });
+    }
+    catch (err) {
+        console.error(err);
+        return res.status(500).json({
+            error: true,
+            message: err.message,
+        })
+    }
+};
+
+const findPatientsInQueue = async (req, res) => {
+    const result = await patientService.getAllPatientInRealtimeDb(req.body);
+
+    if (!result) {
+        return res.status(400).json({
+            error: true,
+            message: "Không có bệnh nhân cần khám",
+        });
+    }
+
+    let patients = new Array();
+
+    for (const patient in result) {
+        patients.push(patient);
+    }
+
+    return res.status(200).json({
+        error: false,
+        message: "Lấy thành công",
+        data: patients,
+    });
+}
+
+const completeHealing = async (req, res) => {
+    try {
+        const result = await patientService.getAllPatientInRealtimeDb(req.body);
+
+        console.log(result);
+
+        if (!result) {
+            return res.status(400).json({
+                error: true,
+                message: "Không có bệnh nhân cần khám",
+            });
+        }
+
+        let patients = await patientService.findPatients(); // set active
+
+        const tmpPatient = {
+            cccd: req.query.cccd,
+            faculty: req.body.faculty
+        }
+
+        if (patients.patient.filter(el => el.cccd === req.query.cccd)) {
+            await patientService.removePatientInRealtimeDb(tmpPatient);
+
+            let newPatient = new Array();
+
+            for (const el of patients.patient) {
+                if (el.cccd === req.query.cccd) {
+                    el.active = 0;
+                }
+                newPatient.push(el);
+            }
+            
+            await patientService.creatPatientInTotal({ patient: newPatient });
+
+            return res.status(200).json({
+                error: false,
+                message: `Khám hoàn tất.`,
+                data: tmpPatient
+            });
+        }
+        else {
+            return res.status(400).json({
+                error: true,
+                message: `Người dùng không có trong hàng chờ.`
+            });
+        }
+    } catch (err) {
+        console.log(err);
+        return res.status(500).json({
+            error: true,
+            message: err.message,
+        });
+    }
+}
+
+const updateStatusPatient = async (req, res) => {
     try {
         const { error } = patientValidation.validateTreatmentProcessByID(req.query)
-                            || patientValidation.validateUpdatePatient(req.body);
+            || patientValidation.validateUpdatePatient(req.body);
         // console.log(req.query.cccd);
         if (error) {
             console.log(error);
@@ -532,12 +671,11 @@ const updateStatus = async (req, res) => {
         const patients = await patientService.findPatients();
         const foundPatient = patients.patient.filter(el => el.cccd === req.query.cccd);
         let newPatient;
-        
+
         if (foundPatient) {
             const newPatient = patients.patient;
 
-            for (const el of newPatient)
-            {
+            for (const el of newPatient) {
                 if (el.cccd === req.query.cccd) {
                     el.active = req.body.active;
                 }
@@ -546,7 +684,7 @@ const updateStatus = async (req, res) => {
             await patientService.creatPatientInTotal({ patient: newPatient });
             return res.status(200).json({
                 error: false,
-                data: newPatient.find(el=>el.cccd===foundPatient.cccd),
+                data: newPatient.find(el => el.cccd === foundPatient.cccd),
                 message: `Cập nhật trạng thái thành công.`,
             })
         }
@@ -576,6 +714,9 @@ module.exports = {
     findPatient,
     findRecords,
     findAllPatient,
-    updateStatus
+    registerPatient,
+    findPatientsInQueue,
+    completeHealing,
+    updateStatusPatient
 }
 
