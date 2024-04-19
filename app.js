@@ -11,7 +11,7 @@ var cors = require('cors');
 var app = express();
 
 app.use(cors({
-  origin: 'http://localhost:3001', // Change this to the actual origin of your frontend application
+  origin: ['http://localhost:3001', 'https://ltnc-fe.vercel.app'],// Change this to the actual origin of your frontend application
   credentials: true // Allow credentials (cookies, authorization headers, etc.)
 }));
 app.use(cookieParser());

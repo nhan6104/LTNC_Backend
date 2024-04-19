@@ -72,6 +72,18 @@ const removeRecordsByPath = async (path) => {
   return await patient.removeRecordsByPath(path);
 }
 
+const createPatientInRealtimeDb = async (info) => {
+  await patient.createPatientInRealtimeDb(info);
+};
+
+const getAllPatientInRealtimeDb = async (info) => {
+  return await patient.getAllPatientInRealtimeDb(info);
+};
+
+const removePatientInRealtimeDb = async (info) => {
+  return await patient.removePatientInRealtimeDb(info);
+};
+
 module.exports = {
   createPatient,
   checkExistPatient,
@@ -90,7 +102,10 @@ module.exports = {
   removeRecordsByPath,
   findHistory,
   createRecordsInHistory,
-  findPatientByPath
+  findPatientByPath,
+  createPatientInRealtimeDb,
+  getAllPatientInRealtimeDb,
+  removePatientInRealtimeDb
 }
 
 

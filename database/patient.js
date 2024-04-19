@@ -1,8 +1,8 @@
 const dbUtils = require('../lib/dbUtils');
-
 const collectionName = "patient";
 const subcollectionName = "medicalRecords"
 const collectiontotal = "staff";
+
 
 const createNewPatient = async (dataPatient, ref) => {
   // const documentID = dataPatient.cccd;
@@ -108,6 +108,22 @@ const treatmentProcessByID = async (patientID) => {
   return result.medicalHistory;
 }
 
+const createPatientInRealtimeDb = async (info) => {
+    const ref = `Faculty/${info.faculty}/${info.cccd}`;
+    await dbUtils.setRealtimeDb(ref, info);
+};
+
+const getAllPatientInRealtimeDb = async (info) => {
+  const ref = `Faculty/${info.faculty}`;
+  const result = await dbUtils.getRealtimeDb(ref);
+  return result;
+};
+
+const removePatientInRealtimeDb = async (info) => {
+  const ref = `Faculty/${info.faculty}/${info.cccd}`;
+  await dbUtils.removeRealtimeDb(ref);
+};
+
 module.exports = {
   createNewPatient,
   updateNewPatientInTotal,
@@ -126,6 +142,9 @@ module.exports = {
   findHistory,
   createNewRecordsInHistory,
   removeRecordsByPath,
-  findPatientByPath
+  findPatientByPath,
+  createPatientInRealtimeDb,
+  getAllPatientInRealtimeDb,
+  removePatientInRealtimeDb
 }
 
