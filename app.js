@@ -10,7 +10,6 @@ var medicalEquipRouter = require('./routes/medicalEquipRoute');
 var cors = require('cors');
 var app = express();
 
-app.use(cors());
 app.use(cors({
   origin: 'http://localhost:3001', // Change this to the actual origin of your frontend application
   credentials: true // Allow credentials (cookies, authorization headers, etc.)
