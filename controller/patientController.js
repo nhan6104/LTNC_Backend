@@ -519,7 +519,7 @@ const findAllPatient = async (req, res) => {
 
 // {
 //     cccd: "",
-//     falculty:"",
+//     faculty:"",
 // }
 
 const registerPatient = async (req, res) => {
@@ -549,18 +549,24 @@ const registerPatient = async (req, res) => {
             faculty: req.body.faculty
         }
 
-        console.log(tempPatient);
-
         patientService.createPatientInRealtimeDb(tempPatient);
 
-        const newPatient = patients.patient;
+        const newPatient = new Array();
 
-        for (const el of newPatient) {
-            if (el.cccd === foundPatient.cccd) {
-                el.active = 1;
+        for (const el of patients.patient) {
+            let tmp = new Object();
+            if (el.cccd === req.body.cccd) {
+                tmp.cccd = el.cccd;
+                tmp.name = el.name;
+                tmp.reference = el.reference;
+                tmp.active = 1;
             }
+            else tmp = el;
+
+            newPatient.push(tmp);
         }
 
+        // console.log(newPatient);
         await patientService.creatPatientInTotal({ patient: newPatient });
 
         return res.status(200).json({
@@ -602,7 +608,11 @@ const findPatientsInQueue = async (req, res) => {
 
 const completeHealing = async (req, res) => {
     try {
-        const result = await patientService.getAllPatientInRealtimeDb(req.body);
+        const data = {
+            cccd: req.query.cccd,
+            faculty: req.query.faculty
+        }
+        const result = await patientService.getAllPatientInRealtimeDb(data);
 
         console.log(result);
 
@@ -617,7 +627,7 @@ const completeHealing = async (req, res) => {
 
         const tmpPatient = {
             cccd: req.query.cccd,
-            faculty: req.body.faculty
+            faculty: req.query.faculty
         }
 
         if (patients.patient.filter(el => el.cccd === req.query.cccd)) {
