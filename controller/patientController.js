@@ -514,7 +514,6 @@ const findAllPatient = async (req, res) => {
     }
 }
 
-
 // {
 //     cccd: "",
 //     falculty:"",
@@ -576,7 +575,7 @@ const findPatientsInQueue = async (req, res) => {
     let patients = new Array();
 
     for (const patient in result) {
-        patients.push(patient);
+        patients.push(result[patient]);
     }
 
     return res.status(200).json({
