@@ -91,7 +91,7 @@ const createMedicalEquip = async (req, res) => {
             for (const m of medicalEquips) {
                 let t = new Object();
                 t.id = m.id;
-                t.refference = `medicalEquip/${m.id}`;
+                t.refference = `MedicalEquipment/${m.id}`;
                 t.name = m.name;
 
                 newMedicalEquip.push(t);
