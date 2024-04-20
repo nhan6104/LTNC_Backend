@@ -301,6 +301,21 @@ class Staff {
 			return error.response.data;
 		}
 	}
+
+	async findAllStaff () {
+		try {
+			const response: AxiosResponse = await axios.get(`${this.baseUrl}/getalldoctor`, {
+				withCredentials: true,
+			});
+	  
+			const data = response.data;
+			return { error: data.error, data:data.data.data, message: data.message };
+		} 
+		catch (error: any) {
+			console.log("Error updating staff: ", error.response.data);
+			return error.response.data;
+		}
+	}
 }
 
 

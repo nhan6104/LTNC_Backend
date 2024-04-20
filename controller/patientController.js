@@ -515,7 +515,6 @@ const findAllPatient = async (req, res) => {
     }
 }
 
-
 // {
 //     cccd: "",
 //     faculty:"",
