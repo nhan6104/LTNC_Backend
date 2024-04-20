@@ -18,4 +18,3 @@ router.get("/find_patient_all", authenticatedUser.isAuthenticated, authenticated
 router.get("/find_records", authenticatedUser.isAuthenticated, authenticatedUser.isAuthorized(["DOCTOR", "ADMIN"]), patientController.findRecords);
 router.get("/find_patient_in_queue", patientController.findPatientsInQueue);
 module.exports = router;
-

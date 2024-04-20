@@ -1,4 +1,7 @@
 const patientService = require('../services/patientService');
+
+const medicalEquipService = require('../services/medicalEquipService');
+
 const validation = require('../lib/validation');
 
 const patientValidation = new validation.PatientValidation();
@@ -178,6 +181,7 @@ const createRecords = async (req, res) => {
         if (!history.medicalHistory) {
             await patientService.createRecords(req.body, req.query.cccd);
             await patientService.createRecordsInHistory({ medicalHistory: newRecords }, req.query.cccd);
+
             return res.status(200).json({
                 error: false,
                 message: `Tạo bệnh án thành công.`,
@@ -517,13 +521,12 @@ const findAllPatient = async (req, res) => {
 
 // {
 //     cccd: "",
-//     faculty:"",
-//     time: "13:30 2024/04/20"
+//     faculty:""
 // }
 
 const registerPatient = async (req, res) => {
     try {
-        const {error} = patientValidation.validateRegisterPatient(req.body);
+        const { error } = patientValidation.validateRegisterPatient(req.body);
 
         if (error) {
             console.log(error);
@@ -551,11 +554,14 @@ const registerPatient = async (req, res) => {
             });
         }
 
-        const [time, date] = req.body.time.split(" ");
-        const formattedID = date.replace(/\//g, "") + time.replace(":", "");
+        const now = new Date();
+        const hours = now.getHours();
+        const minutes = now.getMinutes();
+        const seconds = now.getSeconds();
+        const formattedTime = `${hours < 10 ? '0' + hours : hours}${minutes < 10 ? '0' + minutes : minutes}${seconds < 10 ? '0' + seconds : seconds}`;
 
         const tempPatient = {
-            DBIdBytime: formattedID,
+            DBIdBytime: formattedTime,
             cccd: req.body.cccd,
             name: foundPatient[0].name,
             faculty: req.body.faculty,
@@ -604,8 +610,8 @@ const findPatientsInQueue = async (req, res) => {
 
 const updateActiveAfterRegister = async (req, res) => {
     try {
-        const {error}  = patientValidation.validateUpdateActive(req.query);
-        
+        const { error } = patientValidation.validateUpdateActive(req.query);
+
         if (error) {
             console.log(error);
             return res.status(400).json({
@@ -618,14 +624,14 @@ const updateActiveAfterRegister = async (req, res) => {
         if (result) {
             let el;
             for (el in result) {
-                if (result[el].cccd === req.query.cccd) {
+                if (result[el].DBIdBytime === req.query.DBIdBytime) {
                     result[el].active = 1;
                     await patientService.createPatientInRealtimeDb(result[el]);
                     break;
                 }
             }
-            return res.status(200).json ({
-                error : false ,
+            return res.status(200).json({
+                error: false,
                 message: "Cập nhật thành công.",
                 data: result[el],
             })
@@ -648,8 +654,8 @@ const updateActiveAfterRegister = async (req, res) => {
 
 const completeHealing = async (req, res) => {
     try {
-        const {error}  = patientValidation.validateUpdateActive(req.query);
-        
+        const { error } = patientValidation.validateUpdateActive(req.query);
+
         if (error) {
             console.log(error);
             return res.status(400).json({
@@ -657,10 +663,8 @@ const completeHealing = async (req, res) => {
                 message: error.message,
             });
         }
-        const data = {
-            faculty: req.query.faculty
-        }
-        let result = await patientService.getAllPatientInRealtimeDb(data);
+
+        let result = await patientService.getAllPatientInRealtimeDb(req.query);
 
         if (!result) {
             return res.status(400).json({
@@ -669,20 +673,28 @@ const completeHealing = async (req, res) => {
             });
         }
 
-        let foundPatient = Object.values(result).filter(el => el.cccd === req.query.cccd);
+        let foundPatient = Object.values(result).filter(el => el.DBIdBytime === req.query.DBIdBytime);
 
         if (foundPatient) {
-            const tmpPatient = {
-                faculty: req.query.faculty,
-                DBIdBytime: foundPatient[0].DBIdBytime
-            }
-            await patientService.removePatientInRealtimeDb(tmpPatient);
+            if (foundPatient[0].active == 1) {
+                const tmpPatient = {
+                    faculty: req.query.faculty,
+                    DBIdBytime: foundPatient[0].DBIdBytime
+                }
+                await patientService.removePatientInRealtimeDb(tmpPatient);
 
-            return res.status(200).json({
-                error: false,
-                message: `Khám hoàn tất.`,
-                data: tmpPatient
-            });
+                return res.status(200).json({
+                    error: false,
+                    message: `Khám hoàn tất.`,
+                    data: tmpPatient
+                });
+            }
+            else {
+                return res.status(400).json({
+                    error: true,
+                    message: `Người dùng chưa được đăng ký khám.`
+                });
+            }
         }
         else {
             return res.status(400).json({
