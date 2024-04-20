@@ -5,7 +5,7 @@ const authenticatedUser = require("../lib/auth")
 
 
 router.post("/create_patient",authenticatedUser.isAuthenticated, authenticatedUser.isAuthorized(["ADMIN"]), patientController.createPatient);
-router.post("/create_records",authenticatedUser.isAuthenticated, authenticatedUser.isAuthorized(["DOCTOR", "ADMIN"]), patientController.createRecords);
+router.post("/create_records", patientController.createRecords);
 router.post("/register_patient", patientController.registerPatient);
 router.put("/remove_patient", authenticatedUser.isAuthenticated, authenticatedUser.isAuthorized(["DOCTOR", "ADMIN"]),patientController.removePatient);
 router.put("/remove_records", authenticatedUser.isAuthenticated, authenticatedUser.isAuthorized(["DOCTOR", "ADMIN"]),patientController.removeRecords);

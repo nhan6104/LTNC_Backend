@@ -1,6 +1,6 @@
 const patientService = require('../services/patientService');
 
-const medicalEquipService = require('../services/medicalEquipService');
+const medicalService = require('../services/medicineService');
 
 const validation = require('../lib/validation');
 
@@ -144,7 +144,7 @@ const createRecords = async (req, res) => {
     try {
         const { error } = patientValidation.validateFindPatient(req.query) &&
             patientValidation.validateCreateRecords(req.body);
-        console.log(req.body);
+        // console.log(req.body);
         if (error) {
             // console.log(error);
             return res.status(400).json({
@@ -179,8 +179,29 @@ const createRecords = async (req, res) => {
         }];
 
         if (!history.medicalHistory) {
+            const medicine = await medicalService.findMedicines();
+            let totalPrice = 0;
+
+            for (let el of req.body.prescription) {
+                let foundMedicine = medicine.find(item => item.id === el.medicineID);
+                foundMedicine.quantity -= el.quantity;
+                if (foundMedicine.quantity < 0) {
+                    return res.status(400).json({
+                        error: true,
+                        message: `Không đủ số lượng thuốc.`,
+                    });
+                }
+                await medicalService.updateMedicine(foundMedicine, foundMedicine.id);
+                totalPrice += el.quantity * foundMedicine.disposal_price;
+            }
+
+            const newData = req.body;
+            newData["total_price"] = totalPrice;
+
             await patientService.createRecords(req.body, req.query.cccd);
             await patientService.createRecordsInHistory({ medicalHistory: newRecords }, req.query.cccd);
+
+            // console.log(medicine);
 
             return res.status(200).json({
                 error: false,
