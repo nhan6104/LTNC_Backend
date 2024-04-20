@@ -8,6 +8,12 @@ const findMedicines = async () => {
     return result;
 };
 
+const findMedicineToTal = async () => {
+    const result = await dbUtils.findOne(collectiontotal, collectionName);
+    return result;
+};
+  
+
 const findMedicinesExpire = async () => {
     const result = await dbUtils.findAll(collectionName);
 
@@ -68,9 +74,21 @@ const removeMedicine = async (medicineID) => {
     return dbUtils.erase(collectionName, medicineID);
 };
 
+const removeMedicineByPath = async (ref) => {
+    return dbUtils.erasePath(ref);
+};
+
 const checkExistMedicine = async (data) => {
     const documentID = data;
     const result = await dbUtils.findOne(collectionName, documentID);
+    return result;
+};
+
+
+const updateMedicine = async (data, medicineID) => {
+    const documentID = medicineID;
+    // console.log(documentID)
+    const result = await dbUtils.update(data, collectionName, documentID);
     return result;
 };
 
@@ -82,5 +100,8 @@ module.exports = {
     createMedicineInTotal,
     generateRandomString,
     removeMedicine,
-    checkExistMedicine
+    checkExistMedicine,
+    updateMedicine,
+    findMedicineToTal,
+    removeMedicineByPath
 }

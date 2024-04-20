@@ -8,6 +8,7 @@ router.get("/getExp",authenticate.isAuthenticated, authenticate.isAuthorized(["A
 router.get("/getDetail",authenticate.isAuthenticated, authenticate.isAuthorized(["ADMIN"]), medicalEquipController.findMedicalEquipDetail);
 router.post("/create",authenticate.isAuthenticated, authenticate.isAuthorized(["ADMIN"]), medicalEquipController.createMedicalEquip);
 router.put("/delete",authenticate.isAuthenticated, authenticate.isAuthorized(["ADMIN"]), medicalEquipController.removeMedicalEquip);
+router.put("/update",authenticate.isAuthenticated, authenticate.isAuthorized(["ADMIN"]),medicalEquipController.updateMedicalEquip);
 
 
 module.exports = router;

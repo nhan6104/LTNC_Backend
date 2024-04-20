@@ -109,7 +109,7 @@ const treatmentProcessByID = async (patientID) => {
 }
 
 const createPatientInRealtimeDb = async (info) => {
-    const ref = `Faculty/${info.faculty}/${info.cccd}`;
+    const ref = `Faculty/${info.faculty}/${info.DBIdBytime}`;
     await dbUtils.setRealtimeDb(ref, info);
 };
 
@@ -120,7 +120,7 @@ const getAllPatientInRealtimeDb = async (info) => {
 };
 
 const removePatientInRealtimeDb = async (info) => {
-  const ref = `Faculty/${info.faculty}/${info.cccd}`;
+  const ref = `Faculty/${info.faculty}/${info.DBIdBytime}`;
   await dbUtils.removeRealtimeDb(ref);
 };
 
