@@ -26,13 +26,13 @@ const createPatient = async (req, res) => {
         const newPatient = [{
             cccd: req.body.cccd,
             reference: `patient/${req.body.cccd}`,
-            name: req.body.name
+            name: req.body.name,
         }];
 
         const patients = await patientService.findPatients();
 
         if (patients.patient) {
-            console.log(patients.patient[0]);
+            // console.log(patients.patient[0]);
             for (const patient of patients.patient) {
                 newPatient.push(patient);
             }
@@ -258,18 +258,18 @@ const removeRecords = async (req, res) => {
         const history = await patientService.findHistory(req.query.cccd);
 
         let textResultRemoveRecords;
-        
+
         const matchingRecord = history.medicalHistory.find(el => el.date === req.body.date);
 
         if (matchingRecord) {
             textResultRemoveRecords = `Xóa bệnh án thành công.`;
             const ref = matchingRecord.reference;
             await patientService.removeRecordsByPath(ref);
-        
+
             const newRecords = history.medicalHistory.filter(item => item.date !== req.body.date);
-        
+
             await patientService.createRecordsInHistory({ medicalHistory: newRecords }, req.query.cccd);
-        
+
             return res.status(200).json({
                 error: false,
                 message: `
@@ -278,7 +278,7 @@ const removeRecords = async (req, res) => {
                 data: matchingRecord,
             });
         }
-        
+
     }
     catch (err) {
         console.log(err);
@@ -414,11 +414,12 @@ const findPatient = async (req, res) => {
                 data: dataPatient,
             });
         }
-        
-        return res.status(400).json({
-            error: true,
-            message: `Tìm kiếm bệnh nhân thất bại.`,
-        });
+        else {
+            return res.status(400).json({
+                error: true,
+                message: `Người dùng không tồn tại.`
+            })
+        }
     }
     catch (err) {
         console.log(err);
@@ -514,14 +515,23 @@ const findAllPatient = async (req, res) => {
     }
 }
 
-
 // {
 //     cccd: "",
-//     falculty:"",
+//     faculty:"",
+//     time: "13:30 2024/04/20"
 // }
 
 const registerPatient = async (req, res) => {
     try {
+        const {error} = patientValidation.validateRegisterPatient(req.body);
+
+        if (error) {
+            console.log(error);
+            return res.status(400).json({
+                error: true,
+                message: error.message,
+            });
+        }
 
         const patients = await patientService.findPatients();
 
@@ -532,7 +542,7 @@ const registerPatient = async (req, res) => {
             });
         }
 
-        const foundPatient = patients.patient.find(el => el.cccd === req.body.cccd);
+        const foundPatient = patients.patient.filter(el => el.cccd === req.body.cccd);
 
         if (!foundPatient) {
             return res.status(400).json({
@@ -541,13 +551,18 @@ const registerPatient = async (req, res) => {
             });
         }
 
+        const [time, date] = req.body.time.split(" ");
+        const formattedID = date.replace(/\//g, "") + time.replace(":", "");
+
         const tempPatient = {
+            DBIdBytime: formattedID,
             cccd: req.body.cccd,
             name: foundPatient[0].name,
-            faculty: req.body.faculty
+            faculty: req.body.faculty,
+            active: 0,
         }
 
-        patientService.createPatientInRealtimeDb(tempPatient)
+        patientService.createPatientInRealtimeDb(tempPatient);
 
         return res.status(200).json({
             error: false,
@@ -565,7 +580,8 @@ const registerPatient = async (req, res) => {
 
 const findPatientsInQueue = async (req, res) => {
     const result = await patientService.getAllPatientInRealtimeDb(req.body);
-    
+    console.log(result);
+
     if (!result) {
         return res.status(400).json({
             error: true,
@@ -576,7 +592,7 @@ const findPatientsInQueue = async (req, res) => {
     let patients = new Array();
 
     for (const patient in result) {
-        patients.push(patient);
+        patients.push(result[patient]);
     }
 
     return res.status(200).json({
@@ -586,6 +602,102 @@ const findPatientsInQueue = async (req, res) => {
     });
 }
 
+const updateActiveAfterRegister = async (req, res) => {
+    try {
+        const {error}  = patientValidation.validateUpdateActive(req.query);
+        
+        if (error) {
+            console.log(error);
+            return res.status(400).json({
+                error: true,
+                message: error.message,
+            });
+        }
+
+        const result = await patientService.getAllPatientInRealtimeDb(req.query);
+        if (result) {
+            let el;
+            for (el in result) {
+                if (result[el].cccd === req.query.cccd) {
+                    result[el].active = 1;
+                    await patientService.createPatientInRealtimeDb(result[el]);
+                    break;
+                }
+            }
+            return res.status(200).json ({
+                error : false ,
+                message: "Cập nhật thành công.",
+                data: result[el],
+            })
+        }
+        else {
+            return res.status(400).json({
+                error: true,
+                message: "Cập nhật thất bại."
+            })
+        }
+
+    } catch (err) {
+        console.log(err);
+        return res.status(500).json({
+            error: true,
+            message: err.message,
+        });
+    }
+}
+
+const completeHealing = async (req, res) => {
+    try {
+        const {error}  = patientValidation.validateUpdateActive(req.query);
+        
+        if (error) {
+            console.log(error);
+            return res.status(400).json({
+                error: true,
+                message: error.message,
+            });
+        }
+        const data = {
+            faculty: req.query.faculty
+        }
+        let result = await patientService.getAllPatientInRealtimeDb(data);
+
+        if (!result) {
+            return res.status(400).json({
+                error: true,
+                message: "Không có bệnh nhân chờ khám.",
+            });
+        }
+
+        let foundPatient = Object.values(result).filter(el => el.cccd === req.query.cccd);
+
+        if (foundPatient) {
+            const tmpPatient = {
+                faculty: req.query.faculty,
+                DBIdBytime: foundPatient[0].DBIdBytime
+            }
+            await patientService.removePatientInRealtimeDb(tmpPatient);
+
+            return res.status(200).json({
+                error: false,
+                message: `Khám hoàn tất.`,
+                data: tmpPatient
+            });
+        }
+        else {
+            return res.status(400).json({
+                error: true,
+                message: `Người dùng không có trong hàng chờ.`
+            });
+        }
+    } catch (err) {
+        console.log(err);
+        return res.status(500).json({
+            error: true,
+            message: err.message,
+        });
+    }
+}
 
 
 
@@ -600,6 +712,8 @@ module.exports = {
     findRecords,
     findAllPatient,
     registerPatient,
-    findPatientsInQueue
+    findPatientsInQueue,
+    completeHealing,
+    updateActiveAfterRegister
 }
 
