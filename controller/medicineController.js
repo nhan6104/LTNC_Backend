@@ -94,7 +94,7 @@ const createMedicine = async (req, res) => {
             for (const m of medicines) {
                 let t = new Object();
                 t.id = m.id;
-                t.refference = `medicine/${m.id}`;
+                t.refference = `Medicines/${m.id}`;
                 t.brand = m.brand;
 
                 newMedicine.push(t);
@@ -126,61 +126,45 @@ const removeMedicine = async (req, res) => {
                 message: error.message,
             });
         }
-        let newMedicine = new Array();
 
-        const checkingMedicine = await medicineService.checkExistMedicine(req.query.id);
+        const medicines = await medicineService.findMedicineToTal();
 
-        if (!checkingMedicine) {
-            return res.status(400).json({
-                error: true,
-                message: "Medicine không tồn tại",
-            });
-        }
+        let textResultRemovePatient;
+        for (let el of medicines.medicine) {
+            if (el.id === req.query.id) {
+                const ref = el.refference;
+                
+                await medicineService.removeMedicineByPath(ref);
 
-        const medicines = await medicineService.findMedicines();
+                let newMedicine = new Array();
+                newMedicine = medicines.medicine.filter(item => item.id !== req.query.id);
 
-        const medicineInTotalToRemove = medicines.filter(med => med.id != req.query.id);
+                await medicineService.createMedicineInTotal({ medicine: newMedicine });
 
-        if (medicineInTotalToRemove) {
-            for (const m of medicineInTotalToRemove) {
-                let t = new Object();
-                t.id = m.id;
-                t.refference = `medicine/${m.id}`;
-                t.brand = m.brand;
-
-                newMedicine.push(t);
+                textResultRemovePatient = `Xóa Thuốc thành công.`;
+                return res.status(200).json({
+                    error: false,
+                    message: `
+                    Kết quả:\n
+                    ${textResultRemovePatient}\n`,
+                    data: el,
+                });
             }
         }
 
-        const resultCreatingNewMedicineInTotal = await medicineService.createMedicineInTotal({
-            medicine: newMedicine
+        return res.status(400).json({
+            error: true,
+            message: "Thuốc không tồn tại",
         });
-
-
-        const result = await medicineService.removeMedicine(req.query.id);
-
-        let textResultRemoveMedicine;
-
-        if (!result) {
-            textResultRemoveMedicine = `Xóa medicine thất bại.`;
-        } else {
-            textResultRemoveMedicine = `Xóa medicine thành công.`;
-        }
-
-        return res.status(200).json({
-            error: false,
-            message: `
-            Kết quả:\n
-            ${textResultRemoveMedicine}\n`,
-        });
-    } catch (err) {
+    }
+    catch (err) {
         console.log(err);
         return res.status(500).json({
             error: true,
             message: err.message,
         });
     }
-};
+}
 
 const findMedicineDetail = async (req, res) => {
     try {
@@ -209,11 +193,61 @@ const findMedicineDetail = async (req, res) => {
     }
 };
 
+const updateMedicine = async (req, res) => {
+    try {
+        const { error } = medicineValidation.validateFindMedicine(req.query) &&
+            medicineValidation.validateUpdateMedicine(req.body);
+        console.log(req.body);
+        if (error) {
+            // console.log(error);
+            return res.status(400).json({
+                error: true,
+                message: error.message,
+            });
+        }
+
+        const checkingMedicine = await medicineService.checkExistMedicine(req.query.id);
+
+        if (!checkingMedicine) {
+            return res.status(400).json({
+                error: true,
+                message: "Thuốc không tồn tại",
+            });
+        }
+
+        const result = await medicineService.updateMedicine(req.body, req.query.id);
+
+        let textResult;
+
+        if (!result) {
+            textResult = `Cập nhật thông tin thuốc thất bại.`;
+        }
+        else {
+            textResult = `Cập nhật thông tin thuốc thành công.`;
+        }
+
+        return res.status(200).json({
+            error: false,
+            message: `
+            Kết quả:\n
+            ${textResult}\n`,
+        });
+    }
+    catch (err) {
+        console.log(err);
+        return res.status(500).json({
+            error: true,
+            message: err.message,
+        });
+    }
+};
+
 
 module.exports = {
     findMedicines,
     findMedicinesExpire,
     createMedicine,
     removeMedicine,
-    findMedicineDetail
+    findMedicineDetail,
+    updateMedicine
 }

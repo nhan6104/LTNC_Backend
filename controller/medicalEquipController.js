@@ -125,54 +125,38 @@ const removeMedicalEquip = async (req, res) => {
                 message: error.message,
             });
         }
-        let newMedicalEquip = new Array();
 
-        const checkingMedicalEquip = await medicalEquipService.checkExistMedicalEquip(req.query.id);
+        const medicals = await medicalEquipService.findMedicalEquipToTal();
 
-        if (!checkingMedicalEquip) {
-            return res.status(400).json({
-                error: true,
-                message: "Medical Equipment không tồn tại",
-            });
-        }
+        let textResultRemoveMedicalEquip;
+        for (let el of medicals.medicalEquip) {
+            if (el.id === req.query.id) {
+                const ref = el.refference;
+                
+                await medicalEquipService.removeMedicalEquipByPath(ref);
 
-        const medicalEquips = await medicalEquipService.findMedicalEquip();
+                let newMedicalEquip = new Array();
+                newMedicalEquip = medicals.medicalEquip.filter(item => item.id !== req.query.id);
 
-        const medicalEquipInToTalRemove = medicalEquips.filter(med => med.id != req.query.id);
+                await medicalEquipService.createMedicalEquipInTotal({ medicalEquip: newMedicalEquip });
 
-        if (medicalEquipInToTalRemove) {
-            for (const m of medicalEquipInToTalRemove) {
-                let t = new Object();
-                t.id = m.id;
-                t.refference = `medicalEquip/${m.id}`;
-                t.name = m.name;
-
-                newMedicalEquip.push(t);
+                textResultRemoveMedicalEquip = `Xóa Thiết bị thành công.`;
+                return res.status(200).json({
+                    error: false,
+                    message: `
+                    Kết quả:\n
+                    ${textResultRemoveMedicalEquip}\n`,
+                    data: el,
+                });
             }
         }
 
-        const resultCreatingNewMedicalEquipInTotal = await medicalEquipService.createMedicalEquipInTotal({
-            medicalEquip: newMedicalEquip
+        return res.status(400).json({
+            error: true,
+            message: "Thiết bị không tồn tại",
         });
-
-
-        const result = await medicalEquipService.removeMedicalEquip(req.query.id);
-
-        let textResultRemoveMedicalEquip;
-
-        if (!result) {
-            textResultRemoveMedicalEquip = `Xóa medicalEquip thất bại.`;
-        } else {
-            textResultRemoveMedicalEquip = `Xóa medicalEquip thành công.`;
-        }
-
-        return res.status(200).json({
-            error: false,
-            message: `
-            Kết quả:\n
-            ${textResultRemoveMedicalEquip}\n`,
-        });
-    } catch (err) {
+    }
+    catch (err) {
         console.log(err);
         return res.status(500).json({
             error: true,
@@ -208,6 +192,57 @@ const findMedicalEquipDetail = async (req, res) => {
     }
 }
 
+const updateMedicalEquip = async (req, res) => {
+    try {
+        const { error } = medicalValidation.validateFindMedicalEquip(req.query) &&
+            medicalValidation.validateUpdateMedicalEquip(req.body);
+        console.log(req.body);
+        if (error) {
+            // console.log(error);
+            return res.status(400).json({
+                error: true,
+                message: error.message,
+            });
+        }
+
+        const checkingMedicalEquip = await medicalEquipService.checkExistMedicalEquip(req.query.id);
+
+        if (!checkingMedicalEquip) {
+            return res.status(400).json({
+                error: true,
+                message: "Thiết bị không tồn tại",
+            });
+        }
+
+        const result = await medicalEquipService.updateMedicalEquip(req.body, req.query.id);
+
+        let textResult;
+
+        if (!result) {
+            textResult = `Cập nhật thông tin thiết bị thất bại.`;
+        }
+        else {
+            textResult = `Cập nhật thông tin thiết bị thành công.`;
+        }
+
+        return res.status(200).json({
+            error: false,
+            message: `
+            Kết quả:\n
+            ${textResult}\n`,
+        });
+    }
+    catch (err) {
+        console.log(err);
+        return res.status(500).json({
+            error: true,
+            message: err.message,
+        });
+    }
+};
+
+
+
 
 
 module.exports = {
@@ -215,5 +250,6 @@ module.exports = {
     findMedicalEquipExpire,
     createMedicalEquip,
     removeMedicalEquip,
-    findMedicalEquipDetail
+    findMedicalEquipDetail,
+    updateMedicalEquip
 }
