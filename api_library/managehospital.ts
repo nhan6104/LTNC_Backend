@@ -30,15 +30,12 @@ export interface queryPatient {
   cccd: string, 
 }
 
-export interface dosage {
+
+export interface prescription {
   evening: number,
   morning: number,
   noon:    number,
-}
-
-export interface prescription {
-  dosage : dosage
-  medicine: string,
+	medicine: string,
   quantity: number
 }
 
