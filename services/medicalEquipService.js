@@ -31,6 +31,17 @@ const detailMedicalEquip = async (medicalEquipID) => {
     return medicalEquipDetail;
 };
 
+const updateMedicalEquip = async (data, medicineID) => {
+    return await medicalEquip.updateMedicalEquip(data, medicineID);
+};
+
+const findMedicalEquipToTal = async() => {
+    return await medicalEquip.findMedicalEquipToTal();
+};
+
+const removeMedicalEquipByPath = async (path) => {
+    return await medicalEquip.removeMedicalEquipByPath(path);
+};
 
 
 
@@ -41,5 +52,8 @@ module.exports = {
     createMedicalEquipInTotal,
     removeMedicalEquip,
     checkExistMedicalEquip,
-    detailMedicalEquip
+    detailMedicalEquip,
+    updateMedicalEquip,
+    findMedicalEquipToTal,
+    removeMedicalEquipByPath
 }

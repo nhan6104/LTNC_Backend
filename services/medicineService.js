@@ -19,6 +19,11 @@ const createMedicineInTotal = async (medicineData) => {
 const removeMedicine = async (medicineID) => {
     return await medicine.removeMedicine(medicineID);
 };
+
+const removeMedicineByPath = async (path) => {
+    return await medicine.removeMedicineByPath(path);
+};
+  
   
 const checkExistMedicine = async (data) => { 
     return await medicine.checkExistMedicine(data);
@@ -30,6 +35,16 @@ const detailMedicine = async (medicineID) => {
     const medicineDetail = medicines.filter(t => t.id === medicineID);
     return medicineDetail;
 };
+
+const updateMedicine = async (data, medicineID) => {
+    return await medicine.updateMedicine(data, medicineID);
+};
+
+const findMedicineToTal = async() => {
+    return await medicine.findMedicineToTal();
+};
+
+  
 
 
 
@@ -43,5 +58,8 @@ module.exports = {
     createMedicineInTotal,
     removeMedicine,
     checkExistMedicine,
-    detailMedicine
+    detailMedicine,
+    updateMedicine,
+    findMedicineToTal,
+    removeMedicineByPath
 }

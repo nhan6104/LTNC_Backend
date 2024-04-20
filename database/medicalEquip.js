@@ -77,6 +77,21 @@ const checkExistMedicalEquip = async (data) => {
   return result;
 };
 
+const updateMedicalEquip = async (data, medicineID) => {
+  const documentID = medicineID;
+  // console.log(documentID)
+  const result = await dbUtils.update(data, collectionName, documentID);
+  return result;
+};
+
+const removeMedicalEquipByPath = async (ref) => {
+  return dbUtils.erasePath(ref);
+};
+
+const findMedicalEquipToTal = async () => {
+  const result = await dbUtils.findOne(collectiontotal, collectionName);
+  return result;
+};
 
 
 
@@ -87,5 +102,8 @@ module.exports = {
   createMedicalEquipInTotal,
   generateRandomString,
   removeMedicalEquip,
-  checkExistMedicalEquip
+  checkExistMedicalEquip,
+  updateMedicalEquip,
+  removeMedicalEquipByPath,
+  findMedicalEquipToTal
 }
