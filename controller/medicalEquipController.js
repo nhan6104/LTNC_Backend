@@ -242,9 +242,6 @@ const updateMedicalEquip = async (req, res) => {
 };
 
 
-
-
-
 module.exports = {
     findMedicalEquip,
     findMedicalEquipExpire,

@@ -40,7 +40,8 @@ const createStaff = async (req, res) => {
                 refference: ref,
                 fullname: req.body.name,
                 userUid: resultSignUp.user.uid,
-                role: req.body.role
+                role: req.body.role,
+                faculty: req.body.faculty
             }
 
             newStaff.push(tempStaff)

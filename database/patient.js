@@ -113,8 +113,14 @@ const createPatientInRealtimeDb = async (info) => {
     await dbUtils.setRealtimeDb(ref, info);
 };
 
-const getAllPatientInRealtimeDb = async (info) => {
+const getAllPatientInRealtimeDbInFalcuty = async (info) => {
   const ref = `Faculty/${info.faculty}`;
+  const result = await dbUtils.getRealtimeDb(ref);
+  return result;
+};
+
+const getAllPatientInRealtimeDb = async () => {
+  const ref = `Faculty`;
   const result = await dbUtils.getRealtimeDb(ref);
   return result;
 };
@@ -145,6 +151,7 @@ module.exports = {
   findPatientByPath,
   createPatientInRealtimeDb,
   getAllPatientInRealtimeDb,
-  removePatientInRealtimeDb
+  removePatientInRealtimeDb,
+  getAllPatientInRealtimeDbInFalcuty
 }
 

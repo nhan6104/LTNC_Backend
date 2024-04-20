@@ -578,11 +578,26 @@ const registerPatient = async (req, res) => {
     }
 };
 
+// {
+//     falculty: 
+// }
+
 const findPatientsInQueue = async (req, res) => {
-    const result = await patientService.getAllPatientInRealtimeDb(req.body);
+
+    if (req.body.role === "ADMIN")  {
+        const patients = await patientService.getAllPatientInRealtimeDb();
+
+        return res.status(200).json({
+            error: false,
+            message: "Lấy thành công",
+            data: patients,
+        });
+    }
+
+    const result = await patientService.getAllPatientInRealtimeDbInFalculty(req.body);
     console.log(result);
 
-    if (!result) {
+    if (!result) {  
         return res.status(400).json({
             error: true,
             message: "Không có bệnh nhân cần khám",
@@ -604,7 +619,7 @@ const findPatientsInQueue = async (req, res) => {
 
 const updateActiveAfterRegister = async (req, res) => {
     try {
-        const {error}  = patientValidation.validateUpdateActive(req.query);
+        const {error}  = patientValidation.validateQueryPatientInQueue(req.query);
         
         if (error) {
             console.log(error);
@@ -648,7 +663,7 @@ const updateActiveAfterRegister = async (req, res) => {
 
 const completeHealing = async (req, res) => {
     try {
-        const {error}  = patientValidation.validateUpdateActive(req.query);
+        const {error}  = patientValidation.validateQueryPatientInQueue(req.query);
         
         if (error) {
             console.log(error);
