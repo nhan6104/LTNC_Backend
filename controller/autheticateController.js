@@ -28,6 +28,7 @@ const login = async (req, res) => {
     const data = {
       role: tempStaff[0].role,
       cccd: tempStaff[0].cccd,
+      name: tempStaff[0].fullname
     }
 
     if (tempStaff[0].role !== "ADMIN") {
