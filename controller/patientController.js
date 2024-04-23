@@ -457,9 +457,8 @@ const findPatient = async (req, res) => {
 
 const findRecords = async (req, res) => {
     try {
-        const { error } = patientValidation.validateFindPatient(req.query) &&
-            patientValidation.validateFindRecords(req.body);
-        console.log(req.body);
+        const { error } = patientValidation.validateFindRecords(req.query);
+        console.log(req.query);
         if (error) {
             // console.log(error);
             return res.status(400).json({
@@ -468,7 +467,7 @@ const findRecords = async (req, res) => {
             });
         }
 
-        const formattedDate = req.body.date.replace(/-/g, '');
+        const formattedDate = req.query.date.replace(/-/g, '');
         const checkingPatient = await patientService.checkExistRecords(req.query.cccd, formattedDate);
         if (!checkingPatient) {
             return res.status(400).json({
@@ -480,7 +479,7 @@ const findRecords = async (req, res) => {
         const history = await patientService.findHistory(req.query.cccd);
 
         let resultFindRecords;
-        const matchingRecords = history.medicalHistory.filter(el => el.date === req.body.date);
+        const matchingRecords = history.medicalHistory.filter(el => el.date === req.query.date);
 
         if (matchingRecords.length > 0) {
             resultFindRecords = await patientService.findRecordsByDate(req.query.cccd, formattedDate);
