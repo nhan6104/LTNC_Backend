@@ -451,6 +451,7 @@ export interface createMedicine {
   origin: string,
   purchase_price: number,
   quantity:number,
+	name: string,
 }
 
 export interface QueryMedicine {
@@ -465,6 +466,7 @@ export interface updateMedicine {
 	origin: string,
 	purchase_price: number,
 	quantity: number,
+	name: string,
 }
 
 class MedicalManage {
