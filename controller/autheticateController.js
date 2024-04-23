@@ -72,10 +72,36 @@ const logout = async (req, res) => {
     }
 };
 
+const getUser = async (req, res) => {
+  try {
+    const userid = req.body.uid;
+    const info = await authenticateService.getSession(userid);
+
+    if (!info) {
+          return res.status(400).send({
+          error: true,
+          message: "Người dùng không tồn tại."
+      });
+    }
+
+    return res.status(200).send({
+      error: false,
+      message: "Lấy thông tin thành công.",
+      data: info
+    });
+  }
+  catch (err) {
+    return res.status(400).json({
+      error: true,
+      message: err.message
+    })
+  }
+};
 
 
 module.exports = {
   login,
-  logout
+  logout,
+  getUser
 }
 

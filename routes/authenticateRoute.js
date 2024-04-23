@@ -5,5 +5,6 @@ const authenticatedUser = require("../lib/auth")
 
 router.post("/login", autheticateController.login);
 router.post("/logout",authenticatedUser.isAuthenticated, autheticateController.logout);
+router.get("/getUser",authenticatedUser.isAuthenticated, autheticateController.getUser);
 
 module.exports = router;
