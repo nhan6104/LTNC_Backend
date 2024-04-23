@@ -76,13 +76,19 @@ const createPatientInRealtimeDb = async (info) => {
   await patient.createPatientInRealtimeDb(info);
 };
 
-const getAllPatientInRealtimeDb = async (info) => {
-  return await patient.getAllPatientInRealtimeDb(info);
+const getAllPatientInRealtimeDbInFalculty = async (info) => {
+  return await patient.getAllPatientInRealtimeDbInFalcuty(info);
 };
+
+const getAllPatientInRealtimeDb= async (info) => {
+  return await patient.getAllPatientInRealtimeDb();
+};
+
 
 const removePatientInRealtimeDb = async (info) => {
   return await patient.removePatientInRealtimeDb(info);
 };
+
 
 module.exports = {
   createPatient,
@@ -105,7 +111,8 @@ module.exports = {
   findPatientByPath,
   createPatientInRealtimeDb,
   getAllPatientInRealtimeDb,
-  removePatientInRealtimeDb
+  removePatientInRealtimeDb,
+  getAllPatientInRealtimeDbInFalculty
 }
 
 

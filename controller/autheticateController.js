@@ -26,9 +26,13 @@ const login = async (req, res) => {
     }
 
     const data = {
-      role : tempStaff[0].role,
-      cccd: tempStaff[0].cccd
+      role: tempStaff[0].role,
+      cccd: tempStaff[0].cccd,
     }
+
+    if (tempStaff[0].role !== "ADMIN") {
+      data.faculty = tempStaff[0].faculty;
+    } 
 
     await authenticateService.setSession(tempStaff[0].userUid, data)
     const expiresIn = 60 * 60 * 24 * 5 * 1000; // 5 days
@@ -74,3 +78,4 @@ module.exports = {
   login,
   logout
 }
+

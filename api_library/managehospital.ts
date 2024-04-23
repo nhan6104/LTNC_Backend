@@ -30,16 +30,14 @@ export interface queryPatient {
   cccd: string, 
 }
 
-export interface dosage {
+
+export interface prescription {
   evening: number,
   morning: number,
   noon:    number,
-}
-
-export interface prescription {
-  dosage : dosage
-  medicine: string,
-  quantity: number
+	medicine: string,
+  quantity: number,
+	medicineID: string,
 }
 
 export interface testResult {
@@ -57,6 +55,16 @@ export interface createRecords {
 
 export interface queryRecords {
   date: string,
+}
+
+export interface registerInfo {
+	cccd: string, 
+	faculty: string,
+}
+
+export interface queryPatientInQueue {
+	cccd: string,
+	faculty: string,
 }
 
 class Patient {
@@ -127,7 +135,7 @@ class Patient {
 
   async createRecords (info : createRecords) {
     try {
-      const response: AxiosResponse = await axios.put(`${this.baseUrl}/create_records`, info, {
+      const response: AxiosResponse = await axios.post(`${this.baseUrl}/create_records`, info, {
           withCredentials: true,
       });
 
@@ -200,6 +208,65 @@ class Patient {
     }
   }
 
+	async createRegister (info : registerInfo) {
+    try {
+      const response: AxiosResponse = await axios.post(`${this.baseUrl}/register_patient`, info, {
+          withCredentials: true,
+      });
+
+      const data = response.data;
+      return { error: data.error, message: data.message };
+    } 
+    catch (error: any) {
+        console.log("Error register patient: ", error.response.data);
+        return error.response.data;
+    }
+  }
+
+	async findPatientsInQueue () {
+		try {
+      const response: AxiosResponse = await axios.get(`${this.baseUrl}/find_patient_in_queue`, {
+          withCredentials: true,
+      });
+
+      const data = response.data;
+      return { error: data.error, data:data.data, message: data.message };
+    } 
+    catch (error: any) {
+        console.log("Error find all patient in queue: ", error.response.data);
+        return error.response.data;
+    }
+	}
+
+	async updateStatusAferRegister (condition: queryPatientInQueue) {
+    try {
+      const response: AxiosResponse = await axios.put(`${this.baseUrl}/update_status?cccd=${condition.cccd}&faculty=${condition.faculty}`, {
+          withCredentials: true,
+      });
+
+      const data = response.data;
+      return { error: data.error, data: data.data, message: data.message };
+    } 
+    catch (error: any) {
+        console.log("Error updating patient: ", error.response.data);
+        return error.response.data;
+    }
+  }
+
+	async completeHealing (condition: queryPatientInQueue ) {
+    try {
+      const response: AxiosResponse = await axios.put(`${this.baseUrl}/complete_healing?cccd=${condition.cccd}&faculty=${condition.faculty}`, {
+          withCredentials: true,
+      });
+
+      const data = response.data;
+      return { error: data.error, message: data.message };
+    } 
+    catch (error: any) {
+        console.log("Error updating patient: ", error.response.data);
+        return error.response.data;
+    }
+  }
 }
 
 export interface workinghours {
