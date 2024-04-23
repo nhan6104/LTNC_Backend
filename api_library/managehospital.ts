@@ -404,7 +404,7 @@ class Authenticate {
 			});
 	  
 			const data = response.data;
-			return { error: data.error, message: data.message };
+			return { error: data.error, data: data.info, message: data.message };
 		} 
 		catch (error: any) {
 			console.log("Error login: ", error.response.data);
@@ -426,6 +426,21 @@ class Authenticate {
 			return error.response.data;
 		}
 	}
+
+	async getUser() {
+		try {
+			const response: AxiosResponse = await axios.get(`${this.baseUrl}/getUser`, {
+				withCredentials: true,
+			});
+	  
+			const data = response.data;
+			return { error: data.error, data: data.data, message: data.message };
+		} 
+		catch (error: any) {
+			console.log("Error getUser: ", error.response.data);
+			return error.response.data;
+		}
+	}
 }
 
 export interface createMedicine {
@@ -440,6 +455,16 @@ export interface createMedicine {
 
 export interface QueryMedicine {
   id: string
+}
+
+export interface updateMedicine {
+	brand: string,
+	disposal_price: number,
+	expiration_date: string,
+	manufacture_date: string,
+	origin: string,
+	purchase_price: number,
+	quantity: number,
 }
 
 class MedicalManage {
@@ -522,8 +547,22 @@ class MedicalManage {
 			console.log("Error creating patient: ", error.response.data);
 			return error.response.data;
 		}
-	
   }
+
+	async updateMedicine (condition : QueryMedicine, info : updateMedicine) {
+		try {
+			const response: AxiosResponse = await axios.put(`${this.baseUrl}/update?id=${condition.id}`, info, {
+				withCredentials: true,
+			});
+	  
+			const data = response.data;
+			return { error: data.error, message: data.message };
+		} 
+		catch (error: any) {
+			console.log("Error updating medicine: ", error.response.data);
+			return error.response.data;
+		}
+	}
 }
 
 export interface warantyHist {
@@ -541,6 +580,20 @@ export interface createMedicalEquipment {
 export interface queryMedicalEquipment {
   id: string
 }
+
+export interface warranty_history {
+	date: string,
+	description: string,
+}
+
+export interface updateMedicalEquip {
+	name: string,
+	warranty_expiration_date: string,
+	status: string,
+	purchase_price: number,
+	warranty_history: warranty_history[]
+}
+
 
 class medicalEquipment {
   private baseUrl: string;
@@ -624,6 +677,22 @@ class medicalEquipment {
 		}
 	
   }
+
+	async updateMedicalEquip (condition : queryMedicalEquipment, info : updateMedicalEquip) {
+		try {
+			const response: AxiosResponse = await axios.put(`${this.baseUrl}/update?id=${condition.id}`, info, {
+				withCredentials: true,
+			});
+	  
+			const data = response.data;
+			return { error: data.error, message: data.message };
+		} 
+		catch (error: any) {
+			console.log("Error updating medical: ", error.response.data);
+			return error.response.data;
+		}
+	}
+
 }
 
 export {
