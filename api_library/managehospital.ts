@@ -155,7 +155,7 @@ class Patient {
       });
 
       const data = response.data;
-      return { error: data.error, data:data.data, message: data.message };
+      return { error: data.error, data:data.medicalHistory, message: data.message };
     } 
     catch (error: any) {
         console.log("Error find all treatment: ", error.response.data);
