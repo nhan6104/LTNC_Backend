@@ -133,9 +133,9 @@ class Patient {
     }
   }
 
-  async createRecords (info : createRecords) {
+  async createRecords (info : createRecords, condition: queryPatient) {
     try {
-      const response: AxiosResponse = await axios.post(`${this.baseUrl}/create_records`, info, {
+      const response: AxiosResponse = await axios.post(`${this.baseUrl}/create_records?cccd=${condition.cccd}`, info, {
           withCredentials: true,
       });
 
