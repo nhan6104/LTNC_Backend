@@ -55,6 +55,7 @@ export interface createRecords {
 
 export interface queryRecords {
   date: string,
+	cccd: string,
 }
 
 export interface registerInfo {
@@ -195,7 +196,7 @@ class Patient {
 
   async findRecords (condition : queryRecords) {
     try {
-      const response: AxiosResponse = await axios.get(`${this.baseUrl}/find_records?date=${condition.date}`, {
+      const response: AxiosResponse = await axios.get(`${this.baseUrl}/find_records?cccd=${condition.cccd}&date=${condition.date}`, {
           withCredentials: true,
       });
 
