@@ -255,7 +255,7 @@ const illnessToDoctor = async (req , res) => {
 
 const updateStaff = async (req, res) => {
     try{
-        const { error } = doctorValidation.validationUpdateStaff(req.body) && doctorValidation.validateQueryDoctor(req.query);
+        const { error } = doctorValidation.validateQueryDoctor(req.query) &&  doctorValidation.validationUpdateStaff(req.body);
         if (error) {
             return res.status(400).json({
                 error: true,
