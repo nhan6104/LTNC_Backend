@@ -255,13 +255,14 @@ const illnessToDoctor = async (req , res) => {
 
 const updateStaff = async (req, res) => {
     try{
-        const { error } = doctorValidation.validationUpdateStaff(req.query);
+        const { error } = doctorValidation.validationUpdateStaff(req.body) && doctorValidation.validateQueryDoctor(req.query);
         if (error) {
             return res.status(400).json({
                 error: true,
                 message: error.message,
             });
         }
+
 
         const doctors = await doctorService.findDoctor();
 
