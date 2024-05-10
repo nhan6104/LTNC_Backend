@@ -30,8 +30,8 @@ const updateDoctorInTotal = async (data) => {
 const signupAccount = async (email, password) => {
   return await staff.signupAccount(email, password);
 };
-const updateStaff = async (data) => {
-  return await staff.updateStaffdatabase(data);
+const updateStaff = async (newdata, id) => {
+  return await staff.updateStaffdatabase(newdata,id);
 }
 
 module.exports = {

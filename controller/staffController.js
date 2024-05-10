@@ -281,7 +281,7 @@ const updateStaff = async (req, res) => {
             });
         }
         //!
-        const result = await doctorService.updateStaff(req.body);
+        const result = await doctorService.updateStaff(req.body , req.query.cccd);
         
         let textResult;
 

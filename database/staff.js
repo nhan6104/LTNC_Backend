@@ -67,10 +67,10 @@ const signupAccount = async (email, password) => {
   const result = await createUserWithEmailAndPassword(auth, email, password);
   return result;
 };
-const updateStaffdatabase = async (staff) => {
-  const documentID = staff.cccd;
+const updateStaffdatabase = async (newdata , id) => {
+  const documentID = id;
   // console.log(documentID)
-  const result = await dbUtils.update(staff, collectionName, documentID);
+  const result = await dbUtils.update(newdata, collectionName, documentID);
   return result;
 }
 
