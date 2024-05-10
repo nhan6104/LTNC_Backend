@@ -134,14 +134,14 @@ var Patient = /** @class */ (function () {
             });
         });
     };
-    Patient.prototype.createRecords = function (info) {
+    Patient.prototype.createRecords = function (info, condition) {
         return __awaiter(this, void 0, void 0, function () {
             var response, data, error_5;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, axios_1.default.put("".concat(this.baseUrl, "/create_records"), info, {
+                        return [4 /*yield*/, axios_1.default.post("".concat(this.baseUrl, "/create_records?cccd=").concat(condition.cccd), info, {
                                 withCredentials: true,
                             })];
                     case 1:
@@ -170,7 +170,11 @@ var Patient = /** @class */ (function () {
                     case 1:
                         response = _a.sent();
                         data = response.data;
-                        return [2 /*return*/, { error: data.error, data: data.data, message: data.message }];
+                        return [2 /*return*/, {
+                                error: data.error,
+                                data: data.medicalHistory,
+                                message: data.message,
+                            }];
                     case 2:
                         error_6 = _a.sent();
                         console.log("Error find all treatment: ", error_6.response.data);
@@ -233,7 +237,7 @@ var Patient = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, axios_1.default.get("".concat(this.baseUrl, "/find_records?date=").concat(condition.date), {
+                        return [4 /*yield*/, axios_1.default.get("".concat(this.baseUrl, "/find_records?cccd=").concat(condition.cccd, "&date=").concat(condition.date), {
                                 withCredentials: true,
                             })];
                     case 1:
@@ -249,6 +253,98 @@ var Patient = /** @class */ (function () {
             });
         });
     };
+    Patient.prototype.createRegister = function (info) {
+        return __awaiter(this, void 0, void 0, function () {
+            var response, data, error_10;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, axios_1.default.post("".concat(this.baseUrl, "/register_patient"), info, {
+                                withCredentials: true,
+                            })];
+                    case 1:
+                        response = _a.sent();
+                        data = response.data;
+                        return [2 /*return*/, { error: data.error, message: data.message }];
+                    case 2:
+                        error_10 = _a.sent();
+                        console.log("Error register patient: ", error_10.response.data);
+                        return [2 /*return*/, error_10.response.data];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    Patient.prototype.findPatientsInQueue = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var response, data, error_11;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, axios_1.default.get("".concat(this.baseUrl, "/find_patient_in_queue"), {
+                                withCredentials: true,
+                            })];
+                    case 1:
+                        response = _a.sent();
+                        data = response.data;
+                        return [2 /*return*/, { error: data.error, data: data.data, message: data.message }];
+                    case 2:
+                        error_11 = _a.sent();
+                        console.log("Error find all patient in queue: ", error_11.response.data);
+                        return [2 /*return*/, error_11.response.data];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    Patient.prototype.updateStatusAferRegister = function (condition) {
+        return __awaiter(this, void 0, void 0, function () {
+            var response, data, error_12;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, axios_1.default.put("".concat(this.baseUrl, "/update_status?cccd=").concat(condition.cccd, "&faculty=").concat(condition.faculty), {
+                                withCredentials: true,
+                            })];
+                    case 1:
+                        response = _a.sent();
+                        data = response.data;
+                        return [2 /*return*/, { error: data.error, data: data.data, message: data.message }];
+                    case 2:
+                        error_12 = _a.sent();
+                        console.log("Error updating patient: ", error_12.response.data);
+                        return [2 /*return*/, error_12.response.data];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    Patient.prototype.completeHealing = function (condition) {
+        return __awaiter(this, void 0, void 0, function () {
+            var response, data, error_13;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, axios_1.default.put("".concat(this.baseUrl, "/complete_healing?cccd=").concat(condition.cccd, "&faculty=").concat(condition.faculty), {
+                                withCredentials: true,
+                            })];
+                    case 1:
+                        response = _a.sent();
+                        data = response.data;
+                        return [2 /*return*/, { error: data.error, message: data.message }];
+                    case 2:
+                        error_13 = _a.sent();
+                        console.log("Error updating patient: ", error_13.response.data);
+                        return [2 /*return*/, error_13.response.data];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
     return Patient;
 }());
 exports.Patient = Patient;
@@ -258,111 +354,12 @@ var Staff = /** @class */ (function () {
     }
     Staff.prototype.createStaff = function (info) {
         return __awaiter(this, void 0, void 0, function () {
-            var response, data, error_10;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, axios_1.default.post("".concat(this.baseUrl, "/create"), info, {
-                                withCredentials: true,
-                            })];
-                    case 1:
-                        response = _a.sent();
-                        data = response.data;
-                        return [2 /*return*/, { error: data.error, message: data.message }];
-                    case 2:
-                        error_10 = _a.sent();
-                        console.log("Error creating patient: ", error_10.response.data);
-                        return [2 /*return*/, error_10.response.data];
-                    case 3: return [2 /*return*/];
-                }
-            });
-        });
-    };
-    Staff.prototype.findStaff = function (condition) {
-        return __awaiter(this, void 0, void 0, function () {
-            var response, data, error_11;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, axios_1.default.get("".concat(this.baseUrl, "/detail?cccd=").concat(condition.cccd), {
-                                withCredentials: true,
-                            })];
-                    case 1:
-                        response = _a.sent();
-                        data = response.data;
-                        return [2 /*return*/, { error: data.error, data: data.data, message: data.message }];
-                    case 2:
-                        error_11 = _a.sent();
-                        console.log("Error finding staff: ", error_11.response.data);
-                        return [2 /*return*/, error_11.response.data];
-                    case 3: return [2 /*return*/];
-                }
-            });
-        });
-    };
-    Staff.prototype.deleteStaff = function (condition) {
-        return __awaiter(this, void 0, void 0, function () {
-            var response, data, error_12;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, axios_1.default.put("".concat(this.baseUrl, "/delete?cccd=").concat(condition.cccd), {
-                                withCredentials: true,
-                            })];
-                    case 1:
-                        response = _a.sent();
-                        data = response.data;
-                        return [2 /*return*/, { error: data.error, message: data.message }];
-                    case 2:
-                        error_12 = _a.sent();
-                        console.log("Error removing staff: ", error_12.response.data);
-                        return [2 /*return*/, error_12.response.data];
-                    case 3: return [2 /*return*/];
-                }
-            });
-        });
-    };
-    Staff.prototype.updateStaff = function (condition, info) {
-        return __awaiter(this, void 0, void 0, function () {
-            var response, data, error_13;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, axios_1.default.put("".concat(this.baseUrl, "/update?cccd=").concat(condition.cccd), info, {
-                                withCredentials: true,
-                            })];
-                    case 1:
-                        response = _a.sent();
-                        data = response.data;
-                        return [2 /*return*/, { error: data.error, message: data.message }];
-                    case 2:
-                        error_13 = _a.sent();
-                        console.log("Error updating staff: ", error_13.response.data);
-                        return [2 /*return*/, error_13.response.data];
-                    case 3: return [2 /*return*/];
-                }
-            });
-        });
-    };
-    return Staff;
-}());
-exports.Staff = Staff;
-var Authenticate = /** @class */ (function () {
-    function Authenticate() {
-        this.baseUrl = "http://localhost:3000/api/v1/authenticate";
-    }
-    Authenticate.prototype.login = function (info) {
-        return __awaiter(this, void 0, void 0, function () {
             var response, data, error_14;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, axios_1.default.post("".concat(this.baseUrl, "/login"), info, {
+                        return [4 /*yield*/, axios_1.default.post("".concat(this.baseUrl, "/create"), info, {
                                 withCredentials: true,
                             })];
                     case 1:
@@ -378,9 +375,131 @@ var Authenticate = /** @class */ (function () {
             });
         });
     };
-    Authenticate.prototype.logout = function () {
+    Staff.prototype.findStaff = function (condition) {
         return __awaiter(this, void 0, void 0, function () {
             var response, data, error_15;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, axios_1.default.get("".concat(this.baseUrl, "/detail?cccd=").concat(condition.cccd), {
+                                withCredentials: true,
+                            })];
+                    case 1:
+                        response = _a.sent();
+                        data = response.data;
+                        return [2 /*return*/, { error: data.error, data: data.data, message: data.message }];
+                    case 2:
+                        error_15 = _a.sent();
+                        console.log("Error finding staff: ", error_15.response.data);
+                        return [2 /*return*/, error_15.response.data];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    Staff.prototype.deleteStaff = function (condition) {
+        return __awaiter(this, void 0, void 0, function () {
+            var response, data, error_16;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, axios_1.default.put("".concat(this.baseUrl, "/delete?cccd=").concat(condition.cccd), {
+                                withCredentials: true,
+                            })];
+                    case 1:
+                        response = _a.sent();
+                        data = response.data;
+                        return [2 /*return*/, { error: data.error, message: data.message }];
+                    case 2:
+                        error_16 = _a.sent();
+                        console.log("Error removing staff: ", error_16.response.data);
+                        return [2 /*return*/, error_16.response.data];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    Staff.prototype.updateStaff = function (condition, info) {
+        return __awaiter(this, void 0, void 0, function () {
+            var response, data, error_17;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, axios_1.default.put("".concat(this.baseUrl, "/update?cccd=").concat(condition.cccd), info, {
+                                withCredentials: true,
+                            })];
+                    case 1:
+                        response = _a.sent();
+                        data = response.data;
+                        return [2 /*return*/, { error: data.error, message: data.message }];
+                    case 2:
+                        error_17 = _a.sent();
+                        console.log("Error updating staff: ", error_17.response.data);
+                        return [2 /*return*/, error_17.response.data];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    Staff.prototype.findAllStaff = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var response, data, error_18;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, axios_1.default.get("".concat(this.baseUrl, "/getalldoctor"), {
+                                withCredentials: true,
+                            })];
+                    case 1:
+                        response = _a.sent();
+                        data = response.data;
+                        return [2 /*return*/, { error: data.error, data: data.data, message: data.message }];
+                    case 2:
+                        error_18 = _a.sent();
+                        console.log("Error updating staff: ", error_18.response.data);
+                        return [2 /*return*/, error_18.response.data];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    return Staff;
+}());
+exports.Staff = Staff;
+var Authenticate = /** @class */ (function () {
+    function Authenticate() {
+        this.baseUrl = "http://localhost:3000/api/v1/authenticate";
+    }
+    Authenticate.prototype.login = function (info) {
+        return __awaiter(this, void 0, void 0, function () {
+            var response, data, error_19;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, axios_1.default.post("".concat(this.baseUrl, "/login"), info, {
+                                withCredentials: true,
+                            })];
+                    case 1:
+                        response = _a.sent();
+                        data = response.data;
+                        return [2 /*return*/, { error: data.error, data: data.info, message: data.message }];
+                    case 2:
+                        error_19 = _a.sent();
+                        console.log("Error login: ", error_19.response.data);
+                        return [2 /*return*/, error_19.response.data];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    Authenticate.prototype.logout = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var response, data, error_20;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -393,9 +512,32 @@ var Authenticate = /** @class */ (function () {
                         data = response.data;
                         return [2 /*return*/, { error: data.error, message: data.message }];
                     case 2:
-                        error_15 = _a.sent();
-                        console.log("Error logout: ", error_15.response.data);
-                        return [2 /*return*/, error_15.response.data];
+                        error_20 = _a.sent();
+                        console.log("Error logout: ", error_20.response.data);
+                        return [2 /*return*/, error_20.response.data];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    Authenticate.prototype.getUser = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var response, data, error_21;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, axios_1.default.get("".concat(this.baseUrl, "/getUser"), {
+                                withCredentials: true,
+                            })];
+                    case 1:
+                        response = _a.sent();
+                        data = response.data;
+                        return [2 /*return*/, { error: data.error, data: data.data, message: data.message }];
+                    case 2:
+                        error_21 = _a.sent();
+                        console.log("Error getUser: ", error_21.response.data);
+                        return [2 /*return*/, error_21.response.data];
                     case 3: return [2 /*return*/];
                 }
             });
@@ -410,163 +552,18 @@ var MedicalManage = /** @class */ (function () {
     }
     MedicalManage.prototype.createMedicine = function (info) {
         return __awaiter(this, void 0, void 0, function () {
-            var response, data, error_16;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, axios_1.default.post("".concat(this.baseUrl, "/create"), info, {
-                                withCredentials: true,
-                            })];
-                    case 1:
-                        response = _a.sent();
-                        data = response.data;
-                        return [2 /*return*/, { error: data.error, message: data.message }];
-                    case 2:
-                        error_16 = _a.sent();
-                        console.log("Error creating patient: ", error_16.response.data);
-                        return [2 /*return*/, error_16.response.data];
-                    case 3: return [2 /*return*/];
-                }
-            });
-        });
-    };
-    MedicalManage.prototype.getDetail = function (condition) {
-        return __awaiter(this, void 0, void 0, function () {
-            var response, data, error_17;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, axios_1.default.get("".concat(this.baseUrl, "/getDetail?id=").concat(condition.id), {
-                                withCredentials: true,
-                            })];
-                    case 1:
-                        response = _a.sent();
-                        data = response.data;
-                        return [2 /*return*/, { error: data.error, data: data.data, message: data.message }];
-                    case 2:
-                        error_17 = _a.sent();
-                        console.log("Error creating patient: ", error_17.response.data);
-                        return [2 /*return*/, error_17.response.data];
-                    case 3: return [2 /*return*/];
-                }
-            });
-        });
-    };
-    MedicalManage.prototype.getExpire = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            var response, data, error_18;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, axios_1.default.get("".concat(this.baseUrl, "/getExp"), {
-                                withCredentials: true,
-                            })];
-                    case 1:
-                        response = _a.sent();
-                        data = response.data;
-                        return [2 /*return*/, { error: data.error, data: data.data, message: data.message }];
-                    case 2:
-                        error_18 = _a.sent();
-                        console.log("Error creating patient: ", error_18.response.data);
-                        return [2 /*return*/, error_18.response.data];
-                    case 3: return [2 /*return*/];
-                }
-            });
-        });
-    };
-    MedicalManage.prototype.getData = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            var response, data, error_19;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, axios_1.default.get("".concat(this.baseUrl, "/getData"), {
-                                withCredentials: true,
-                            })];
-                    case 1:
-                        response = _a.sent();
-                        data = response.data;
-                        return [2 /*return*/, { error: data.error, data: data.data, message: data.message }];
-                    case 2:
-                        error_19 = _a.sent();
-                        console.log("Error creating patient: ", error_19.response.data);
-                        return [2 /*return*/, error_19.response.data];
-                    case 3: return [2 /*return*/];
-                }
-            });
-        });
-    };
-    MedicalManage.prototype.deleteMedicine = function (condition) {
-        return __awaiter(this, void 0, void 0, function () {
-            var response, data, error_20;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, axios_1.default.put("".concat(this.baseUrl, "/delete?id=").concat(condition.id), {
-                                withCredentials: true,
-                            })];
-                    case 1:
-                        response = _a.sent();
-                        data = response.data;
-                        return [2 /*return*/, { error: data.error, message: data.message }];
-                    case 2:
-                        error_20 = _a.sent();
-                        console.log("Error creating patient: ", error_20.response.data);
-                        return [2 /*return*/, error_20.response.data];
-                    case 3: return [2 /*return*/];
-                }
-            });
-        });
-    };
-    return MedicalManage;
-}());
-exports.MedicalManage = MedicalManage;
-var medicalEquipment = /** @class */ (function () {
-    function medicalEquipment() {
-        this.baseUrl = "http://localhost:3000/api/v1/medicalEquip";
-    }
-    medicalEquipment.prototype.createMedicalEquipment = function (info) {
-        return __awaiter(this, void 0, void 0, function () {
-            var response, data, error_21;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, axios_1.default.post("".concat(this.baseUrl, "/create"), info, {
-                                withCredentials: true,
-                            })];
-                    case 1:
-                        response = _a.sent();
-                        data = response.data;
-                        return [2 /*return*/, { error: data.error, message: data.message }];
-                    case 2:
-                        error_21 = _a.sent();
-                        console.log("Error creating patient: ", error_21.response.data);
-                        return [2 /*return*/, error_21.response.data];
-                    case 3: return [2 /*return*/];
-                }
-            });
-        });
-    };
-    medicalEquipment.prototype.getDetail = function (condition) {
-        return __awaiter(this, void 0, void 0, function () {
             var response, data, error_22;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, axios_1.default.get("".concat(this.baseUrl, "/getDetail?id=").concat(condition.id), {
+                        return [4 /*yield*/, axios_1.default.post("".concat(this.baseUrl, "/create"), info, {
                                 withCredentials: true,
                             })];
                     case 1:
                         response = _a.sent();
                         data = response.data;
-                        return [2 /*return*/, { error: data.error, data: data.data, message: data.message }];
+                        return [2 /*return*/, { error: data.error, message: data.message }];
                     case 2:
                         error_22 = _a.sent();
                         console.log("Error creating patient: ", error_22.response.data);
@@ -576,14 +573,14 @@ var medicalEquipment = /** @class */ (function () {
             });
         });
     };
-    medicalEquipment.prototype.getExpire = function () {
+    MedicalManage.prototype.getDetail = function (condition) {
         return __awaiter(this, void 0, void 0, function () {
             var response, data, error_23;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, axios_1.default.get("".concat(this.baseUrl, "/getExp"), {
+                        return [4 /*yield*/, axios_1.default.get("".concat(this.baseUrl, "/getDetail?id=").concat(condition.id), {
                                 withCredentials: true,
                             })];
                     case 1:
@@ -599,14 +596,14 @@ var medicalEquipment = /** @class */ (function () {
             });
         });
     };
-    medicalEquipment.prototype.getData = function () {
+    MedicalManage.prototype.getExpire = function () {
         return __awaiter(this, void 0, void 0, function () {
             var response, data, error_24;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, axios_1.default.get("".concat(this.baseUrl, "/getData"), {
+                        return [4 /*yield*/, axios_1.default.get("".concat(this.baseUrl, "/getExp"), {
                                 withCredentials: true,
                             })];
                     case 1:
@@ -622,9 +619,32 @@ var medicalEquipment = /** @class */ (function () {
             });
         });
     };
-    medicalEquipment.prototype.deleteMedicalEquipment = function (condition) {
+    MedicalManage.prototype.getData = function () {
         return __awaiter(this, void 0, void 0, function () {
             var response, data, error_25;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, axios_1.default.get("".concat(this.baseUrl, "/getData"), {
+                                withCredentials: true,
+                            })];
+                    case 1:
+                        response = _a.sent();
+                        data = response.data;
+                        return [2 /*return*/, { error: data.error, data: data.data, message: data.message }];
+                    case 2:
+                        error_25 = _a.sent();
+                        console.log("Error creating patient: ", error_25.response.data);
+                        return [2 /*return*/, error_25.response.data];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    MedicalManage.prototype.deleteMedicine = function (condition) {
+        return __awaiter(this, void 0, void 0, function () {
+            var response, data, error_26;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -637,9 +657,177 @@ var medicalEquipment = /** @class */ (function () {
                         data = response.data;
                         return [2 /*return*/, { error: data.error, message: data.message }];
                     case 2:
-                        error_25 = _a.sent();
-                        console.log("Error creating patient: ", error_25.response.data);
-                        return [2 /*return*/, error_25.response.data];
+                        error_26 = _a.sent();
+                        console.log("Error creating patient: ", error_26.response.data);
+                        return [2 /*return*/, error_26.response.data];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    MedicalManage.prototype.updateMedicine = function (condition, info) {
+        return __awaiter(this, void 0, void 0, function () {
+            var response, data, error_27;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, axios_1.default.put("".concat(this.baseUrl, "/update?id=").concat(condition.id), info, {
+                                withCredentials: true,
+                            })];
+                    case 1:
+                        response = _a.sent();
+                        data = response.data;
+                        return [2 /*return*/, { error: data.error, message: data.message }];
+                    case 2:
+                        error_27 = _a.sent();
+                        console.log("Error updating medicine: ", error_27.response.data);
+                        return [2 /*return*/, error_27.response.data];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    return MedicalManage;
+}());
+exports.MedicalManage = MedicalManage;
+var medicalEquipment = /** @class */ (function () {
+    function medicalEquipment() {
+        this.baseUrl = "http://localhost:3000/api/v1/medicalEquip";
+    }
+    medicalEquipment.prototype.createMedicalEquipment = function (info) {
+        return __awaiter(this, void 0, void 0, function () {
+            var response, data, error_28;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, axios_1.default.post("".concat(this.baseUrl, "/create"), info, {
+                                withCredentials: true,
+                            })];
+                    case 1:
+                        response = _a.sent();
+                        data = response.data;
+                        return [2 /*return*/, { error: data.error, message: data.message }];
+                    case 2:
+                        error_28 = _a.sent();
+                        console.log("Error creating patient: ", error_28.response.data);
+                        return [2 /*return*/, error_28.response.data];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    medicalEquipment.prototype.getDetail = function (condition) {
+        return __awaiter(this, void 0, void 0, function () {
+            var response, data, error_29;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, axios_1.default.get("".concat(this.baseUrl, "/getDetail?id=").concat(condition.id), {
+                                withCredentials: true,
+                            })];
+                    case 1:
+                        response = _a.sent();
+                        data = response.data;
+                        return [2 /*return*/, { error: data.error, data: data.data, message: data.message }];
+                    case 2:
+                        error_29 = _a.sent();
+                        console.log("Error creating patient: ", error_29.response.data);
+                        return [2 /*return*/, error_29.response.data];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    medicalEquipment.prototype.getExpire = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var response, data, error_30;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, axios_1.default.get("".concat(this.baseUrl, "/getExp"), {
+                                withCredentials: true,
+                            })];
+                    case 1:
+                        response = _a.sent();
+                        data = response.data;
+                        return [2 /*return*/, { error: data.error, data: data.data, message: data.message }];
+                    case 2:
+                        error_30 = _a.sent();
+                        console.log("Error creating patient: ", error_30.response.data);
+                        return [2 /*return*/, error_30.response.data];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    medicalEquipment.prototype.getData = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var response, data, error_31;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, axios_1.default.get("".concat(this.baseUrl, "/getData"), {
+                                withCredentials: true,
+                            })];
+                    case 1:
+                        response = _a.sent();
+                        data = response.data;
+                        return [2 /*return*/, { error: data.error, data: data.data, message: data.message }];
+                    case 2:
+                        error_31 = _a.sent();
+                        console.log("Error creating patient: ", error_31.response.data);
+                        return [2 /*return*/, error_31.response.data];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    medicalEquipment.prototype.deleteMedicalEquipment = function (condition) {
+        return __awaiter(this, void 0, void 0, function () {
+            var response, data, error_32;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, axios_1.default.put("".concat(this.baseUrl, "/delete?id=").concat(condition.id), {
+                                withCredentials: true,
+                            })];
+                    case 1:
+                        response = _a.sent();
+                        data = response.data;
+                        return [2 /*return*/, { error: data.error, message: data.message }];
+                    case 2:
+                        error_32 = _a.sent();
+                        console.log("Error creating patient: ", error_32.response.data);
+                        return [2 /*return*/, error_32.response.data];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    medicalEquipment.prototype.updateMedicalEquip = function (condition, info) {
+        return __awaiter(this, void 0, void 0, function () {
+            var response, data, error_33;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, axios_1.default.put("".concat(this.baseUrl, "/update?id=").concat(condition.id), info, {
+                                withCredentials: true,
+                            })];
+                    case 1:
+                        response = _a.sent();
+                        data = response.data;
+                        return [2 /*return*/, { error: data.error, message: data.message }];
+                    case 2:
+                        error_33 = _a.sent();
+                        console.log("Error updating medical: ", error_33.response.data);
+                        return [2 /*return*/, error_33.response.data];
                     case 3: return [2 /*return*/];
                 }
             });
