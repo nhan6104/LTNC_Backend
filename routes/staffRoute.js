@@ -9,5 +9,6 @@ router.get("/detail", authenticatedUser.isAuthenticated, authenticatedUser.isAut
 router.put("/delete", authenticatedUser.isAuthenticated, authenticatedUser.isAuthorized(["ADMIN"]), staffController.removeStaff);
 router.put("/update", authenticatedUser.isAuthenticated, authenticatedUser.isAuthorized(["ADMIN"]), staffController.updateStaff);
 router.get("/getalldoctor",authenticatedUser.isAuthenticated, authenticatedUser.isAuthorized(["ADMIN"]),staffController.getAlldoctor)
+router.get("/getschedule", authenticatedUser.isAuthenticated, authenticatedUser.isAuthorizedFinding(["ADMIN", "DOCTOR"]), staffController.getSchedule);
 
 module.exports = router;

@@ -378,6 +378,23 @@ class Staff {
     }
   }
 
+  async getschedule() {
+    try {
+      const response: AxiosResponse = await axios.get(
+        `${this.baseUrl}/getschedule`,
+        {
+          withCredentials: true,
+        }
+      );
+
+      const data = response.data;
+      return { error: data.error, data: data.data, message: data.message };
+    } catch (error: any) {
+      console.log("Error finding staff: ", error.response.data);
+      return error.response.data;
+    }
+  }
+
   async deleteStaff(condition: queryStaff) {
     try {
       const response: AxiosResponse = await axios.put(

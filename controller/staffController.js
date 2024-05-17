@@ -189,8 +189,6 @@ const detailStaff = async (req, res) => {
             });
         }
 
-        console.log(doctors.doctors);
-
         const doctor =  doctors.doctors.filter(item => item.cccd == req.query.cccd);
 
         if (!doctor) {
@@ -330,11 +328,52 @@ const getAlldoctor = async (req, res) => {
         });
     }
 }
+
+const getSchedule = async (req, res) => {
+    try {
+
+        const doctors = await doctorService.findDoctor();
+
+        if ( !doctors || !doctors.doctors) {
+            return res.status(400).json({
+                error: true,
+                message: "Người dùng không tồn tại",
+            });
+        }
+
+        const doctor =  doctors.doctors.filter(item => item.cccd == req.body.cccd);
+
+        if (!doctor) {
+            return res.status(400).json({
+                error: true,
+                message: "Người dùng không tồn tại",
+            });
+        }
+
+        const detail = await doctorService.detailStaff(doctor[0].refference)
+
+        return res.status(200).json({
+            error: true,
+            message: "Lấy thành công",
+            data: detail.working_hours
+
+        });
+    }
+    catch (error) {
+        // console.log(err);
+		return res.status(500).json({
+			error: true,
+			message: error.message,
+		});
+    }
+}
+
 module.exports = {
     createStaff,
     removeStaff,
     detailStaff,
     illnessToDoctor,
     updateStaff,
-    getAlldoctor
+    getAlldoctor,
+    getSchedule
 }
