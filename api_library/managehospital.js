@@ -398,9 +398,32 @@ var Staff = /** @class */ (function () {
             });
         });
     };
-    Staff.prototype.deleteStaff = function (condition) {
+    Staff.prototype.getschedule = function () {
         return __awaiter(this, void 0, void 0, function () {
             var response, data, error_16;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, axios_1.default.get("".concat(this.baseUrl, "/getschedule"), {
+                                withCredentials: true,
+                            })];
+                    case 1:
+                        response = _a.sent();
+                        data = response.data;
+                        return [2 /*return*/, { error: data.error, data: data.data, message: data.message }];
+                    case 2:
+                        error_16 = _a.sent();
+                        console.log("Error finding staff: ", error_16.response.data);
+                        return [2 /*return*/, error_16.response.data];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    Staff.prototype.deleteStaff = function (condition) {
+        return __awaiter(this, void 0, void 0, function () {
+            var response, data, error_17;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -413,9 +436,9 @@ var Staff = /** @class */ (function () {
                         data = response.data;
                         return [2 /*return*/, { error: data.error, message: data.message }];
                     case 2:
-                        error_16 = _a.sent();
-                        console.log("Error removing staff: ", error_16.response.data);
-                        return [2 /*return*/, error_16.response.data];
+                        error_17 = _a.sent();
+                        console.log("Error removing staff: ", error_17.response.data);
+                        return [2 /*return*/, error_17.response.data];
                     case 3: return [2 /*return*/];
                 }
             });
@@ -423,7 +446,7 @@ var Staff = /** @class */ (function () {
     };
     Staff.prototype.updateStaff = function (condition, info) {
         return __awaiter(this, void 0, void 0, function () {
-            var response, data, error_17;
+            var response, data, error_18;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -436,9 +459,9 @@ var Staff = /** @class */ (function () {
                         data = response.data;
                         return [2 /*return*/, { error: data.error, message: data.message }];
                     case 2:
-                        error_17 = _a.sent();
-                        console.log("Error updating staff: ", error_17.response.data);
-                        return [2 /*return*/, error_17.response.data];
+                        error_18 = _a.sent();
+                        console.log("Error updating staff: ", error_18.response.data);
+                        return [2 /*return*/, error_18.response.data];
                     case 3: return [2 /*return*/];
                 }
             });
@@ -446,7 +469,7 @@ var Staff = /** @class */ (function () {
     };
     Staff.prototype.findAllStaff = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var response, data, error_18;
+            var response, data, error_19;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -459,9 +482,9 @@ var Staff = /** @class */ (function () {
                         data = response.data;
                         return [2 /*return*/, { error: data.error, data: data.data, message: data.message }];
                     case 2:
-                        error_18 = _a.sent();
-                        console.log("Error updating staff: ", error_18.response.data);
-                        return [2 /*return*/, error_18.response.data];
+                        error_19 = _a.sent();
+                        console.log("Error updating staff: ", error_19.response.data);
+                        return [2 /*return*/, error_19.response.data];
                     case 3: return [2 /*return*/];
                 }
             });
@@ -476,7 +499,7 @@ var Authenticate = /** @class */ (function () {
     }
     Authenticate.prototype.login = function (info) {
         return __awaiter(this, void 0, void 0, function () {
-            var response, data, error_19;
+            var response, data, error_20;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -489,9 +512,9 @@ var Authenticate = /** @class */ (function () {
                         data = response.data;
                         return [2 /*return*/, { error: data.error, data: data.info, message: data.message }];
                     case 2:
-                        error_19 = _a.sent();
-                        console.log("Error login: ", error_19.response.data);
-                        return [2 /*return*/, error_19.response.data];
+                        error_20 = _a.sent();
+                        console.log("Error login: ", error_20.response.data);
+                        return [2 /*return*/, error_20.response.data];
                     case 3: return [2 /*return*/];
                 }
             });
@@ -499,7 +522,7 @@ var Authenticate = /** @class */ (function () {
     };
     Authenticate.prototype.logout = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var response, data, error_20;
+            var response, data, error_21;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -512,9 +535,9 @@ var Authenticate = /** @class */ (function () {
                         data = response.data;
                         return [2 /*return*/, { error: data.error, message: data.message }];
                     case 2:
-                        error_20 = _a.sent();
-                        console.log("Error logout: ", error_20.response.data);
-                        return [2 /*return*/, error_20.response.data];
+                        error_21 = _a.sent();
+                        console.log("Error logout: ", error_21.response.data);
+                        return [2 /*return*/, error_21.response.data];
                     case 3: return [2 /*return*/];
                 }
             });
@@ -522,7 +545,7 @@ var Authenticate = /** @class */ (function () {
     };
     Authenticate.prototype.getUser = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var response, data, error_21;
+            var response, data, error_22;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -535,9 +558,9 @@ var Authenticate = /** @class */ (function () {
                         data = response.data;
                         return [2 /*return*/, { error: data.error, data: data.data, message: data.message }];
                     case 2:
-                        error_21 = _a.sent();
-                        console.log("Error getUser: ", error_21.response.data);
-                        return [2 /*return*/, error_21.response.data];
+                        error_22 = _a.sent();
+                        console.log("Error getUser: ", error_22.response.data);
+                        return [2 /*return*/, error_22.response.data];
                     case 3: return [2 /*return*/];
                 }
             });
@@ -552,7 +575,7 @@ var MedicalManage = /** @class */ (function () {
     }
     MedicalManage.prototype.createMedicine = function (info) {
         return __awaiter(this, void 0, void 0, function () {
-            var response, data, error_22;
+            var response, data, error_23;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -565,29 +588,6 @@ var MedicalManage = /** @class */ (function () {
                         data = response.data;
                         return [2 /*return*/, { error: data.error, message: data.message }];
                     case 2:
-                        error_22 = _a.sent();
-                        console.log("Error creating patient: ", error_22.response.data);
-                        return [2 /*return*/, error_22.response.data];
-                    case 3: return [2 /*return*/];
-                }
-            });
-        });
-    };
-    MedicalManage.prototype.getDetail = function (condition) {
-        return __awaiter(this, void 0, void 0, function () {
-            var response, data, error_23;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, axios_1.default.get("".concat(this.baseUrl, "/getDetail?id=").concat(condition.id), {
-                                withCredentials: true,
-                            })];
-                    case 1:
-                        response = _a.sent();
-                        data = response.data;
-                        return [2 /*return*/, { error: data.error, data: data.data, message: data.message }];
-                    case 2:
                         error_23 = _a.sent();
                         console.log("Error creating patient: ", error_23.response.data);
                         return [2 /*return*/, error_23.response.data];
@@ -596,14 +596,14 @@ var MedicalManage = /** @class */ (function () {
             });
         });
     };
-    MedicalManage.prototype.getExpire = function () {
+    MedicalManage.prototype.getDetail = function (condition) {
         return __awaiter(this, void 0, void 0, function () {
             var response, data, error_24;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, axios_1.default.get("".concat(this.baseUrl, "/getExp"), {
+                        return [4 /*yield*/, axios_1.default.get("".concat(this.baseUrl, "/getDetail?id=").concat(condition.id), {
                                 withCredentials: true,
                             })];
                     case 1:
@@ -619,14 +619,14 @@ var MedicalManage = /** @class */ (function () {
             });
         });
     };
-    MedicalManage.prototype.getData = function () {
+    MedicalManage.prototype.getExpire = function () {
         return __awaiter(this, void 0, void 0, function () {
             var response, data, error_25;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, axios_1.default.get("".concat(this.baseUrl, "/getData"), {
+                        return [4 /*yield*/, axios_1.default.get("".concat(this.baseUrl, "/getExp"), {
                                 withCredentials: true,
                             })];
                     case 1:
@@ -642,9 +642,32 @@ var MedicalManage = /** @class */ (function () {
             });
         });
     };
-    MedicalManage.prototype.deleteMedicine = function (condition) {
+    MedicalManage.prototype.getData = function () {
         return __awaiter(this, void 0, void 0, function () {
             var response, data, error_26;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, axios_1.default.get("".concat(this.baseUrl, "/getData"), {
+                                withCredentials: true,
+                            })];
+                    case 1:
+                        response = _a.sent();
+                        data = response.data;
+                        return [2 /*return*/, { error: data.error, data: data.data, message: data.message }];
+                    case 2:
+                        error_26 = _a.sent();
+                        console.log("Error creating patient: ", error_26.response.data);
+                        return [2 /*return*/, error_26.response.data];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    MedicalManage.prototype.deleteMedicine = function (condition) {
+        return __awaiter(this, void 0, void 0, function () {
+            var response, data, error_27;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -657,9 +680,9 @@ var MedicalManage = /** @class */ (function () {
                         data = response.data;
                         return [2 /*return*/, { error: data.error, message: data.message }];
                     case 2:
-                        error_26 = _a.sent();
-                        console.log("Error creating patient: ", error_26.response.data);
-                        return [2 /*return*/, error_26.response.data];
+                        error_27 = _a.sent();
+                        console.log("Error creating patient: ", error_27.response.data);
+                        return [2 /*return*/, error_27.response.data];
                     case 3: return [2 /*return*/];
                 }
             });
@@ -667,7 +690,7 @@ var MedicalManage = /** @class */ (function () {
     };
     MedicalManage.prototype.updateMedicine = function (condition, info) {
         return __awaiter(this, void 0, void 0, function () {
-            var response, data, error_27;
+            var response, data, error_28;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -680,9 +703,9 @@ var MedicalManage = /** @class */ (function () {
                         data = response.data;
                         return [2 /*return*/, { error: data.error, message: data.message }];
                     case 2:
-                        error_27 = _a.sent();
-                        console.log("Error updating medicine: ", error_27.response.data);
-                        return [2 /*return*/, error_27.response.data];
+                        error_28 = _a.sent();
+                        console.log("Error updating medicine: ", error_28.response.data);
+                        return [2 /*return*/, error_28.response.data];
                     case 3: return [2 /*return*/];
                 }
             });
@@ -697,7 +720,7 @@ var medicalEquipment = /** @class */ (function () {
     }
     medicalEquipment.prototype.createMedicalEquipment = function (info) {
         return __awaiter(this, void 0, void 0, function () {
-            var response, data, error_28;
+            var response, data, error_29;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -710,29 +733,6 @@ var medicalEquipment = /** @class */ (function () {
                         data = response.data;
                         return [2 /*return*/, { error: data.error, message: data.message }];
                     case 2:
-                        error_28 = _a.sent();
-                        console.log("Error creating patient: ", error_28.response.data);
-                        return [2 /*return*/, error_28.response.data];
-                    case 3: return [2 /*return*/];
-                }
-            });
-        });
-    };
-    medicalEquipment.prototype.getDetail = function (condition) {
-        return __awaiter(this, void 0, void 0, function () {
-            var response, data, error_29;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, axios_1.default.get("".concat(this.baseUrl, "/getDetail?id=").concat(condition.id), {
-                                withCredentials: true,
-                            })];
-                    case 1:
-                        response = _a.sent();
-                        data = response.data;
-                        return [2 /*return*/, { error: data.error, data: data.data, message: data.message }];
-                    case 2:
                         error_29 = _a.sent();
                         console.log("Error creating patient: ", error_29.response.data);
                         return [2 /*return*/, error_29.response.data];
@@ -741,14 +741,14 @@ var medicalEquipment = /** @class */ (function () {
             });
         });
     };
-    medicalEquipment.prototype.getExpire = function () {
+    medicalEquipment.prototype.getDetail = function (condition) {
         return __awaiter(this, void 0, void 0, function () {
             var response, data, error_30;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, axios_1.default.get("".concat(this.baseUrl, "/getExp"), {
+                        return [4 /*yield*/, axios_1.default.get("".concat(this.baseUrl, "/getDetail?id=").concat(condition.id), {
                                 withCredentials: true,
                             })];
                     case 1:
@@ -764,14 +764,14 @@ var medicalEquipment = /** @class */ (function () {
             });
         });
     };
-    medicalEquipment.prototype.getData = function () {
+    medicalEquipment.prototype.getExpire = function () {
         return __awaiter(this, void 0, void 0, function () {
             var response, data, error_31;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, axios_1.default.get("".concat(this.baseUrl, "/getData"), {
+                        return [4 /*yield*/, axios_1.default.get("".concat(this.baseUrl, "/getExp"), {
                                 withCredentials: true,
                             })];
                     case 1:
@@ -787,9 +787,32 @@ var medicalEquipment = /** @class */ (function () {
             });
         });
     };
-    medicalEquipment.prototype.deleteMedicalEquipment = function (condition) {
+    medicalEquipment.prototype.getData = function () {
         return __awaiter(this, void 0, void 0, function () {
             var response, data, error_32;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, axios_1.default.get("".concat(this.baseUrl, "/getData"), {
+                                withCredentials: true,
+                            })];
+                    case 1:
+                        response = _a.sent();
+                        data = response.data;
+                        return [2 /*return*/, { error: data.error, data: data.data, message: data.message }];
+                    case 2:
+                        error_32 = _a.sent();
+                        console.log("Error creating patient: ", error_32.response.data);
+                        return [2 /*return*/, error_32.response.data];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    medicalEquipment.prototype.deleteMedicalEquipment = function (condition) {
+        return __awaiter(this, void 0, void 0, function () {
+            var response, data, error_33;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -802,9 +825,9 @@ var medicalEquipment = /** @class */ (function () {
                         data = response.data;
                         return [2 /*return*/, { error: data.error, message: data.message }];
                     case 2:
-                        error_32 = _a.sent();
-                        console.log("Error creating patient: ", error_32.response.data);
-                        return [2 /*return*/, error_32.response.data];
+                        error_33 = _a.sent();
+                        console.log("Error creating patient: ", error_33.response.data);
+                        return [2 /*return*/, error_33.response.data];
                     case 3: return [2 /*return*/];
                 }
             });
@@ -812,7 +835,7 @@ var medicalEquipment = /** @class */ (function () {
     };
     medicalEquipment.prototype.updateMedicalEquip = function (condition, info) {
         return __awaiter(this, void 0, void 0, function () {
-            var response, data, error_33;
+            var response, data, error_34;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -825,9 +848,9 @@ var medicalEquipment = /** @class */ (function () {
                         data = response.data;
                         return [2 /*return*/, { error: data.error, message: data.message }];
                     case 2:
-                        error_33 = _a.sent();
-                        console.log("Error updating medical: ", error_33.response.data);
-                        return [2 /*return*/, error_33.response.data];
+                        error_34 = _a.sent();
+                        console.log("Error updating medical: ", error_34.response.data);
+                        return [2 /*return*/, error_34.response.data];
                     case 3: return [2 /*return*/];
                 }
             });

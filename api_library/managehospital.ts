@@ -322,6 +322,7 @@ export interface createStaff {
   specialized: string;
   role: string;
   working_hours: workinghours[];
+  faculty: string;
 }
 
 export interface queryStaff {
@@ -513,6 +514,7 @@ class Authenticate {
 }
 
 export interface createMedicine {
+  name: string;
   brand: string;
   disposal_price: number;
   expiration_date: string;
@@ -520,7 +522,6 @@ export interface createMedicine {
   origin: string;
   purchase_price: number;
   quantity: number;
-  npm;
 }
 
 export interface QueryMedicine {
