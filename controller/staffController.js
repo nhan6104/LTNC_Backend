@@ -6,6 +6,7 @@ const doctorValidation = new validation.DoctorValidation();
 
 const createStaff = async (req, res) => {
     try {
+        console.log(req.body);
             const { error } = doctorValidation.validateCreateDoctor(req.body);
     
             if (error) {
@@ -28,7 +29,7 @@ const createStaff = async (req, res) => {
                     }   
                 }
             }
-
+            const uidtemp = req.body.uid
             const resultSignUp = await doctorService.signupAccount(req.body.email, req.body.cccd);
             
             let newStaff = new Array();
@@ -76,6 +77,10 @@ const createStaff = async (req, res) => {
             else {
                 textResultCreatingNewStaff = `Tạo nhân viên thành công.`
             }
+
+            const expiresIn = 60 * 60 * 24 * 5 * 1000; // 5 days
+    
+            res.cookie('session', uidtemp, { maxAge: expiresIn, httpOnly: true, secure: true });
 
             return res.status(200).json({
                 error: false,
