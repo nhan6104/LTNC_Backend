@@ -67,6 +67,11 @@ export interface queryPatientInQueue {
   faculty: string;
 }
 
+export interface completeHhealing {
+  DBIdBytime: string;
+  faculty: string;
+}
+
 class Patient {
   private baseUrl: string;
   constructor() {
@@ -285,10 +290,10 @@ class Patient {
     }
   }
 
-  async completeHealing(condition: queryPatientInQueue) {
+  async completeHealing(condition: completeHhealing) {
     try {
       const response: AxiosResponse = await axios.put(
-        `${this.baseUrl}/complete_healing?cccd=${condition.cccd}&faculty=${condition.faculty}`,
+        `${this.baseUrl}/complete_healing?DBIdBytime=${condition.DBIdBytime}&faculty=${condition.faculty}`,
         {
           withCredentials: true,
         }
