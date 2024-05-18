@@ -306,7 +306,7 @@ var Patient = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, axios_1.default.put("".concat(this.baseUrl, "/update_status?cccd=").concat(condition.cccd, "&faculty=").concat(condition.faculty), {
+                        return [4 /*yield*/, axios_1.default.put("".concat(this.baseUrl, "/update_status?DBIdBytime=").concat(condition.DBIdBytime, "&faculty=").concat(condition.faculty), {
                                 withCredentials: true,
                             })];
                     case 1:
@@ -329,7 +329,7 @@ var Patient = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, axios_1.default.put("".concat(this.baseUrl, "/complete_healing?cccd=").concat(condition.cccd, "&faculty=").concat(condition.faculty), {
+                        return [4 /*yield*/, axios_1.default.put("".concat(this.baseUrl, "/complete_healing?DBIdBytime=").concat(condition.DBIdBytime, "&faculty=").concat(condition.faculty), {
                                 withCredentials: true,
                             })];
                     case 1:
