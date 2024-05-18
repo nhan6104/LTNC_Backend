@@ -63,7 +63,7 @@ export interface registerInfo {
 }
 
 export interface queryPatientInQueue {
-  cccd: string;
+  DBIdBytime: string;
   faculty: string;
 }
 
@@ -276,7 +276,7 @@ class Patient {
   async updateStatusAferRegister(condition: queryPatientInQueue) {
     try {
       const response: AxiosResponse = await axios.put(
-        `${this.baseUrl}/update_status?cccd=${condition.cccd}&faculty=${condition.faculty}`,
+        `${this.baseUrl}/update_status?DBIdBytime=${condition.DBIdBytime}&faculty=${condition.faculty}`,
         {
           withCredentials: true,
         }
