@@ -187,7 +187,7 @@ const createRecords = async (req, res) => {
       },
     ];
 
-    if (!history.medicalHistory) {
+    if (history.medicalHistory) {
       const medicine = await medicalService.findMedicines();
       let totalPrice = 0;
 
@@ -731,69 +731,72 @@ const updateActiveAfterRegister = async (req, res) => {
 
 const completeHealing = async (req, res) => {
   try {
-    const { error } = patientValidation.validateQueryPatientInQueue(req.query);
-
-    if (error) {
-      console.log(error);
-      return res.status(400).json({
-        error: true,
-        message: error.message,
-      });
-    }
-
-    let result = await patientService.getAllPatientInRealtimeDb(req.query);
-
-    if (!result) {
-      return res.status(400).json({
-        error: true,
-        message: "Không có bệnh nhân chờ khám.",
-      });
-    }
-
-    let el;
-    if (result) {
-      for (el in result[req.query.faculty]) {
-        if (el === req.query.DBIdBytime) {
-          break;
-        }
+      const {error}  = patientValidation.validateQueryPatientInQueue(req.query);
+      
+      if (error) {
+          console.log(error);
+          return res.status(400).json({
+              error: true,
+              message: error.message,
+          });
       }
-    }
 
-    let foundPatient = result[req.query.faculty][el];
+      let result = await patientService.getAllPatientInRealtimeDb(req.query);
 
-    if (foundPatient) {
-      if (foundPatient.active == 1) {
-        const tmpPatient = {
-          faculty: req.query.faculty,
-          DBIdBytime: foundPatient.DBIdBytime,
-        };
-        await patientService.removePatientInRealtimeDb(tmpPatient);
-
-        return res.status(200).json({
-          error: false,
-          message: "Khám hoàn tất.",
-          data: tmpPatient,
-        });
-      } else {
-        return res.status(400).json({
-          error: true,
-          message: "Người dùng chưa được đăng ký khám.",
-        });
+      if (!result) {
+          return res.status(400).json({
+              error: true,
+              message: "Không có bệnh nhân chờ khám.",
+          });
       }
-    } else {
-      return res.status(400).json({
-        error: true,
-        message: "Người dùng không có trong hàng chờ.",
-      });
-    }
+
+      let el;
+      if (result) {
+          for (el in result[req.query.faculty]) {
+              if (el === req.query.DBIdBytime) {
+                  break;
+              }
+          }
+      }
+
+      let foundPatient = result[req.query.faculty][el];
+
+      if (foundPatient) {
+          if (foundPatient.active == 1) {
+              const tmpPatient = {
+                  faculty: req.query.faculty,
+                  DBIdBytime: foundPatient.DBIdBytime
+              }
+              await patientService.removePatientInRealtimeDb(tmpPatient);
+
+              return res.status(200).json({
+                  error: false,
+                  message: `Khám hoàn tất.`,
+                  data: tmpPatient
+              });
+          }
+          else {
+              return res.status(400).json({
+                  error: true,
+                  message: `Người dùng chưa được đăng ký khám.`
+              });
+          }
+      }
+      else {
+          return res.status(400).json({
+              error: true,
+              message: `Người dùng không có trong hàng chờ.`
+          });
+      }
   } catch (err) {
-    console.log(err);
-    return res.status(500).json({
-      error: true,
-      message: err.message,
-    });
+      console.log(err);
+      return res.status(500).json({
+          error: true,
+          message: err.message,
+      });
   }
 };
+
 
 module.exports = {
   createPatient,
