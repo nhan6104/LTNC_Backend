@@ -685,49 +685,49 @@ const findPatientsInQueue = async (req, res) => {
 
 const updateActiveAfterRegister = async (req, res) => {
   try {
-    const { error } = patientValidation.validateQueryPatientInQueue(req.query);
-
-    if (error) {
-      console.log(error);
-      return res.status(400).json({
-        error: true,
-        message: error.message,
-      });
-    }
-
-    const result = await patientService.getAllPatientInRealtimeDb(req.query);
-
-    if (result) {
-      let el;
-      for (el in result[req.query.faculty]) {
-        if (el === req.query.DBIdBytime) {
-          result[req.query.faculty][el].active = 1;
-          console.log(result[req.query.faculty][el]);
-          await patientService.createPatientInRealtimeDb(
-            result[req.query.faculty][el]
-          );
-          break;
-        }
+      const {error}  = patientValidation.validateQueryPatientInQueue(req.query);
+      
+      if (error) {
+          console.log(error);
+          return res.status(400).json({
+              error: true,
+              message: error.message,
+          });
       }
-      return res.status(200).json({
-        error: false,
-        message: "Cập nhật thành công.",
-        data: result[req.query.faculty][el],
-      });
-    } else {
-      return res.status(400).json({
-        error: true,
-        message: "Cập nhật thất bại.",
-      });
-    }
+
+      const result = await patientService.getAllPatientInRealtimeDb(req.query);
+      
+      if (result) {
+          let el;
+          for (el in result[req.query.faculty]) {
+              if (el === req.query.DBIdBytime) {
+                  result[req.query.faculty][el].active = 1;
+                  console.log(result[req.query.faculty][el]);
+                  await patientService.createPatientInRealtimeDb(result[req.query.faculty][el]);
+                  break;
+              }
+          }
+          return res.status(200).json({
+              error: false,
+              message: "Cập nhật thành công.",
+              data: result[req.query.faculty][el],
+          })
+      }
+      else {
+          return res.status(400).json({
+              error: true,
+              message: "Cập nhật thất bại."
+          })
+      }
+
   } catch (err) {
-    console.log(err);
-    return res.status(500).json({
-      error: true,
-      message: err.message,
-    });
+      console.log(err);
+      return res.status(500).json({
+          error: true,
+          message: err.message,
+      });
   }
-};
+}
 
 const completeHealing = async (req, res) => {
   try {
